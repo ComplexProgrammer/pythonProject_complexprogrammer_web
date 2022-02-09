@@ -12,11 +12,17 @@ def home_page():
 
 
 @app.route("/ExchangeRates")
+def ExchangeRates():
+    return render_template('ExchangeRates.html')
+
+
+@app.route("/GetExchangeRates", methods=['GET'])
 def GetExchangeRates():
     url = "http://195.158.6.195:4444/Api/C0mplexApi/GetExchangeRates"
-    response = urllib.request.urlopen(url)
-    data = response.read()
-    return render_template('ExchangeRates.html', data=json.loads(data), index=0)
+    request = urllib.request.urlopen(url)
+    data = request.read()
+    return { "data":json.loads(data)}
+
 
 
 @app.route("/ChangeText", methods=['GET', 'POST'])
