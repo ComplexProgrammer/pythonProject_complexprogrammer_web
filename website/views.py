@@ -11,25 +11,24 @@ def home_page():
     return render_template('home.html')
 
 
-@app.route("/ExchangeRates")
-def ExchangeRates():
-    return render_template('ExchangeRates.html')
+#region online services
+@app.route("/exchangerates")
+def exchangerates():
+    return render_template('exchangerates.html')
 
 
 @app.route("/GetExchangeRates", methods=['GET'])
 def GetExchangeRates():
+    print(1)
     url = "http://195.158.6.195:4444/Api/C0mplexApi/GetExchangeRates"
-    request = urllib.request.urlopen(url)
-    data = request.read()
-    return { "data":json.loads(data)}
+    r = urllib.request.urlopen(url)
+    data = r.read()
+    return {"data": json.loads(data)}
 
 
-
-@app.route("/ChangeText", methods=['GET', 'POST'])
-def ChangeText():
-    print(request.form.get('old_text'))
-
-    return render_template('ChangeText.html')
+@app.route("/changetext", methods=['GET', 'POST'])
+def changetext():
+    return render_template('changetext.html')
 
 
 @app.route("/ChangeTextData", methods=['POST'])
@@ -179,3 +178,84 @@ def GetChangeTextData():
         text = text.replace("Ғ", "Gʼ").replace("ғ", "gʼ")
 
     return text
+
+
+@app.route("/ip")
+def ip():
+    return render_template('ip.html')
+
+
+@app.route("/GetMyIP", methods=['GET'])
+def GetMyIP():
+    url = "https://ipapi.co/ip"
+    r = urllib.request.urlopen(url)
+    data = r.read()
+    print(data)
+    return data
+
+
+@app.route("/GetMyIPData", methods=['GET'])
+def GetMyIPData():
+    url = "https://ipapi.co/json"
+    r = urllib.request.urlopen(url)
+    data = r.read()
+    return {"data": json.loads(data)}
+
+
+@app.route("/GetCustomIPData", methods=['GET'])
+def GetCustomIPData():
+    ip = request.args.get('ip')
+    url = "https://ipapi.co/" + ip + "/json"
+    r = urllib.request.urlopen(url)
+    data = r.read()
+    return {"data": json.loads(data)}
+#endregion
+
+
+#regin online games
+@app.route('/snake')
+def snake():
+    return render_template("snake.html")
+
+
+@app.route('/snake2')
+def snake2():
+    return render_template("snake2.html")
+
+
+@app.route('/car')
+def car():
+    return render_template("car.html")
+
+
+@app.route('/duckhunt')
+def duckhunt():
+    return render_template("duckhunt.html")
+
+
+@app.route('/motorcycle')
+def motorcycle():
+    return render_template("motorcycle.html")
+
+
+@app.route('/bubbleshooter')
+def bubbleshooter():
+    return render_template("bubbleshooter.html")
+
+
+@app.route('/pingpong')
+def pingpong():
+    return render_template("pingpong.html")
+
+
+@app.route('/tictactoe')
+def tictactoe():
+    return render_template("tictactoe.html")
+
+
+@app.route('/tetris')
+def tetris():
+    return render_template("tetris.html")
+
+
+#endregion

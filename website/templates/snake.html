@@ -1,0 +1,12 @@
+ <link rel="icon" sizes="16x16" href="{{ url_for('static', filename='/Games/snake/img/icon.png') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='/Games/snake/snake.css') }}">
+<canvas id="SnakeGame" class="hide" width="608" height="608"></canvas>
+<div class="startScreen">
+    <div class='IlonchaRasmi'> </div>
+    <p>
+        Boshlash uchun shu yerni bosing<br />
+        Boshqarish uchun &#8592;, &#8594;, &#8593;, &#8595; yoki (a, d, w, s) tugmalaridan foydalaning<br />
+        Devorga tegib ketsangiz yoki iloncha tanasini o'ziga yedirsangiz yutqazasiz.
+    </p>
+</div>
+<script src="{{ url_for('static', filename='/Games/snake/snake.js') }}"></script>

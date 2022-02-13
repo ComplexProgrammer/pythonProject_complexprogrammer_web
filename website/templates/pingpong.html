@@ -1,0 +1,19 @@
+  <link rel="icon" sizes="16x16" href="{{ url_for('static', filename='/games/pingpong/pingpong.png') }}">
+<title>Ping Pong Game</title>
+    <style>
+        body {
+        background-color: #212121;
+        color: white
+        }
+        #pong {
+            border: 2px solid #FFF;
+            position: absolute;
+            margin: auto;
+            top: 0;
+            right: 0;
+            left: 0;
+            bottom: 0;
+        }
+    </style>
+<canvas id="pong" width="600" height="400"></canvas>
+    <script src="/static/Games/PingPong/pong.js"></script>
