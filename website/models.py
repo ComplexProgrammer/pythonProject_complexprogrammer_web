@@ -1,3 +1,18 @@
+from website import db
+
+
+class savollar(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    savol = db.Column(db.String(length=1024), nullable=False, unique=True)
+    javob_a = db.Column(db.String(length=1024), nullable=False)
+    javob_b = db.Column(db.String(length=1024), nullable=False)
+    javob_c = db.Column(db.String(length=1024), nullable=False)
+    javob_d = db.Column(db.String(length=1024), nullable=False)
+    javob = db.Column(db.String(length=1024), nullable=False)
+    bilet = db.Column(db.String(length=1024), nullable=False)
+    rasm = db.Column(db.String(length=1024), nullable=False)
+
+
 class ListTextValue:
 
     def __init__(self, old_value, new_value):

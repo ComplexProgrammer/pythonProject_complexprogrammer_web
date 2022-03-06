@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='C0mplexButtonStyle.css') }}">
+    <link rel="icon" sizes="16x16" href="{{ url_for('static', filename='/img/favicon.ico') }}">
+    <link href="{{ url_for('static', filename='/alertify/alertify.default.css') }}" rel="stylesheet" />
+    <link href="{{ url_for('static', filename='/alertify/alertify.core.css') }}" rel="stylesheet" />
+    <script src="{{ url_for('static', filename='/alertify/alertify.min.js') }}"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
+    <script src="{{ url_for('static', filename='angular.min.js') }}"></script>
+    <style>
+    .wrapper{
+      margin: 60px auto;
+      text-align: center;
+    }
+
+    #pagination-demo{
+      display: inline-block;
+      margin-bottom: 1.75em;
+    }
+    #pagination-demo li{
+      display: inline-block;
+    }
+
+    .page-content{
+      background: #eee;
+      display: inline-block;
+      padding: 10px;
+      width: 100%;
+      max-width: 660px;
+    }
+    .alertify-log-custom {
+        background: #fba155;
+    }
+
+    .poin:hover {
+        cursor: pointer;
+    }
+    .disabledDiv {
+        pointer-events: none;
+        opacity: 0.4;
+    }
+    </style>
+
+</head>
+<body ng-app="App" ng-controller="avtotest">
+    <div id="conn" style="visibility:hidden;position:absolute;margin-left:45%;margin-top:20%;z-index:9999">
+        <img src="{{ url_for('static', filename='/img/buffering.gif') }}" />
+    </div>
+    <input id="hh" type="hidden" />
+    <audio id="click" controls="controls" style="position:absolute;visibility:hidden">
+        <source src="/static/sounds/click.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="right" controls="controls" style="position:absolute;visibility:hidden">
+        <source src="/static/sounds/right.mp3" type="audio/mpeg" />
+    </audio>
+    <audio id="wrong" controls="controls" style="position:absolute;visibility:hidden">
+        <source src="/static/sounds/wrong.mp3" type="audio/mpeg" />
+    </audio>
+    <hr />
+    <div class="wrapper">
+          <div class="container">
+            <div class="page-content">{{ bilet }} - bilet, 1 - savol</div>
+            <ul id="pagination-demo" class="pagination-demo pagination-lg"></ul>
+            {% raw %}
+                 <h4>{{data.savol}}</h4>
+                <img ng-show="data.rasm" src="/static/avtotest/{{data.rasm}}">
+                <div class="list-group" style="text-align:left">
+                  <a ng-click="ok('A')" id="A" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_a!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === A{{data.id}}' name="javob{{data.id}}" id="a{{data.id}}" value="A{{data.id}}"> {{data.javob_a}}</a>
+                  <a ng-click="ok('B')" id="B" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_b!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === B{{data.id}}' name="javob{{data.id}}" id="b{{data.id}}" value="B{{data.id}}"> {{data.javob_b}}</a>
+                  <a ng-click="ok('C')" id="C" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_c!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === C{{data.id}}' name="javob{{data.id}}" id="c{{data.id}}" value="C{{data.id}}"> {{data.javob_c}}</a>
+                  <a ng-click="ok('D')" id="D" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_d!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === D{{data.id}}' name="javob{{data.id}}" id="d{{data.id}}" value="D{{data.id}}"> {{data.javob_d}}</a>
+                </div>
+            {% endraw %}
+
+        </div>
+    </div>
+    <hr />
+
+
+
+<script>
+        if(window.screen.availWidth>1366){
+            document.getElementsByClassName('pagination-demo')[0].className ="pagination-demo pagination-lg";
+        }
+        else{
+            if(window.screen.availWidth>768&&window.screen.availWidth<1366){
+                document.getElementsByClassName('pagination-demo')[0].className ="pagination-demo";
+            }
+            else{
+                document.getElementsByClassName('pagination-demo')[0].className ="pagination-demo pagination-sm";
+            }
+        }
+      var app = angular.module("App", []);
+      app.controller("avtotest", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
+            $scope.ok=function(value){
+                $scope.mValue=value+$scope.data.id;
+
+                if(value===$scope.data.javob){
+                    document.getElementById('right').play();
+                    document.getElementById(value).classList.add('list-group-item-success');
+                    alertify.success("To`g`ri javob");
+                }
+                else{
+                    document.getElementById('wrong').play();
+                    document.getElementById(value).classList.add('list-group-item-danger');
+                    alertify.error("Noto`g`ri javob");
+
+                }
+                document.getElementById('A').classList.add('disabledDiv');
+                document.getElementById('B').classList.add('disabledDiv');
+                document.getElementById('C').classList.add('disabledDiv');
+                document.getElementById('D').classList.add('disabledDiv');
+            }
+          LoadData(1,{{ bilet }});
+          function LoadData(id){
+              document.getElementById('conn').style.visibility = "visible";
+              $('#hh').modal({
+                       backdrop: 'static',
+                       keyboard: false
+                })
+                  $http({
+                      method: 'GET',
+                      url: "/GetSavol?id="+id+"&bilet="+{{ bilet }},
+                      dataType: "json"
+                  }).then(function (d) {
+                          $scope.data = d.data;
+                          console.log($scope.data);
+                            $('.pagination-demo').twbsPagination({
+                                totalPages: 10,
+                                visiblePages: 10,
+                                next: 'Keyingi &#8250;',
+                                prev: '&#8249; Oldingi',
+                                first: '&#171; Birinchi',
+                                last: 'Oxirgi &#187;',
+                                paginationClass: 'pagination',
+                                loop:false,
+
+                                onPageClick: function (event, page) {
+                                    document.getElementById('click').play();
+                                    $scope.mValue=null;
+                                    document.getElementById('A').classList.remove('disabledDiv');
+                                    document.getElementById('B').classList.remove('disabledDiv');
+                                    document.getElementById('C').classList.remove('disabledDiv');
+                                    document.getElementById('D').classList.remove('disabledDiv');
+                                    document.getElementById('A').classList.remove('list-group-item-success');
+                                    document.getElementById('B').classList.remove('list-group-item-success');
+                                    document.getElementById('C').classList.remove('list-group-item-success');
+                                    document.getElementById('D').classList.remove('list-group-item-success');
+                                    document.getElementById('A').classList.remove('list-group-item-danger');
+                                    document.getElementById('B').classList.remove('list-group-item-danger');
+                                    document.getElementById('C').classList.remove('list-group-item-danger');
+                                    document.getElementById('D').classList.remove('list-group-item-danger');
+                                    console.log(event);
+                                    $('.page-content').text('{{ bilet }} - bilet, '+page + ' - savol') + ' content here';
+                                    LoadData(page,{{ bilet }});
+
+                                },
+                                nextClass:'page-item next',
+                                anchorClass:'page-link'
+
+
+                            });
+                  $("#hh").modal('hide');
+                  document.getElementById('conn').style.visibility = "hidden";
+              }, function (error) {
+                    $("#hh").modal('hide');
+                    document.getElementById('conn').style.visibility = "hidden";
+                  console.log("error in GetSavol -> ", error);
+                  alertify.error("Xatolik yuz berdi");
+              });
+          }
+          }]);
+
+
+</script>
+</body>
+</html>

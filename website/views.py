@@ -1,7 +1,10 @@
+import os
+import sqlite3
 import urllib
-from flask import render_template, request
+from flask import render_template, request, jsonify
 from website import app
-from website.models import ListTextValue
+from website.models import savollar
+from website import db
 import json
 
 
@@ -11,7 +14,7 @@ def home_page():
     return render_template('home.html')
 
 
-#region online services
+# region online services
 @app.route("/exchangerates")
 def exchangerates():
     return render_template('exchangerates.html')
@@ -209,10 +212,40 @@ def GetCustomIPData():
     r = urllib.request.urlopen(url)
     data = r.read()
     return {"data": json.loads(data)}
-#endregion
 
 
-#regin online games
+@app.route("/avtotest")
+def avtotest():
+    return render_template('avtotest.html')
+
+
+@app.route("/test/<id>")
+def test(id):
+    return render_template('test.html',bilet=id)
+
+
+def dict_factory(cursor, row):
+    d = {}
+    for idx, col in enumerate(cursor.description):
+        d[col[0]] = row[idx]
+    return d
+
+
+@app.route("/GetSavol", methods=['GET'])
+def GetSavol():
+    id = request.args.get('id')
+    bilet = request.args.get('bilet')
+    conn = sqlite3.connect('website/avtotest.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+    savol = cur.execute('SELECT * FROM savollar where bilet=="'+bilet+'" and raqam=='+id+';').fetchone()
+    return jsonify(savol)
+
+
+# endregion
+
+
+#region online games
 @app.route('/snake')
 def snake():
     return render_template("snake.html")
@@ -257,5 +290,4 @@ def tictactoe():
 def tetris():
     return render_template("tetris.html")
 
-
-#endregion
+# endregion
