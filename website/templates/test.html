@@ -8,11 +8,16 @@
     <link href="{{ url_for('static', filename='/alertify/alertify.default.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='/alertify/alertify.core.css') }}" rel="stylesheet" />
     <script src="{{ url_for('static', filename='/alertify/alertify.min.js') }}"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <script src="{{ url_for('static', filename='angular.min.js') }}"></script>
+
     <style>
     .wrapper{
       margin: 60px auto;
@@ -45,6 +50,15 @@
         pointer-events: none;
         opacity: 0.4;
     }
+    .container {
+      margin-top: 20px;
+    }
+    .page {
+      display: none;
+    }
+    .page-active {
+      display: block;
+    }
     </style>
 
 </head>
@@ -65,16 +79,27 @@
     <hr />
     <div class="wrapper">
           <div class="container">
-            <div class="page-content">{{ bilet }} - bilet, 1 - savol</div>
-            <ul id="pagination-demo" class="pagination-demo pagination-lg"></ul>
+              <ul class="pagination pagination-lg">
+                <li class="page-item active" id="b1" ng-click="b(1)"><a class="page-link" id="ab1" href="#">1</a></li>
+                <li class="page-item" id="b2" ng-click="b(2)"><a class="page-link" id="ab2" href="#">2</a></li>
+                <li class="page-item" id="b3" ng-click="b(3)"><a class="page-link" id="ab3" href="#">3</a></li>
+                <li class="page-item" id="b4" ng-click="b(4)"><a class="page-link" id="ab4" href="#">4</a></li>
+                <li class="page-item" id="b5" ng-click="b(5)"><a class="page-link" id="ab5" href="#">5</a></li>
+                <li class="page-item" id="b6" ng-click="b(6)"><a class="page-link" id="ab6" href="#">6</a></li>
+                <li class="page-item" id="b7" ng-click="b(7)"><a class="page-link" id="ab7" href="#">7</a></li>
+                <li class="page-item" id="b8" ng-click="b(8)"><a class="page-link" id="ab8" href="#">8</a></li>
+                <li class="page-item" id="b9" ng-click="b(9)"><a class="page-link" id="ab9" href="#">9</a></li>
+                <li class="page-item" id="b10" ng-click="b(10)"><a class="page-link" id="ab10" href="#">10</a></li>
+              </ul>
+            <div class="page-content">{{ bilet }} - bilet, {% raw %}{{savol}}{% endraw %} - savol</div>
             {% raw %}
                  <h4>{{data.savol}}</h4>
                 <img ng-show="data.rasm" src="/static/avtotest/{{data.rasm}}">
                 <div class="list-group" style="text-align:left">
-                  <a ng-click="ok('A')" id="A" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_a!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === A{{data.id}}' name="javob{{data.id}}" id="a{{data.id}}" value="A{{data.id}}"> {{data.javob_a}}</a>
-                  <a ng-click="ok('B')" id="B" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_b!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === B{{data.id}}' name="javob{{data.id}}" id="b{{data.id}}" value="B{{data.id}}"> {{data.javob_b}}</a>
-                  <a ng-click="ok('C')" id="C" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_c!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === C{{data.id}}' name="javob{{data.id}}" id="c{{data.id}}" value="C{{data.id}}"> {{data.javob_c}}</a>
-                  <a ng-click="ok('D')" id="D" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_d!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === D{{data.id}}' name="javob{{data.id}}" id="d{{data.id}}" value="D{{data.id}}"> {{data.javob_d}}</a>
+                  <a ng-click="ok('A')" id="A{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_a!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === A{{data.id}}' name="javob{{data.id}}" value="A{{data.id}}"> {{data.javob_a}}</a>
+                  <a ng-click="ok('B')" id="B{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_b!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === B{{data.id}}' name="javob{{data.id}}" value="B{{data.id}}"> {{data.javob_b}}</a>
+                  <a ng-click="ok('C')" id="C{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_c!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === C{{data.id}}' name="javob{{data.id}}" value="C{{data.id}}"> {{data.javob_c}}</a>
+                  <a ng-click="ok('D')" id="D{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_d!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === D{{data.id}}' name="javob{{data.id}}" value="D{{data.id}}"> {{data.javob_d}}</a>
                 </div>
             {% endraw %}
 
@@ -86,39 +111,133 @@
 
 <script>
         if(window.screen.availWidth>1366){
-            document.getElementsByClassName('pagination-demo')[0].className ="pagination-demo pagination-lg";
+            document.getElementsByClassName('pagination')[0].className ="pagination pagination-lg";
         }
         else{
             if(window.screen.availWidth>768&&window.screen.availWidth<1366){
-                document.getElementsByClassName('pagination-demo')[0].className ="pagination-demo";
+                document.getElementsByClassName('pagination')[0].className ="pagination";
             }
             else{
-                document.getElementsByClassName('pagination-demo')[0].className ="pagination-demo pagination-sm";
+                document.getElementsByClassName('pagination')[0].className ="pagination pagination-sm";
             }
         }
       var app = angular.module("App", []);
       app.controller("avtotest", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
-            $scope.ok=function(value){
-                $scope.mValue=value+$scope.data.id;
+                $scope.javoblar=[];
+                $scope.mValue=null;
+                function setCookie(cname, cvalue, exdays) {
+                  const d = new Date();
+                  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                  let expires = "expires="+d.toUTCString();
+                  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                }
 
+                function getCookie(cname) {
+                  let name = cname + "=";
+                  let ca = document.cookie.split(';');
+                  for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                      c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                      return c.substring(name.length, c.length);
+                    }
+                  }
+                  return "";
+                }
+
+                function checkJavoblar() {
+                  let javoblar = getCookie("javoblar");
+                  if (javoblar != "") {
+                    $scope.javoblar=javoblar;
+                    console.log(javoblar);
+                  } else {
+                    if ($scope.javoblar != "" && $scope.javoblar != null) {
+                      setCookie("javoblar", $scope.javoblar, 365);
+                    }
+                  }
+                }
+          $scope.b=function(value){
+            document.getElementById('click').play();
+            LoadData(value);
+            var element = document.getElementsByClassName('page-item');
+                for(var i = 0; i < element.length; i++)
+                {
+                    element[i].classList.remove('active');
+                    console.log(element[i].className);
+                }
+            document.getElementById('b'+value).classList.add('active');
+            document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-success');
+            document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-success');
+            document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-success');
+            document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-success');
+            document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-danger');
+            document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-danger');
+            document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-danger');
+            document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-danger');
+            $scope.javob=$scope.javoblar.find(element => element.savol == value);
+            if($scope.javob)
+            {
+                $scope.mValue=$scope.javob.javob+$scope.javob.savol;
+                if($scope.javob.javob==$scope.javob.togri_javob)
+                {
+                    document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-success');
+                }
+                else
+                {
+                    document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-danger');
+                }
+                document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
+            }
+            else
+            {
+                document.getElementById('A'+$scope.data.id).classList.remove('disabledDiv');
+                document.getElementById('B'+$scope.data.id).classList.remove('disabledDiv');
+                document.getElementById('C'+$scope.data.id).classList.remove('disabledDiv');
+                document.getElementById('D'+$scope.data.id).classList.remove('disabledDiv');
+
+            }
+
+
+          }
+            $scope.ok=function(value){
+
+                var obj = {
+                  bilet: {{ bilet }},
+                  savol:$scope.savol,
+                  javob:value,
+                  togri_javob:$scope.data.javob
+                };
+                if(!$scope.javoblar.find(element => element == obj))
+                {
+                    $scope.javoblar.push(obj);
+                }
+                $scope.mValue=value+$scope.data.id;
                 if(value===$scope.data.javob){
                     document.getElementById('right').play();
-                    document.getElementById(value).classList.add('list-group-item-success');
+                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-success');
+                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-success');
                     alertify.success("To`g`ri javob");
                 }
                 else{
                     document.getElementById('wrong').play();
-                    document.getElementById(value).classList.add('list-group-item-danger');
+                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-danger');
+                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-danger');
                     alertify.error("Noto`g`ri javob");
 
                 }
-                document.getElementById('A').classList.add('disabledDiv');
-                document.getElementById('B').classList.add('disabledDiv');
-                document.getElementById('C').classList.add('disabledDiv');
-                document.getElementById('D').classList.add('disabledDiv');
+                document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
             }
-          LoadData(1,{{ bilet }});
+          LoadData(1);
           function LoadData(id){
+                $scope.savol=id;
               document.getElementById('conn').style.visibility = "visible";
               $('#hh').modal({
                        backdrop: 'static',
@@ -131,41 +250,7 @@
                   }).then(function (d) {
                           $scope.data = d.data;
                           console.log($scope.data);
-                            $('.pagination-demo').twbsPagination({
-                                totalPages: 10,
-                                visiblePages: 10,
-                                next: 'Keyingi &#8250;',
-                                prev: '&#8249; Oldingi',
-                                first: '&#171; Birinchi',
-                                last: 'Oxirgi &#187;',
-                                paginationClass: 'pagination',
-                                loop:false,
 
-                                onPageClick: function (event, page) {
-                                    document.getElementById('click').play();
-                                    $scope.mValue=null;
-                                    document.getElementById('A').classList.remove('disabledDiv');
-                                    document.getElementById('B').classList.remove('disabledDiv');
-                                    document.getElementById('C').classList.remove('disabledDiv');
-                                    document.getElementById('D').classList.remove('disabledDiv');
-                                    document.getElementById('A').classList.remove('list-group-item-success');
-                                    document.getElementById('B').classList.remove('list-group-item-success');
-                                    document.getElementById('C').classList.remove('list-group-item-success');
-                                    document.getElementById('D').classList.remove('list-group-item-success');
-                                    document.getElementById('A').classList.remove('list-group-item-danger');
-                                    document.getElementById('B').classList.remove('list-group-item-danger');
-                                    document.getElementById('C').classList.remove('list-group-item-danger');
-                                    document.getElementById('D').classList.remove('list-group-item-danger');
-                                    console.log(event);
-                                    $('.page-content').text('{{ bilet }} - bilet, '+page + ' - savol') + ' content here';
-                                    LoadData(page,{{ bilet }});
-
-                                },
-                                nextClass:'page-item next',
-                                anchorClass:'page-link'
-
-
-                            });
                   $("#hh").modal('hide');
                   document.getElementById('conn').style.visibility = "hidden";
               }, function (error) {
