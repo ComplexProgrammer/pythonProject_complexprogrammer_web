@@ -293,6 +293,7 @@ p {
 	border-radius: 10px;
 	background-image: url(/static/img/img-1.png);
 	background-size: cover;
+	height:500px;
 	margin: 10px 5%;
 	position: relative;
 	z-index: 1;
@@ -697,7 +698,7 @@ p {
 	/* End header */
 
 	#services .service-bottom .service-item {
-		flex-basis: 22%;
+		flex-basis: 25%;
 		margin: 1.5%;
 	}
 }

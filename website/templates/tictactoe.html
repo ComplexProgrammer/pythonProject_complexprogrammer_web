@@ -1,5 +1,39 @@
- <link rel="icon" sizes="16x16" href="{{ url_for('static', filename='/Games/TicTacToe/tictactoe.png') }}">
- <title>Tic Tac Toe</title>
+<link rel="icon" sizes="16x16" href="{{ url_for('static', filename='/Games/TicTacToe/tictactoe.png') }}">
+<title>Tic Tac Toe</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7773722896374259"
+ crossorigin="anonymous"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DHWL20H58"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-8DHWL20H58');
+</script>
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDpWaFi5QLTNc-yY0ieMKJtGOmbm2ofBm4",
+    authDomain: "c0mplex.firebaseapp.com",
+    projectId: "c0mplex",
+    storageBucket: "c0mplex.appspot.com",
+    messagingSenderId: "755681568857",
+    appId: "1:755681568857:web:102b1b733df55baefe2948",
+    measurementId: "G-95WQGY7X9E"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 <link href="/static/Games/TicTacToe/style.css" rel="stylesheet" />
 <script src="https://use.fontawesome.com/releases/v5.15.2/js/all.js" data-auto-replace-svg="nest"></script>
 <div class="TicTacToeBody">
@@ -15,7 +49,6 @@
             <div class="credit">Created By <a href="http://complexprogrammer.uz" target="_blank">www.complexprogrammer.uz</a></div>
         </div>
     </div>
-
     <!-- playboard section -->
     <div class="play-board">
         <div class="details">

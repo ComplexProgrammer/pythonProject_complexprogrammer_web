@@ -9,68 +9,613 @@
 
 <url>
   <loc>http://complexprogrammer.uz/</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>1.00</priority>
 </url>
 <url>
+  <loc>http://complexprogrammer.uz/avtotest</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
   <loc>http://complexprogrammer.uz/exchangerates</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/changetext</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/ip</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/snake</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/snake2</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/car</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/duckhunt</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/motorcycle</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/bubbleshooter</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/pingpong</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/tictactoe</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
 </url>
 <url>
   <loc>http://complexprogrammer.uz/tetris</loc>
-  <lastmod>2022-02-14T08:39:50+00:00</lastmod>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
   <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/1</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/2</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/3</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/4</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/5</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/6</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/7</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/8</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/9</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/10</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/11</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/12</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/13</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/14</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/15</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/16</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/17</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/18</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/19</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/20</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/21</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/22</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/23</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/24</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/25</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/26</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/27</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/28</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/29</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/30</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/31</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/32</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/33</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/34</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/35</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/36</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/37</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/38</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/39</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/40</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/41</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/42</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/43</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/44</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/45</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/46</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/47</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/48</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/49</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/50</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/51</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/52</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/53</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/54</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/55</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/56</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/57</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/58</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/59</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/60</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/61</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/62</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/63</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/64</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/65</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/66</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/67</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/68</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/69</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/70</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/71</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/72</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/73</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/74</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/75</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/76</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/77</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/78</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/79</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/80</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/81</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/82</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/83</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/84</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/85</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/86</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/87</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/88</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/89</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/90</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/91</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/92</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/93</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/94</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/95</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/96</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/97</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/98</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/99</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/100</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/101</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/102</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/103</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/104</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/105</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/106</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/107</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://complexprogrammer.uz/test/108</loc>
+  <lastmod>2022-03-07T11:47:47+00:00</lastmod>
+  <priority>0.64</priority>
 </url>
 
 
