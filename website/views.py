@@ -214,14 +214,9 @@ def GetCustomIPData():
     return {"data": json.loads(data)}
 
 
-@app.route("/avtotest")
-def avtotest():
-    return render_template('avtotest.html')
-
-
-@app.route("/test/<id>")
-def test(id):
-    return render_template('test.html',bilet=id)
+@app.route("/avtotest/<id>")
+def avtotest(id=0):
+    return render_template('avtotest.html',bilet=id)
 
 
 def dict_factory(cursor, row):
