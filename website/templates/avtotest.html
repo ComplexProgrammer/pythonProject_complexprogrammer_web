@@ -179,7 +179,6 @@
 
           }
             $scope.ok=function(value){
-
                 var obj = {
                   bilet: {{ bilet }},
                   savol:$scope.savol,
@@ -209,7 +208,11 @@
                 document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
                 document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
             }
-          LoadData(1);
+            if({{ bilet }}!=0){
+                startTimer();
+                LoadData(1);
+            }
+
           function LoadData(id){
                 $scope.savol=id;
               document.getElementById('conn').style.visibility = "visible";
@@ -238,6 +241,19 @@
 
 
 </script>
+    <style>
+        section {
+
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        h1 {
+          font-family: "Montserrat";
+          font-size: 90px;
+        }
+    </style>
+
 </head>
 <body ng-app="App" ng-controller="avtotest">
     <div id="conn" style="visibility:hidden;position:absolute;margin-left:45%;margin-top:20%;z-index:9999">
@@ -334,6 +350,7 @@
     </div>
     <div class="wrapper">
           <div class="container">
+              <h1 id="timer">00:00</h1>
               <ul class="pagination pagination-lg">
                 <li class="page-item active" id="b1" ng-click="b(1)"><a class="page-link" id="ab1" href="#">1</a></li>
                 <li class="page-item" id="b2" ng-click="b(2)"><a class="page-link" id="ab2" href="#">2</a></li>
@@ -374,5 +391,32 @@
             }
         }
 </script>
+<script>
+        let timeSecond = 900;
+        const timeH = document.getElementById("timer");
+        function startTimer(){
+            displayTime(timeSecond);
+
+            const countDown = setInterval(() => {
+              timeSecond--;
+              displayTime(timeSecond);
+              if (timeSecond == 0 || timeSecond < 1) {
+                endCount();
+                clearInterval(countDown);
+              }
+            }, 1000);
+        }
+
+        function displayTime(second) {
+          const min = Math.floor(second / 60);
+          const sec = Math.floor(second % 60);
+            timeH.innerHTML = `${min < 10 ? "0" : ""}${min}:${sec < 10 ? "0" : ""}${sec}`;
+        }
+
+        function endCount() {
+          timeH.innerHTML = "Time out";
+        }
+
+    </script>
 </body>
 </html>
