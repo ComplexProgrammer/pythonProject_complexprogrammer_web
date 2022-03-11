@@ -41,12 +41,13 @@
     <link href="{{ url_for('static', filename='/alertify/alertify.default.css') }}" rel="stylesheet" />
     <link href="{{ url_for('static', filename='/alertify/alertify.core.css') }}" rel="stylesheet" />
     <script src="{{ url_for('static', filename='/alertify/alertify.min.js') }}"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ url_for('static', filename='C0mplexButtonStyle.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twbs-pagination/1.4.2/jquery.twbsPagination.min.js"></script>
     <script src="{{ url_for('static', filename='angular.min.js') }}"></script>
     <style>
@@ -94,153 +95,6 @@
           background: url("/static/img/avtotest.png") no-repeat center center fixed;
         }
     </style>
-    <script>
-      var app = angular.module("App", []);
-      app.controller("avtotest", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
-                $scope.javoblar=[];
-                $scope.mValue=null;
-                function setCookie(cname, cvalue, exdays) {
-                  const d = new Date();
-                  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-                  let expires = "expires="+d.toUTCString();
-                  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-                }
-
-                function getCookie(cname) {
-                  let name = cname + "=";
-                  let ca = document.cookie.split(';');
-                  for(let i = 0; i < ca.length; i++) {
-                    let c = ca[i];
-                    while (c.charAt(0) == ' ') {
-                      c = c.substring(1);
-                    }
-                    if (c.indexOf(name) == 0) {
-                      return c.substring(name.length, c.length);
-                    }
-                  }
-                  return "";
-                }
-
-                function checkJavoblar() {
-                  let javoblar = getCookie("javoblar");
-                  if (javoblar != "") {
-                    $scope.javoblar=javoblar;
-                    console.log(javoblar);
-                  } else {
-                    if ($scope.javoblar != "" && $scope.javoblar != null) {
-                      setCookie("javoblar", $scope.javoblar, 365);
-                    }
-                  }
-                }
-          $scope.b=function(value){
-            document.getElementById('click').play();
-            LoadData(value);
-            var element = document.getElementsByClassName('page-item');
-                for(var i = 0; i < element.length; i++)
-                {
-                    element[i].classList.remove('active');
-                    console.log(element[i].className);
-                }
-            document.getElementById('b'+value).classList.add('active');
-            document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-success');
-            document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-success');
-            document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-success');
-            document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-success');
-            document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-danger');
-            document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-danger');
-            document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-danger');
-            document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-danger');
-            $scope.javob=$scope.javoblar.find(element => element.savol == value);
-            if($scope.javob)
-            {
-                $scope.mValue=$scope.javob.javob+$scope.javob.savol;
-                if($scope.javob.javob==$scope.javob.togri_javob)
-                {
-                    document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-success');
-                }
-                else
-                {
-                    document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-danger');
-                }
-                document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
-            }
-            else
-            {
-                document.getElementById('A'+$scope.data.id).classList.remove('disabledDiv');
-                document.getElementById('B'+$scope.data.id).classList.remove('disabledDiv');
-                document.getElementById('C'+$scope.data.id).classList.remove('disabledDiv');
-                document.getElementById('D'+$scope.data.id).classList.remove('disabledDiv');
-
-            }
-
-
-          }
-            $scope.ok=function(value){
-                var obj = {
-                  bilet: {{ bilet }},
-                  savol:$scope.savol,
-                  javob:value,
-                  togri_javob:$scope.data.javob
-                };
-                if(!$scope.javoblar.find(element => element == obj))
-                {
-                    $scope.javoblar.push(obj);
-                }
-                $scope.mValue=value+$scope.data.id;
-                if(value===$scope.data.javob){
-                    document.getElementById('right').play();
-                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-success');
-                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-success');
-                    alertify.success("To`g`ri javob");
-                }
-                else{
-                    document.getElementById('wrong').play();
-                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-danger');
-                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-danger');
-                    alertify.error("Noto`g`ri javob");
-
-                }
-                document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
-            }
-            if({{ bilet }}!=0){
-                startTimer();
-                LoadData(1);
-            }
-
-          function LoadData(id){
-                $scope.savol=id;
-              document.getElementById('conn').style.visibility = "visible";
-              $('#hh').modal({
-                       backdrop: 'static',
-                       keyboard: false
-                })
-                  $http({
-                      method: 'GET',
-                      url: "/GetSavol?id="+id+"&bilet="+{{ bilet }},
-                      dataType: "json"
-                  }).then(function (d) {
-                          $scope.data = d.data;
-                          console.log($scope.data);
-
-                  $("#hh").modal('hide');
-                  document.getElementById('conn').style.visibility = "hidden";
-              }, function (error) {
-                    $("#hh").modal('hide');
-                    document.getElementById('conn').style.visibility = "hidden";
-                  console.log("error in GetSavol -> ", error);
-                  alertify.error("Xatolik yuz berdi");
-              });
-          }
-          }]);
-
-
-</script>
     <style>
         section {
 
@@ -269,10 +123,30 @@
     <audio id="wrong" controls="controls" style="position:absolute;visibility:hidden">
         <source src="/static/sounds/wrong.mp3" type="audio/mpeg" />
     </audio>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Natija</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="p-3 mb-2 bg-secondary text-white">.bg-secondary</div>
+        <div class="p-3 mb-2 bg-success text-white">.bg-success</div>
+        <div class="p-3 mb-2 bg-danger text-white">.bg-danger</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary"><i class="bi bi-box-arrow-right"></i> {%raw%}{{bilet+1}} - biletga o'tish{%endraw%}</button>
+      </div>
+    </div>
+  </div>
+</div>
     <hr />
     {% if bilet=='0' %}
     <div class="wrapper hero-image">
-        <div class="C0mplexButton danger float-right">
+        <div class="C0mplexButton float-end">
             <a href="/#services">
                 <span></span>
                 <span></span>
@@ -339,7 +213,7 @@
         </div>
     </div>
     {% else %}
-    <div class="C0mplexButton danger float-right">
+    <div class="C0mplexButton float-end">
         <a href="/avtotest/0">
             <span></span>
             <span></span>
@@ -378,7 +252,164 @@
     </div>
     {% endif %}
     <hr />
-<script>
+    <script>
+    var myModal = new bootstrap.Modal(document.getElementById('staticBackdrop'), {
+      keyboard: false
+    });
+      var app = angular.module("App", []);
+      app.controller("avtotest", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
+                $scope.bilet={{ bilet }};
+                $scope.javoblar=[];
+                $scope.mValue=null;
+                function setCookie(cname, cvalue, exdays) {
+                  const d = new Date();
+                  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                  let expires = "expires="+d.toUTCString();
+                  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+                }
+
+                function getCookie(cname) {
+                  let name = cname + "=";
+                  let ca = document.cookie.split(';');
+                  for(let i = 0; i < ca.length; i++) {
+                    let c = ca[i];
+                    while (c.charAt(0) == ' ') {
+                      c = c.substring(1);
+                    }
+                    if (c.indexOf(name) == 0) {
+                      return c.substring(name.length, c.length);
+                    }
+                  }
+                  return "";
+                }
+
+                function checkJavoblar() {
+                  let javoblar = getCookie("javoblar");
+                  if (javoblar != "") {
+                    $scope.javoblar=javoblar;
+                    console.log(javoblar);
+                  } else {
+                    if ($scope.javoblar != "" && $scope.javoblar != null) {
+                      setCookie("javoblar", $scope.javoblar, 365);
+                    }
+                  }
+                }
+                function next(value){
+                    document.getElementById('click').play();
+                    LoadData(value);
+                    var element = document.getElementsByClassName('page-item');
+                        for(var i = 0; i < element.length; i++)
+                        {
+                            element[i].classList.remove('active');
+                            console.log(element[i].className);
+                        }
+                    document.getElementById('b'+value).classList.add('active');
+                    document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-success');
+                    document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-success');
+                    document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-success');
+                    document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-success');
+                    document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-danger');
+                    document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-danger');
+                    document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-danger');
+                    document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-danger');
+                    $scope.javob=$scope.javoblar.find(element => element.savol == value);
+                    if($scope.javob)
+                    {
+                        $scope.mValue=$scope.javob.javob+$scope.javob.savol;
+                        if($scope.javob.javob==$scope.javob.togri_javob)
+                        {
+                            document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-success');
+                        }
+                        else
+                        {
+                            document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-danger');
+                        }
+                        document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
+                        document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
+                        document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
+                        document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
+                    }
+                    else
+                    {
+                        document.getElementById('A'+$scope.data.id).classList.remove('disabledDiv');
+                        document.getElementById('B'+$scope.data.id).classList.remove('disabledDiv');
+                        document.getElementById('C'+$scope.data.id).classList.remove('disabledDiv');
+                        document.getElementById('D'+$scope.data.id).classList.remove('disabledDiv');
+
+                    }
+                }
+          $scope.b=function(value){
+               next(value);
+          }
+              function myFunction() {
+                  if($scope.javoblar.length!=10){
+                        next($scope.savol+1);
+                  }
+                  else{
+                        myModal.show();
+                  }
+                }
+            $scope.ok=function(value){
+                var obj = {
+                  bilet: {{ bilet }},
+                  savol:$scope.savol,
+                  javob:value,
+                  togri_javob:$scope.data.javob
+                };
+                if(!$scope.javoblar.find(element => element == obj))
+                {
+                    $scope.javoblar.push(obj);
+                }
+                $scope.mValue=value+$scope.data.id;
+                if(value===$scope.data.javob){
+                    document.getElementById('right').play();
+                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-success');
+                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-success');
+                    alertify.success("To`g`ri javob");
+                }
+                else{
+                    document.getElementById('wrong').play();
+                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-danger');
+                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-danger');
+                    alertify.error("Noto`g`ri javob");
+
+                }
+                document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
+                document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
+                setTimeout(myFunction, 5000);
+            }
+            if({{ bilet }}!=0){
+                startTimer();
+                LoadData(1);
+            }
+
+          function LoadData(id){
+              $scope.savol=id;
+              document.getElementById('conn').style.visibility = "visible";
+              $('#hh').modal({
+                       backdrop: 'static',
+                       keyboard: false
+                })
+                  $http({
+                      method: 'GET',
+                      url: "/GetSavol?id="+id+"&bilet="+{{ bilet }},
+                      dataType: "json"
+                  }).then(function (d) {
+                          $scope.data = d.data;
+                          console.log($scope.data);
+
+                  $("#hh").modal('hide');
+                  document.getElementById('conn').style.visibility = "hidden";
+              }, function (error) {
+                    $("#hh").modal('hide');
+                    document.getElementById('conn').style.visibility = "hidden";
+                  console.log("error in GetSavol -> ", error);
+                  alertify.error("Xatolik yuz berdi");
+              });
+          }
+          }]);
         if(window.screen.availWidth>1366){
             document.getElementsByClassName('pagination')[0].className ="pagination pagination-lg";
         }
@@ -390,8 +421,6 @@
                 document.getElementsByClassName('pagination')[0].className ="pagination";
             }
         }
-</script>
-<script>
         let timeSecond = 900;
         const timeH = document.getElementById("timer");
         function startTimer(){
@@ -415,8 +444,8 @@
 
         function endCount() {
           timeH.innerHTML = "Time out";
+          myModal.show();
         }
-
-    </script>
+</script>
 </body>
 </html>
