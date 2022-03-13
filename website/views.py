@@ -214,8 +214,9 @@ def GetCustomIPData():
     return {"data": json.loads(data)}
 
 
+@app.route("/avtotest/")
 @app.route("/avtotest/<id>")
-def avtotest(id=0):
+def avtotest(id='0'):
     return render_template('avtotest.html',bilet=id)
 
 
@@ -228,12 +229,11 @@ def dict_factory(cursor, row):
 
 @app.route("/GetSavol", methods=['GET'])
 def GetSavol():
-    id = request.args.get('id')
     bilet = request.args.get('bilet')
     conn = sqlite3.connect('website/avtotest.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
-    savol = cur.execute('SELECT * FROM savollar where bilet=="'+bilet+'" and raqam=='+id+';').fetchone()
+    savol = cur.execute('SELECT * FROM savollar where bilet=="'+bilet+'" order by raqam;').fetchall()
     return jsonify(savol)
 
 

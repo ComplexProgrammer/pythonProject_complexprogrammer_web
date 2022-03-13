@@ -123,6 +123,7 @@
     <audio id="wrong" controls="controls" style="position:absolute;visibility:hidden">
         <source src="/static/sounds/wrong.mp3" type="audio/mpeg" />
     </audio>
+{%raw%}
 <!-- Modal -->
 <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -132,17 +133,19 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="p-3 mb-2 bg-secondary text-white">.bg-secondary</div>
-        <div class="p-3 mb-2 bg-success text-white">.bg-success</div>
-        <div class="p-3 mb-2 bg-danger text-white">.bg-danger</div>
+        <div class="p-3 mb-2 bg-secondary text-white" ng-show="10-togri_javob_soni-notogri_javob_soni!=0">Belgilanmagan savollar : {{10-togri_javob_soni-notogri_javob_soni}} ta</div>
+        <div class="p-3 mb-2 bg-success text-white">To'g'ri javob : {{togri_javob_soni}} ta</div>
+        <div class="p-3 mb-2 bg-danger text-white">Noto'g'ri javob : {{notogri_javob_soni}} ta</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary"><i class="bi bi-box-arrow-right"></i> {%raw%}{{bilet+1}} - biletga o'tish{%endraw%}</button>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-door-closed"></i> yopish</button>
+        <button type="button" class="btn btn-outline-danger" ng-click="back()"><i class="bi bi-backspace"></i> Biletlarga qaytish</button>
+        <button type="button" class="btn btn-outline-primary" ng-click="nextbilet(bilet+1)"><i class="bi bi-box-arrow-right"></i> {{bilet+1}} - biletga o'tish</button>
       </div>
     </div>
   </div>
 </div>
+{%endraw%}
     <hr />
     {% if bilet=='0' %}
     <div class="wrapper hero-image">
@@ -213,8 +216,8 @@
         </div>
     </div>
     {% else %}
-    <div class="C0mplexButton float-end">
-        <a href="/avtotest/0">
+    <div class="C0mplexButton float-end" ng-click="showModal()">
+        <a href="#">
             <span></span>
             <span></span>
             <span></span>
@@ -226,25 +229,28 @@
           <div class="container">
               <h1 id="timer">00:00</h1>
               <ul class="pagination pagination-lg">
-                <li class="page-item active" id="b1" ng-click="b(1)"><a class="page-link" id="ab1" href="#">1</a></li>
-                <li class="page-item" id="b2" ng-click="b(2)"><a class="page-link" id="ab2" href="#">2</a></li>
-                <li class="page-item" id="b3" ng-click="b(3)"><a class="page-link" id="ab3" href="#">3</a></li>
-                <li class="page-item" id="b4" ng-click="b(4)"><a class="page-link" id="ab4" href="#">4</a></li>
-                <li class="page-item" id="b5" ng-click="b(5)"><a class="page-link" id="ab5" href="#">5</a></li>
-                <li class="page-item" id="b6" ng-click="b(6)"><a class="page-link" id="ab6" href="#">6</a></li>
-                <li class="page-item" id="b7" ng-click="b(7)"><a class="page-link" id="ab7" href="#">7</a></li>
-                <li class="page-item" id="b8" ng-click="b(8)"><a class="page-link" id="ab8" href="#">8</a></li>
-                <li class="page-item" id="b9" ng-click="b(9)"><a class="page-link" id="ab9" href="#">9</a></li>
-                <li class="page-item" id="b10" ng-click="b(10)"><a class="page-link" id="ab10" href="#">10</a></li>
+                <li class="page-item" id="savol1" ng-click="b(1)"><a class="page-link" id="ab1" href="#">1</a></li>
+                <li class="page-item" id="savol2" ng-click="b(2)"><a class="page-link" id="ab2" href="#">2</a></li>
+                <li class="page-item" id="savol3" ng-click="b(3)"><a class="page-link" id="ab3" href="#">3</a></li>
+                <li class="page-item" id="savol4" ng-click="b(4)"><a class="page-link" id="ab4" href="#">4</a></li>
+                <li class="page-item" id="savol5" ng-click="b(5)"><a class="page-link" id="ab5" href="#">5</a></li>
+                <li class="page-item" id="savol6" ng-click="b(6)"><a class="page-link" id="ab6" href="#">6</a></li>
+                <li class="page-item" id="savol7" ng-click="b(7)"><a class="page-link" id="ab7" href="#">7</a></li>
+                <li class="page-item" id="savol8" ng-click="b(8)"><a class="page-link" id="ab8" href="#">8</a></li>
+                <li class="page-item" id="savol9" ng-click="b(9)"><a class="page-link" id="ab9" href="#">9</a></li>
+                <li class="page-item" id="savol10" ng-click="b(10)"><a class="page-link" id="ab10" href="#">10</a></li>
               </ul>
-            <h4 class="page-content">{{ bilet }} - bilet<br/> {% raw %}{{savol}} - savol<br/>{{data.savol}}{% endraw %}</h4>
+
             {% raw %}
-                <img ng-show="data.rasm" src="/static/avtotest/{{data.rasm}}" width="30%">
-                <div class="list-group" style="text-align:left">
-                  <a ng-click="ok('A')" id="A{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_a!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === A{{data.id}}' name="javob{{data.id}}" value="A{{data.id}}"> {{data.javob_a}}</a>
-                  <a ng-click="ok('B')" id="B{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_b!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === B{{data.id}}' name="javob{{data.id}}" value="B{{data.id}}"> {{data.javob_b}}</a>
-                  <a ng-click="ok('C')" id="C{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_c!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === C{{data.id}}' name="javob{{data.id}}" value="C{{data.id}}"> {{data.javob_c}}</a>
-                  <a ng-click="ok('D')" id="D{{data.id}}" href="#" class="list-group-item list-group-item-action" ng-show="data.javob_d!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === D{{data.id}}' name="javob{{data.id}}" value="D{{data.id}}"> {{data.javob_d}}</a>
+                <div ng-repeat="item in data" ng-show="item.id===savol.id">
+                    <h4 class="page-content">{{bilet}} - bilet<br/>{{savol_raqami}} - savol<br/>{{item.savol}}</h4>
+                    <img ng-show="item.rasm" src="/static/avtotest/{{item.rasm}}" width="30%">
+                    <div class="list-group" style="text-align:left">
+                      <a ng-click="ok('A')" id="A{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_a!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === A{{item.id}}' name="javob{{savol_raqami}}" value="A{{item.id}}"> {{item.javob_a}}</a>
+                      <a ng-click="ok('B')" id="B{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_b!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === B{{item.id}}' name="javob{{savol_raqami}}" value="B{{item.id}}"> {{item.javob_b}}</a>
+                      <a ng-click="ok('C')" id="C{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_c!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === C{{item.id}}' name="javob{{savol_raqami}}" value="C{{item.id}}"> {{item.javob_c}}</a>
+                      <a ng-click="ok('D')" id="D{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_d!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === D{{item.id}}' name="javob{{savol_raqami}}" value="D{{item.id}}"> {{item.javob_d}}</a>
+                    </div>
                 </div>
             {% endraw %}
 
@@ -258,9 +264,28 @@
     });
       var app = angular.module("App", []);
       app.controller("avtotest", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
+
+                $scope.savol_raqami=1;
                 $scope.bilet={{ bilet }};
+                $scope.togri_javob_soni=0;
+                $scope.notogri_javob_soni=0;
                 $scope.javoblar=[];
+                //setCookie("javoblar", JSON.stringify($scope.javoblar), 365);
+                if($scope.bilet!=0){
+                    checkJavoblar();
+                    startTimer();
+                    LoadData();
+                }
                 $scope.mValue=null;
+                $scope.back=function(){
+                    window.location.href="/avtotest";
+                }
+                $scope.nextbilet=function(value){
+                    window.location.href="/avtotest/"+value;
+                }
+                $scope.showModal=function(){
+                    myModal.show();
+                }
                 function setCookie(cname, cvalue, exdays) {
                   const d = new Date();
                   d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
@@ -282,111 +307,146 @@
                   }
                   return "";
                 }
-
                 function checkJavoblar() {
-                  let javoblar = getCookie("javoblar");
-                  if (javoblar != "") {
-                    $scope.javoblar=javoblar;
-                    console.log(javoblar);
-                  } else {
-                    if ($scope.javoblar != "" && $scope.javoblar != null) {
-                      setCookie("javoblar", $scope.javoblar, 365);
+                    if(getCookie("javoblar")){
+                         $scope.javoblar = JSON.parse(getCookie("javoblar")).filter(word => word.bilet ==$scope.bilet);;
                     }
-                  }
+
+                  let max=0,mm=0;
+                  $scope.javoblar=$scope.javoblar.sort(function(a, b){return a.savol-b.savol});
+                  console.log($scope.javoblar);
+                  $scope.javoblar.forEach((element) => {
+
+                    if(element.savol>max&&max==element.savol-1)
+                    {
+                        max=element.savol;
+                    }
+                      if(element.bilet==$scope.bilet){
+                        if(element.javob===element.togri_javob){
+                            $scope.togri_javob_soni=$scope.togri_javob_soni+1;
+                            document.getElementById('ab'+element.savol).classList.add('bg-success');
+                        }
+                        else{
+                            $scope.notogri_javob_soni=$scope.notogri_javob_soni+1;
+                            document.getElementById('ab'+element.savol).classList.add('bg-danger');
+                        }
+                      }
+                  });
+                  $scope.savol_raqami=max+1;
+                  document.getElementById('savol'+$scope.savol_raqami).classList.add('active');
                 }
+
                 function next(value){
+
                     document.getElementById('click').play();
-                    LoadData(value);
                     var element = document.getElementsByClassName('page-item');
                         for(var i = 0; i < element.length; i++)
                         {
                             element[i].classList.remove('active');
                             console.log(element[i].className);
                         }
-                    document.getElementById('b'+value).classList.add('active');
-                    document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-success');
-                    document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-success');
-                    document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-success');
-                    document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-success');
-                    document.getElementById('A'+$scope.data.id).classList.remove('list-group-item-danger');
-                    document.getElementById('B'+$scope.data.id).classList.remove('list-group-item-danger');
-                    document.getElementById('C'+$scope.data.id).classList.remove('list-group-item-danger');
-                    document.getElementById('D'+$scope.data.id).classList.remove('list-group-item-danger');
+
+                    document.getElementById('savol'+value).classList.add('active');
+                    document.getElementById('A'+$scope.savol.id).classList.remove('list-group-item-success');
+                    document.getElementById('B'+$scope.savol.id).classList.remove('list-group-item-success');
+                    document.getElementById('C'+$scope.savol.id).classList.remove('list-group-item-success');
+                    document.getElementById('D'+$scope.savol.id).classList.remove('list-group-item-success');
+                    document.getElementById('A'+$scope.savol.id).classList.remove('list-group-item-danger');
+                    document.getElementById('B'+$scope.savol.id).classList.remove('list-group-item-danger');
+                    document.getElementById('C'+$scope.savol.id).classList.remove('list-group-item-danger');
+                    document.getElementById('D'+$scope.savol.id).classList.remove('list-group-item-danger');
+                    document.getElementById('A'+$scope.savol.id).classList.remove('disabledDiv');
+                    document.getElementById('B'+$scope.savol.id).classList.remove('disabledDiv');
+                    document.getElementById('C'+$scope.savol.id).classList.remove('disabledDiv');
+                    document.getElementById('D'+$scope.savol.id).classList.remove('disabledDiv');
                     $scope.javob=$scope.javoblar.find(element => element.savol == value);
                     if($scope.javob)
                     {
                         $scope.mValue=$scope.javob.javob+$scope.javob.savol;
                         if($scope.javob.javob==$scope.javob.togri_javob)
                         {
-                            document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-success');
+                            document.getElementById($scope.javob.javob+$scope.savol.id).classList.add('list-group-item-success');
                         }
                         else
                         {
-                            document.getElementById($scope.javob.javob+$scope.data.id).classList.add('list-group-item-danger');
+                            document.getElementById($scope.javob.javob+$scope.savol.id).classList.add('list-group-item-danger');
                         }
-                        document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
-                        document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
-                        document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
-                        document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
+                        document.getElementById('A'+$scope.savol.id).classList.add('disabledDiv');
+                        document.getElementById('B'+$scope.savol.id).classList.add('disabledDiv');
+                        document.getElementById('C'+$scope.savol.id).classList.add('disabledDiv');
+                        document.getElementById('D'+$scope.savol.id).classList.add('disabledDiv');
                     }
                     else
                     {
-                        document.getElementById('A'+$scope.data.id).classList.remove('disabledDiv');
-                        document.getElementById('B'+$scope.data.id).classList.remove('disabledDiv');
-                        document.getElementById('C'+$scope.data.id).classList.remove('disabledDiv');
-                        document.getElementById('D'+$scope.data.id).classList.remove('disabledDiv');
+                        document.getElementById('A'+$scope.savol.id).classList.remove('disabledDiv');
+                        document.getElementById('B'+$scope.savol.id).classList.remove('disabledDiv');
+                        document.getElementById('C'+$scope.savol.id).classList.remove('disabledDiv');
+                        document.getElementById('D'+$scope.savol.id).classList.remove('disabledDiv');
 
                     }
                 }
           $scope.b=function(value){
-               next(value);
+                $scope.savol_raqami=value;
+                $scope.savol=$scope.data[$scope.savol_raqami-1];
+                console.log($scope.savol);
+                next(value);
           }
               function myFunction() {
-                  if($scope.javoblar.length!=10){
-                        next($scope.savol+1);
+                  if($scope.javoblar.length<10){
+                        next($scope.savol_raqami);
                   }
                   else{
                         myModal.show();
                   }
                 }
-            $scope.ok=function(value){
-                var obj = {
-                  bilet: {{ bilet }},
-                  savol:$scope.savol,
-                  javob:value,
-                  togri_javob:$scope.data.javob
-                };
-                if(!$scope.javoblar.find(element => element == obj))
+                function setJavob(javob)
                 {
-                    $scope.javoblar.push(obj);
-                }
-                $scope.mValue=value+$scope.data.id;
-                if(value===$scope.data.javob){
-                    document.getElementById('right').play();
-                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-success');
-                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-success');
-                    alertify.success("To`g`ri javob");
-                }
-                else{
-                    document.getElementById('wrong').play();
-                    document.getElementById(value+$scope.data.id).classList.add('list-group-item-danger');
-                    document.getElementById('ab'+$scope.data.raqam).classList.add('bg-danger');
-                    alertify.error("Noto`g`ri javob");
+                    var obj = {
+                      id: $scope.savol.id,
+                      bilet: $scope.savol.bilet,
+                      savol:$scope.savol_raqami,
+                      javob:javob,
+                      togri_javob:$scope.savol.javob
+                    };
+
+                    if(!$scope.javoblar.find(element => element.id == obj.id))
+                    {
+                        $scope.javoblar.push(obj);
+                        setCookie("javoblar", JSON.stringify($scope.javoblar), 365);
+
+                    }
+
+                    $scope.mValue=javob+$scope.savol.id;
+                    if(javob===$scope.savol.javob){
+                        $scope.togri_javob_soni=$scope.togri_javob_soni+1;
+                        document.getElementById('right').play();
+                        document.getElementById(javob+$scope.savol.id).classList.add('list-group-item-success');
+                        document.getElementById('ab'+$scope.savol_raqami).classList.add('bg-success');
+                        alertify.success("To`g`ri javob");
+                    }
+                    else{
+                        $scope.notogri_javob_soni=$scope.notogri_javob_soni+1;
+                        document.getElementById('wrong').play();
+                        document.getElementById(javob+$scope.savol.id).classList.add('list-group-item-danger');
+                        document.getElementById('ab'+$scope.savol_raqami).classList.add('bg-danger');
+                        alertify.error("Noto`g`ri javob");
+
+                    }
+                    document.getElementById('A'+$scope.savol.id).classList.add('disabledDiv');
+                    document.getElementById('B'+$scope.savol.id).classList.add('disabledDiv');
+                    document.getElementById('C'+$scope.savol.id).classList.add('disabledDiv');
+                    document.getElementById('D'+$scope.savol.id).classList.add('disabledDiv');
+                    $scope.savol_raqami=$scope.savol_raqami+1;
+                    $scope.savol=$scope.data[$scope.savol_raqami-1];
 
                 }
-                document.getElementById('A'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('B'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('C'+$scope.data.id).classList.add('disabledDiv');
-                document.getElementById('D'+$scope.data.id).classList.add('disabledDiv');
-                setTimeout(myFunction, 5000);
-            }
-            if({{ bilet }}!=0){
-                startTimer();
-                LoadData(1);
+            $scope.ok=function(javob){
+                setJavob(javob);
+                setTimeout(myFunction, 500);
+
             }
 
-          function LoadData(id){
-              $scope.savol=id;
+          function LoadData(){
               document.getElementById('conn').style.visibility = "visible";
               $('#hh').modal({
                        backdrop: 'static',
@@ -394,10 +454,11 @@
                 })
                   $http({
                       method: 'GET',
-                      url: "/GetSavol?id="+id+"&bilet="+{{ bilet }},
+                      url: "/GetSavol?bilet="+$scope.bilet,
                       dataType: "json"
                   }).then(function (d) {
                           $scope.data = d.data;
+                           $scope.savol=$scope.data[$scope.savol_raqami-1];
                           console.log($scope.data);
 
                   $("#hh").modal('hide');
@@ -410,6 +471,7 @@
               });
           }
           }]);
+
         if(window.screen.availWidth>1366){
             document.getElementsByClassName('pagination')[0].className ="pagination pagination-lg";
         }
