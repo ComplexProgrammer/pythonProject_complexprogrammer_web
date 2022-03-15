@@ -9,7 +9,7 @@ class savollar(db.Model):
     javob_c = db.Column(db.String(length=1024), nullable=False)
     javob_d = db.Column(db.String(length=1024), nullable=False)
     javob = db.Column(db.String(length=1024), nullable=False)
-    bilet = db.Column(db.String(length=1024), nullable=False)
+    bilet = db.Column(db.Integer(), nullable=False)
     rasm = db.Column(db.String(length=1024), nullable=False)
 
 

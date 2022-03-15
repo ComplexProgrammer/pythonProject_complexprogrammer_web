@@ -227,7 +227,7 @@
     </div>
     <div class="wrapper">
           <div class="container">
-              <h1 id="timer">00:00</h1>
+              <h1 id="timer" ng-click="f()">00:00</h1>
               <ul class="pagination pagination-lg">
                 <li class="page-item" id="savol1" ng-click="b(1)"><a class="page-link" id="ab1" href="#">1</a></li>
                 <li class="page-item" id="savol2" ng-click="b(2)"><a class="page-link" id="ab2" href="#">2</a></li>
@@ -240,20 +240,18 @@
                 <li class="page-item" id="savol9" ng-click="b(9)"><a class="page-link" id="ab9" href="#">9</a></li>
                 <li class="page-item" id="savol10" ng-click="b(10)"><a class="page-link" id="ab10" href="#">10</a></li>
               </ul>
-
             {% raw %}
-                <div ng-repeat="item in data" ng-show="item.id===savol.id">
-                    <h4 class="page-content">{{bilet}} - bilet<br/>{{savol_raqami}} - savol<br/>{{item.savol}}</h4>
+                <div ng-repeat="item in data" ng-show="item.id==id">
+                    <h4 class="page-content">{{bilet}} - bilet<br/>{{item.raqam}} - savol<br/>{{item.savol}}</h4>
                     <img ng-show="item.rasm" src="/static/avtotest/{{item.rasm}}" width="30%">
                     <div class="list-group" style="text-align:left">
-                      <a ng-click="ok('A')" id="A{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_a!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === A{{item.id}}' name="javob{{savol_raqami}}" value="A{{item.id}}"> {{item.javob_a}}</a>
-                      <a ng-click="ok('B')" id="B{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_b!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === B{{item.id}}' name="javob{{savol_raqami}}" value="B{{item.id}}"> {{item.javob_b}}</a>
-                      <a ng-click="ok('C')" id="C{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_c!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === C{{item.id}}' name="javob{{savol_raqami}}" value="C{{item.id}}"> {{item.javob_c}}</a>
-                      <a ng-click="ok('D')" id="D{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-show="item.javob_d!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === D{{item.id}}' name="javob{{savol_raqami}}" value="D{{item.id}}"> {{item.javob_d}}</a>
+                      <a ng-click="ok('A')" id="A{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-class="item.berilgan_javob==''?'':item.berilgan_javob==item.javob&&item.javob=='A'?'list-group-item-success disabledDiv':'disabledDiv'" ng-show="item.javob_a!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === A{{item.id}}' name="javob{{savol_raqami}}" value="A{{item.id}}"> {{item.javob_a}}</a>
+                      <a ng-click="ok('B')" id="B{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-class="item.berilgan_javob==''?'':item.berilgan_javob==item.javob&&item.javob=='B'?'list-group-item-success disabledDiv':'disabledDiv'" ng-show="item.javob_b!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === B{{item.id}}' name="javob{{savol_raqami}}" value="B{{item.id}}"> {{item.javob_b}}</a>
+                      <a ng-click="ok('C')" id="C{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-class="item.berilgan_javob==''?'':item.berilgan_javob==item.javob&&item.javob=='C'?'list-group-item-success disabledDiv':'disabledDiv'" ng-show="item.javob_c!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === C{{item.id}}' name="javob{{savol_raqami}}" value="C{{item.id}}"> {{item.javob_c}}</a>
+                      <a ng-click="ok('D')" id="D{{item.id}}" href="#" class="list-group-item list-group-item-action" ng-class="item.berilgan_javob==''?'':item.berilgan_javob==item.javob&&item.javob=='D'?'list-group-item-success disabledDiv':'disabledDiv'" ng-show="item.javob_d!=''"><input type="radio" ng-model='mValue' ng-checked='mValue === D{{item.id}}' name="javob{{savol_raqami}}" value="D{{item.id}}"> {{item.javob_d}}</a>
                     </div>
                 </div>
             {% endraw %}
-
         </div>
     </div>
     {% endif %}
@@ -270,6 +268,7 @@
                 $scope.togri_javob_soni=0;
                 $scope.notogri_javob_soni=0;
                 $scope.javoblar=[];
+                $scope.data=[];
                 //setCookie("javoblar", JSON.stringify($scope.javoblar), 365);
                 if($scope.bilet!=0){
                     checkJavoblar();
@@ -309,34 +308,24 @@
                 }
                 function checkJavoblar() {
                     if(getCookie("javoblar")){
-                         $scope.javoblar = JSON.parse(getCookie("javoblar")).filter(word => word.bilet == $scope.bilet);
+                         $scope.javoblar = JSON.parse(getCookie("javoblar"));
                     }
+                    console.log($scope.javoblar);
 
-                  let max=0,mm=0;
-                  $scope.javoblar=$scope.javoblar.sort(function(a, b){return a.savol-b.savol});
-                  console.log($scope.javoblar);
-                  $scope.javoblar.forEach((element) => {
-
-                    if(element.savol>max&&max==element.savol-1)
-                    {
-                        max=element.savol;
-                    }
-                      if(element.bilet==$scope.bilet){
-                        if(element.javob===element.togri_javob){
-                            $scope.togri_javob_soni=$scope.togri_javob_soni+1;
-                            document.getElementById('ab'+element.savol).classList.add('bg-success');
-                        }
-                        else{
-                            $scope.notogri_javob_soni=$scope.notogri_javob_soni+1;
-                            document.getElementById('ab'+element.savol).classList.add('bg-danger');
-                        }
-                      }
-                  });
-                  $scope.savol_raqami=max+1;
-                  document.getElementById('savol'+$scope.savol_raqami).classList.add('active');
                 }
-
-                function next(value,id){
+              $scope.b=function(value){
+                    myFunction(value);
+              }
+              function myFunction(value) {
+                  if($scope.javoblar.length<10){
+                    $scope.savol_raqami=value;
+                    $scope.savol=$scope.data[value-1];
+                    console.log($scope.data);
+                    $scope.id=$scope.savol.id;
+                    if($scope.savol.berilgan_javob)
+                    {
+                        $scope.mValue=$scope.savol.javob+$scope.id;
+                    }
                     document.getElementById('click').play();
                     var element = document.getElementsByClassName('page-item');
                         for(var i = 0; i < element.length; i++)
@@ -344,55 +333,7 @@
                             element[i].classList.remove('active');
                             console.log(element[i].className);
                         }
-
                     document.getElementById('savol'+value).classList.add('active');
-                    document.getElementById('A'+id).classList.remove('list-group-item-success');
-                    document.getElementById('B'+id).classList.remove('list-group-item-success');
-                    document.getElementById('C'+id).classList.remove('list-group-item-success');
-                    document.getElementById('D'+id).classList.remove('list-group-item-success');
-                    document.getElementById('A'+id).classList.remove('list-group-item-danger');
-                    document.getElementById('B'+id).classList.remove('list-group-item-danger');
-                    document.getElementById('C'+id).classList.remove('list-group-item-danger');
-                    document.getElementById('D'+id).classList.remove('list-group-item-danger');
-                    document.getElementById('A'+id).classList.remove('disabledDiv');
-                    document.getElementById('B'+id).classList.remove('disabledDiv');
-                    document.getElementById('C'+id).classList.remove('disabledDiv');
-                    document.getElementById('D'+id).classList.remove('disabledDiv');
-                    $scope.javob=$scope.javoblar.find(element => element.savol == value);
-                    if($scope.javob)
-                    {
-                        $scope.mValue=$scope.javob.javob+$scope.javob.savol;
-                        if($scope.javob.javob==$scope.javob.togri_javob)
-                        {
-                            document.getElementById($scope.javob.javob+id).classList.add('list-group-item-success');
-                        }
-                        else
-                        {
-                            document.getElementById($scope.javob.javob+id).classList.add('list-group-item-danger');
-                        }
-                        document.getElementById('A'+id).classList.add('disabledDiv');
-                        document.getElementById('B'+id).classList.add('disabledDiv');
-                        document.getElementById('C'+id).classList.add('disabledDiv');
-                        document.getElementById('D'+id).classList.add('disabledDiv');
-                    }
-                    else
-                    {
-                        document.getElementById('A'+id).classList.remove('disabledDiv');
-                        document.getElementById('B'+id).classList.remove('disabledDiv');
-                        document.getElementById('C'+id).classList.remove('disabledDiv');
-                        document.getElementById('D'+id).classList.remove('disabledDiv');
-
-                    }
-                }
-          $scope.b=function(value){
-                $scope.savol_raqami=value;
-                $scope.savol=$scope.data[$scope.savol_raqami-1];
-                console.log($scope.savol);
-                next(value,$scope.savol.id);
-          }
-              function myFunction() {
-                  if($scope.javoblar.length<10){
-                    next($scope.savol_raqami,$scope.savol.id);
                   }
                   else{
                         myModal.show();
@@ -402,46 +343,38 @@
                 {
                     var obj = {
                       id: $scope.savol.id,
-                      bilet: $scope.savol.bilet,
-                      savol_raqami:$scope.savol_raqami,
+                      bilet: $scope.bilet,
                       javob:javob,
-                      togri_javob:$scope.savol.javob
                     };
 
                     if(!$scope.javoblar.find(element => element.id == obj.id))
                     {
                         $scope.javoblar.push(obj);
-                        //setCookie("javoblar", JSON.stringify($scope.javoblar), 365);
+                        setCookie("javoblar", JSON.stringify($scope.javoblar), 365);
 
                     }
 
-                    $scope.mValue=javob+$scope.savol.id;
+                    $scope.mValue=javob+$scope.id;
                     if(javob===$scope.savol.javob){
                         $scope.togri_javob_soni=$scope.togri_javob_soni+1;
                         document.getElementById('right').play();
-                        document.getElementById(javob+$scope.savol.id).classList.add('list-group-item-success');
+                        document.getElementById(javob+$scope.id).classList.add('list-group-item-success');
                         document.getElementById('ab'+$scope.savol_raqami).classList.add('bg-success');
                         alertify.success("To`g`ri javob");
                     }
                     else{
                         $scope.notogri_javob_soni=$scope.notogri_javob_soni+1;
                         document.getElementById('wrong').play();
-                        document.getElementById(javob+$scope.savol.id).classList.add('list-group-item-danger');
+                        document.getElementById(javob+$scope.id).classList.add('list-group-item-danger');
                         document.getElementById('ab'+$scope.savol_raqami).classList.add('bg-danger');
                         alertify.error("Noto`g`ri javob");
 
                     }
-                    document.getElementById('A'+$scope.savol.id).classList.add('disabledDiv');
-                    document.getElementById('B'+$scope.savol.id).classList.add('disabledDiv');
-                    document.getElementById('C'+$scope.savol.id).classList.add('disabledDiv');
-                    document.getElementById('D'+$scope.savol.id).classList.add('disabledDiv');
-                    $scope.savol_raqami=$scope.savol_raqami+1;
-                    $scope.savol=$scope.data[$scope.savol_raqami-1];
 
                 }
             $scope.ok=function(javob){
                 setJavob(javob);
-                setTimeout(myFunction, 500);
+                //setTimeout(myFunction, 3000, $scope.savol_raqami+1);
 
             }
 
@@ -456,9 +389,57 @@
                       url: "/GetSavol?bilet="+$scope.bilet,
                       dataType: "json"
                   }).then(function (d) {
-                          $scope.data = d.data;
-                           $scope.savol=$scope.data[$scope.savol_raqami-1];
+                          d.data.forEach((item) => {
+                            berilgan_javob='';
+                            if($scope.javoblar.find(element => element.id == item.id))
+                            {
+                                berilgan_javob=$scope.javoblar.find(element => element.id == item.id).javob;
+                            }
+                            var obj = {
+                              id: item.id,
+                              bilet: item.bilet,
+                              javob:item.javob,
+                              javob_a:item.javob_a,
+                              javob_b:item.javob_b,
+                              javob_c:item.javob_c,
+                              javob_d:item.javob_d,
+                              raqam:item.raqam,
+                              rasm:item.rasm,
+                              savol:item.savol,
+                              berilgan_javob:berilgan_javob,
+                            };
+                            $scope.data.push(obj);
+                          });
                           console.log($scope.data);
+                          let raqam=0;
+                          $scope.data=$scope.data.sort(function(a, b){return a.raqam-b.raqam});
+                          $scope.data.forEach((element) =>
+                          {
+                              if(element.raqam>raqam&&raqam==element.raqam-1&&element.berilgan_javob!='')
+                              {
+                                  raqam=element.raqam;
+                              }
+                              if(element.berilgan_javob){
+                                if(element.javob==element.berilgan_javob){
+                                    $scope.togri_javob_soni=$scope.togri_javob_soni+1;
+                                    document.getElementById('ab'+element.raqam).classList.add('bg-success');
+                                }
+                                else{
+                                    $scope.notogri_javob_soni=$scope.notogri_javob_soni+1;
+                                    document.getElementById('ab'+element.raqam).classList.add('bg-danger');
+                                }
+                              }
+                          });
+                          if(raqam==10)
+                          {
+                            raqam=0;
+                            setCookie("javoblar", JSON.stringify($scope.javoblar.filter(word => word.bilet == $scope.bilet)), 365);
+                          }
+                          $scope.savol=$scope.data[raqam];
+                          $scope.id=$scope.savol.id;
+                          $scope.savol_raqami=raqam+1;
+                          document.getElementById('savol'+$scope.savol_raqami).classList.add('active');
+
 
                   $("#hh").modal('hide');
                   document.getElementById('conn').style.visibility = "hidden";
