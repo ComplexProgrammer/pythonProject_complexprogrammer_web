@@ -130,7 +130,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">{{bilet}} - Bilet natijasi</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" ng-show="isPaused" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="p-3 mb-2 bg-secondary text-white" ng-show="10-togri_javob_soni-notogri_javob_soni!=0">Belgilanmagan savollar : {{10-togri_javob_soni-notogri_javob_soni}} ta</div>
@@ -138,10 +138,10 @@
         <div class="p-3 mb-2 bg-danger text-white" ng-show="notogri_javob_soni!=0&&togri_javob_soni!=10">Noto'g'ri javob : {{notogri_javob_soni}} ta</div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="bi bi-door-closed"></i> yopish</button>
-        <button type="button" class="btn btn-outline-danger" ng-click="back()"><i class="bi bi-backspace"></i> Biletlarga qaytish</button>
-        <button type="button" class="btn btn-outline-success" ng-click="nextbilet(bilet)"><i class="bi bi-arrow-repeat"></i> Boshidan boshlash</button>
-        <button type="button" class="btn btn-outline-primary" ng-click="nextbilet(bilet+1)"><i class="bi bi-box-arrow-right"></i> {{bilet+1}} - biletga o'tish</button>
+        <button type="button" ng-show="isPaused" class="btn btn-outline-secondary" style="width:200px" data-bs-dismiss="modal"><i class="bi bi-back"></i> Davom etish</button>
+        <button type="button" class="btn btn-outline-primary" style="width:200px" ng-click="nextbilet(bilet+1)"><i class="bi bi-box-arrow-right"></i> {{bilet+1}} - biletga o'tish</button>
+        <button type="button" class="btn btn-outline-danger" style="width:200px" ng-click="back()"><i class="bi bi-backspace"></i> Biletlarga qaytish</button>
+        <button type="button" class="btn btn-outline-success" style="width:200px" ng-click="nextbilet(bilet)"><i class="bi bi-arrow-repeat"></i> Boshidan boshlash</button>
       </div>
     </div>
   </div>
@@ -264,10 +264,12 @@
     });
       var app = angular.module("App", []);
       app.controller("avtotest", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
-                var timeSecond = 900;
-                var timeH = document.getElementById("timer");$scope.notime=0;
+                var timeH = document.getElementById("timer");
+                $scope.isPaused = false;
+                $scope.timeout = false;
                 $scope.savol_raqami=1;
                 $scope.bilet={{ bilet }};
+                $scope.time=900;
                 $scope.togri_javob_soni=0;
                 $scope.notogri_javob_soni=0;
                 $scope.javoblar=[];
@@ -275,7 +277,6 @@
                 //setCookie("javoblar", JSON.stringify($scope.javoblar), 365);
                 if($scope.bilet!=0){
                     checkJavoblar();
-                    startTimer();
                     LoadData();
                 }
                 $scope.mValue=null;
@@ -286,20 +287,29 @@
                     window.location.href="/avtotest/"+value;
                 }
                 $scope.showModal=function(){
+                    $scope.isPaused = true;
                     myModal.show();
+
                 }
-
-
-                function startTimer(){
+                $('#timer').on('click', function(e) {
+                  e.preventDefault();
+                  //$scope.isPaused = !$scope.isPaused;
+                });
+                $("#staticBackdrop").on('hide.bs.modal', function(){
+                    $scope.isPaused = false;
+                });
+                function startTimer(timeSecond){
                     displayTime(timeSecond);
-
                     const countDown = setInterval(() => {
-                      timeSecond--;
-                      displayTime(timeSecond);
-                      if (timeSecond == 0 || timeSecond < 1) {
-                        endCount();
-                        clearInterval(countDown);
-                      }
+                        if(!$scope.isPaused) {
+                          timeSecond--;
+                          $scope.time=timeSecond;
+                          displayTime(timeSecond);
+                          if (timeSecond == 0 || timeSecond < 1) {
+                            endCount();
+                            clearInterval(countDown);
+                          }
+                        }
                     }, 1000);
                 }
 
@@ -312,6 +322,8 @@
                 function endCount() {
                   timeH.innerHTML = "Vaqt tugadi";
                   myModal.show();
+                  $scope.timeout = true;
+                  $scope.isPaused = true;
                 }
                 function setCookie(cname, cvalue, exdays) {
                   const d = new Date();
@@ -343,6 +355,13 @@
                         setCookie("javoblar", JSON.stringify($scope.javoblar.filter(word => word.bilet != $scope.bilet)), 365);
                         $scope.javoblar = JSON.parse(getCookie("javoblar"));
                     }
+                    $scope.javoblar.forEach((element) =>{
+                        if(element.time<$scope.time)
+                        {
+                            $scope.time=element.time;
+                        }
+                    });
+                    startTimer($scope.time);
                     console.log($scope.javoblar);
 
                 }
@@ -350,7 +369,6 @@
                     myFunction(value);
               }
               function myFunction(value) {
-                  if($scope.javoblar.length<10){
                     $scope.savol_raqami=value;
                     $scope.savol=$scope.data[value-1];
                     console.log($scope.data);
@@ -364,16 +382,13 @@
                             console.log(element[i].className);
                         }
                     document.getElementById('savol'+value).classList.add('active');
-                  }
-                  else{
-                        myModal.show();
-                  }
                 }
                 function setJavob(javob)
                 {
                     var obj = {
                       id: $scope.savol.id,
                       bilet: $scope.bilet,
+                      time: $scope.time,
                       javob:javob,
                     };
 
@@ -402,12 +417,15 @@
                     document.getElementById('B'+$scope.id).classList.add('disabledDiv');
                     document.getElementById('C'+$scope.id).classList.add('disabledDiv');
                     document.getElementById('D'+$scope.id).classList.add('disabledDiv');
-
+                    if($scope.javoblar.filter(word => word.bilet == $scope.bilet).length==10)
+                    {
+                        $scope.isPaused = false;
+                        myModal.show();
+                    }
                 }
             $scope.ok=function(javob){
                 setJavob(javob);
                 //setTimeout(myFunction, 3000, $scope.savol_raqami+1);
-
             }
 
           function LoadData(){
