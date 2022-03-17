@@ -130,7 +130,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="staticBackdropLabel">{{bilet}} - Bilet natijasi</h5>
-        <button type="button" ng-show="isPaused" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <button type="button" ng-show="timeout" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="p-3 mb-2 bg-secondary text-white" ng-show="10-togri_javob_soni-notogri_javob_soni!=0">Belgilanmagan savollar : {{10-togri_javob_soni-notogri_javob_soni}} ta</div>
@@ -138,7 +138,7 @@
         <div class="p-3 mb-2 bg-danger text-white" ng-show="notogri_javob_soni!=0&&togri_javob_soni!=10">Noto'g'ri javob : {{notogri_javob_soni}} ta</div>
       </div>
       <div class="modal-footer">
-        <button type="button" ng-show="isPaused" class="btn btn-outline-secondary" style="width:200px" data-bs-dismiss="modal"><i class="bi bi-back"></i> Davom etish</button>
+        <button type="button" ng-show="timeout" class="btn btn-outline-secondary" style="width:200px" data-bs-dismiss="modal"><i class="bi bi-chevron-double-right"></i> Davom etish</button>
         <button type="button" class="btn btn-outline-primary" style="width:200px" ng-click="nextbilet(bilet+1)"><i class="bi bi-box-arrow-right"></i> {{bilet+1}} - biletga o'tish</button>
         <button type="button" class="btn btn-outline-danger" style="width:200px" ng-click="back()"><i class="bi bi-backspace"></i> Biletlarga qaytish</button>
         <button type="button" class="btn btn-outline-success" style="width:200px" ng-click="nextbilet(bilet)"><i class="bi bi-arrow-repeat"></i> Boshidan boshlash</button>
@@ -256,6 +256,19 @@
             {% endraw %}
         </div>
     </div>
+    <script>
+        if(window.screen.availWidth>1366){
+            document.getElementsByClassName('pagination')[0].className ="pagination pagination-lg";
+        }
+        else{
+            if(window.screen.availWidth>768&&window.screen.availWidth<1366){
+                document.getElementsByClassName('pagination')[0].className ="pagination";
+            }
+            else{
+                document.getElementsByClassName('pagination')[0].className ="pagination";
+            }
+        }
+    </script>
     {% endif %}
     <hr />
     <script>
@@ -284,10 +297,15 @@
                     window.location.href="/avtotest";
                 }
                 $scope.nextbilet=function(value){
+                    if($scope.bilet==value)
+                    {
+                        setCookie("javoblar", JSON.stringify($scope.javoblar.filter(word => word.bilet != $scope.bilet)), 365);
+                    }
                     window.location.href="/avtotest/"+value;
                 }
                 $scope.showModal=function(){
                     $scope.isPaused = true;
+                    $scope.timeout = true;
                     myModal.show();
 
                 }
@@ -322,8 +340,6 @@
                 function endCount() {
                   timeH.innerHTML = "Vaqt tugadi";
                   myModal.show();
-                  $scope.timeout = true;
-                  $scope.isPaused = true;
                 }
                 function setCookie(cname, cvalue, exdays) {
                   const d = new Date();
@@ -355,7 +371,16 @@
                         setCookie("javoblar", JSON.stringify($scope.javoblar.filter(word => word.bilet != $scope.bilet)), 365);
                         $scope.javoblar = JSON.parse(getCookie("javoblar"));
                     }
-                    $scope.javoblar.forEach((element) =>{
+                    else
+                    {
+                        if($scope.javoblar.filter(word => word.bilet == $scope.bilet).length!=0)
+                        {
+<!--                            $scope.isPaused = true;-->
+<!--                            $scope.timeout = true;-->
+<!--                            myModal.show();-->
+                        }
+                    }
+                    $scope.javoblar.filter(word => word.bilet == $scope.bilet).forEach((element) =>{
                         if(element.time<$scope.time)
                         {
                             $scope.time=element.time;
@@ -419,7 +444,8 @@
                     document.getElementById('D'+$scope.id).classList.add('disabledDiv');
                     if($scope.javoblar.filter(word => word.bilet == $scope.bilet).length==10)
                     {
-                        $scope.isPaused = false;
+                        $scope.isPaused = true;
+                        $scope.timeout = false;
                         myModal.show();
                     }
                 }
@@ -496,18 +522,6 @@
               });
           }
           }]);
-
-        if(window.screen.availWidth>1366){
-            document.getElementsByClassName('pagination')[0].className ="pagination pagination-lg";
-        }
-        else{
-            if(window.screen.availWidth>768&&window.screen.availWidth<1366){
-                document.getElementsByClassName('pagination')[0].className ="pagination";
-            }
-            else{
-                document.getElementsByClassName('pagination')[0].className ="pagination";
-            }
-        }
 </script>
 </body>
 </html>
