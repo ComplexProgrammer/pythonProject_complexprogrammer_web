@@ -236,8 +236,17 @@ def GetSavol():
     if(bilet):
         savol = cur.execute('SELECT * FROM savollar where bilet=="' + bilet + '" order by raqam;').fetchall()
     else:
-        savol = cur.execute('SELECT bilet FROM savollar group by bilet order by bilet;').fetchall()
+        savol = cur.execute('SELECT * FROM savollar order by raqam;').fetchall()
 
+    return jsonify(savol)
+
+
+@app.route("/GetBilet", methods=['GET'])
+def GetBilet():
+    conn = sqlite3.connect('website/avtotest.db')
+    conn.row_factory = dict_factory
+    cur = conn.cursor()
+    savol = cur.execute('SELECT bilet FROM savollar group by bilet order by bilet;').fetchall()
     return jsonify(savol)
 
 
