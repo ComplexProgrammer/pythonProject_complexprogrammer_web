@@ -233,7 +233,11 @@ def GetSavol():
     conn = sqlite3.connect('website/avtotest.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
-    savol = cur.execute('SELECT * FROM savollar where bilet=="'+bilet+'" order by raqam;').fetchall()
+    if(bilet):
+        savol = cur.execute('SELECT * FROM savollar where bilet=="' + bilet + '" order by raqam;').fetchall()
+    else:
+        savol = cur.execute('SELECT bilet FROM savollar group by bilet order by bilet;').fetchall()
+
     return jsonify(savol)
 
 
