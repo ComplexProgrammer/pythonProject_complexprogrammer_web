@@ -23,7 +23,8 @@ def exchangerates():
 @app.route("/GetExchangeRates", methods=['GET'])
 def GetExchangeRates():
     print(1)
-    url = "http://195.158.6.195:4444/Api/C0mplexApi/GetExchangeRates"
+    # url = "http://195.158.6.195:4444/Api/C0mplexApi/GetExchangeRates"
+    url = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/"
     r = urllib.request.urlopen(url)
     data = r.read()
     return {"data": json.loads(data)}
