@@ -1,10 +1,9 @@
 import os
 import sqlite3
 import urllib
+from PIL import Image, ImageChops
 from flask import render_template, request, jsonify
 from website import app
-from website.models import savollar
-from website import db
 import json
 
 
@@ -251,6 +250,18 @@ def GetBilet():
     return jsonify(savol)
 
 
+@app.route('/imagecompare')
+def ImageCompare():
+    return render_template('imagecompare.html')
+
+
+@app.route("/GetImageCompareResult", methods=['GET'])
+def GetImageCompareResult():
+    img1 = Image.open('E:/image/img1.jpg')
+    img2 = Image.open('E:/image/img2.jpg')
+    diff = ImageChops.difference(img1, img2)
+    print(diff.getbbox())
+    return {"data": diff.getbbox()}
 # endregion
 
 
