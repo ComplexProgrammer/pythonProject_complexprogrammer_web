@@ -47,52 +47,13 @@
     <script src="http://complexprogrammer.uz/static/angular.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,900|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/css/dropify.min.css">
-    <style>
-          body {
-          background-color: #212121;
-          color: white
-          }
-    </style>
-    <script>
-    var app = angular.module("App", []);
-    app.controller("ImageCompare", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
-        $scope.ShowData = false;
-        $scope.getResult=function() {
-            document.getElementById('conn').style.visibility = "visible";
-            $http({
-                method: 'GET',
-                url: "/GetImageCompareResult",
-                dataType: "json"
-            }).then(function (d) {
-                $scope.Data = d.data.data;
-                if (d.data === 0) {
-                    $scope.ShowData = false;
-                }
-                else {
-                    if (d.data === -1) {
-                        $scope.ShowData = false;
-                    }
-                    else {
-                        if (d.data.length === 0) {
-                            $scope.ShowData = false;
-                        }
-                        else {
-                            $scope.ShowData = true;
-                        }
-                    }
-                }
-                document.getElementById('conn').style.visibility = "hidden";
-            }, function (error) {
-                console.log("error in GetImageCompareResult -> ", error);
-                document.getElementById('conn').style.visibility = "hidden";
-            });
-        };
-    }]);
+    <link rel="stylesheet" href="/static/imagecompare/style.css">
+    <script src="/static/imagecompare/js.js"></script>
 
-</script>
     <title>Image Compare</title>
 </head>
 <body ng-app="App" ng-controller="ImageCompare">
+{% raw %}
 <div class="C0mplexButton float-end">
             <a href="/#services">
                 <span></span>
@@ -112,10 +73,11 @@
                 <img src="http://complexprogrammer.uz/static/img/google-play.svg" />
             </a>
         </h2>
-        <div class="row">
-            <div class="col"><input type="file" id="img1" data-height="500" class="dropify" /></div>
-            <div class="col"><input type="file" id="img2" data-height="500" class="dropify" /></div>
-        </div>
+        <form class="row" action="/GetImageCompareResult" method=post enctype=multipart/form-data>
+            <div class="col"><input type="file" ng-model="img_model1" id="img1" name="img1" data-height="500" class="dropify" /></div>
+            <div class="col"><input type="file" ng-model="img_model2" id="img2" name="img2" data-height="500" class="dropify" /></div>
+            <input type=submit value=Upload>
+        </form>
         <div class="C0mplexButton Success">
             <a href="#" style="width:100%;text-align:center" ng-click="getResult()">
                 <span></span>
@@ -127,11 +89,11 @@
             </a>
         </div>
         <div class="row" ng-show="ShowData">
-            <div class="col"><div class="col"><input type="file" id="result" data-height="500" class="dropify" /></div></div>
+            <div class="col"><div class="col"><input type="file" ng-model="img_result" id="result" data-height="500" class="dropify" /></div></div>
         </div>
     </div>
 <script src="http://complexprogrammer.uz/static/js/dropify.min.js"></script>
 <script src="http://complexprogrammer.uz/static/js/dropifycustom.js"></script>
-
+{% endraw %}
 </body>
 </html>

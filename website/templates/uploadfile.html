@@ -1,0 +1,52 @@
+<html>
+
+   <head>
+       <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.9/angular.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/12.2.13/ng-file-upload.min.js"></script>
+            <script type="text/javascript">
+        var app = angular.module('MyApp', ['ngFileUpload'])
+        app.controller('MyController', function ($scope, Upload, $timeout) {
+            $scope.UploadFiles = function (file) {
+               console.log(file);
+                $scope.SelectedFiles = file;
+                if ($scope.SelectedFiles && $scope.SelectedFiles.length) {
+                    Upload.upload({
+                        url: '/Home/Upload/',
+                        data: {
+                            file: $scope.SelectedFiles
+                        }
+                    }).then(function (response) {
+                        $timeout(function () {
+                            $scope.Result = response.data;
+                        });
+                    }, function (response) {
+                        if (response.status > 0) {
+                            var errorMsg = response.status + ': ' + response.data;
+                            alert(errorMsg);
+                        }
+                    }, function (evt) {
+                        var element = angular.element(document.querySelector('#dvProgress'));
+                        $scope.Progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
+                        element.html('<div style="width: ' + $scope.Progress + '%">' + $scope.Progress + '%</div>');
+                    });
+                }
+            };
+        });
+    </script>
+   </head>
+
+   <body>
+{%raw%}
+       <div ng-app="MyApp" ng-controller="MyController">
+        <input type="file" ngf-select="UploadFiles($files)"/>
+        <hr/>
+        Files:
+        <ul><li ng-repeat="file in SelectedFiles">{{file.name}}</li></ul>
+        <div id="dvProgress" class="progress" ng-show="Progress >= 0">
+        </div>
+    </div>
+
+
+{%endraw%}
+   </body>
+</html>

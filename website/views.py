@@ -1,9 +1,14 @@
 import os
 import sqlite3
 import urllib
+
+import numpy
 from PIL import Image, ImageChops
-from flask import render_template, request, jsonify
-from website import app
+from cv2 import cv2
+from flask import render_template, request, jsonify, flash
+from werkzeug.utils import secure_filename
+
+from website import app, ALLOWED_EXTENSIONS
 import json
 
 
@@ -250,18 +255,59 @@ def GetBilet():
     return jsonify(savol)
 
 
-@app.route('/imagecompare')
+@app.route('/uploadfile')
+def UploadImage():
+    return render_template('uploadfile.html')
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+@app.route('/imagecompare', methods=['GET', 'POST'])
 def ImageCompare():
+
     return render_template('imagecompare.html')
 
 
-@app.route("/GetImageCompareResult", methods=['GET'])
+@app.route("/GetImageCompareResult", methods=['POST'])
 def GetImageCompareResult():
-    img1 = Image.open('E:/image/img1.jpg')
-    img2 = Image.open('E:/image/img2.jpg')
-    diff = ImageChops.difference(img1, img2)
-    print(diff.getbbox())
-    return {"data": diff.getbbox()}
+    if request.method == 'POST':
+        if 'img1' not in request.files:
+            flash("No file part")
+
+        if 'img2' not in request.files:
+            flash("No file part")
+
+        imgstr1 = request.files['img1'].read()
+        imgstr2 = request.files['img2'].read()
+        npimg1 = numpy.fromstring(imgstr1, numpy.uint8)
+        npimg2 = numpy.fromstring(imgstr2, numpy.uint8)
+        # img1 = cv2.imdecode(npimg1, cv2.CV_LOAD_IMAGE_UNCHANGED)
+        # img2 = cv2.imdecode(npimg2, cv2.CV_LOAD_IMAGE_UNCHANGED)
+        img1 = Image.fromarray(npimg1)
+        img2 = Image.fromarray(npimg2)
+        diff = ImageChops.difference(img1, img2)
+        print(diff.getbbox())
+        # if imgstr1.filename == '':
+        #     flash('No selected file')
+        #     return render_template('imagecompare.html')
+        # if imgstr2.filename == '':
+        #     flash('No selected file')
+        #     return render_template('imagecompare.html')
+        # if imgstr1 and allowed_file(imgstr1.filename) and imgstr2 and allowed_file(imgstr2.filename):
+        #
+        #     filename1 = secure_filename(imgstr1.filename)
+        #     filename2 = secure_filename(imgstr2.filename)
+
+            # img1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
+            # img2.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
+
+    # img1 = Image.open('E:/image/img1.jpg')
+    # img2 = Image.open('E:/image/img2.jpg')
+
+    # return {"imgstr1": imgstr1, "imgstr2": imgstr2}
+    return render_template('imagecompare.html')
 # endregion
 
 
