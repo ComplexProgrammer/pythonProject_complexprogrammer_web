@@ -1,9 +1,12 @@
+import base64
+import io
 import os
 import sqlite3
 import urllib
 
 import numpy
-from PIL import Image, ImageChops
+import numpy as np
+from PIL import Image, ImageChops, ImageFile
 from cv2 import cv2
 from flask import render_template, request, jsonify, flash
 from werkzeug.utils import secure_filename
@@ -266,12 +269,6 @@ def allowed_file(filename):
 
 @app.route('/imagecompare', methods=['GET', 'POST'])
 def ImageCompare():
-
-    return render_template('imagecompare.html')
-
-
-@app.route("/GetImageCompareResult", methods=['POST'])
-def GetImageCompareResult():
     if request.method == 'POST':
         if 'img1' not in request.files:
             flash("No file part")
@@ -302,12 +299,31 @@ def GetImageCompareResult():
 
             # img1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
             # img2.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
-
-    # img1 = Image.open('E:/image/img1.jpg')
-    # img2 = Image.open('E:/image/img2.jpg')
-
-    # return {"imgstr1": imgstr1, "imgstr2": imgstr2}
     return render_template('imagecompare.html')
+
+
+@app.route("/GetImageCompareResult", methods=['GET', 'POST'])
+def GetImageCompareResult():
+    img_model1 = request.args.get('img_model1')
+    img_model2 = request.args.get('img_model2')
+    print(img_model1)
+    print(img_model2)
+    # img_model1 = img_model1.replace(img_model1[0:img_model1.index('base64,')] + 'base64,', "")
+    # img_model2 = img_model2.replace(img_model2[0:img_model2.index('base64,')] + 'base64,', "")
+    # b1 = base64.b64decode(img_model1)
+    # b2 = base64.b64decode(img_model2)
+    #
+    # print(b1)
+    # print(b2)
+    # ImageFile.LOAD_TRUNCATED_IMAGES = True
+    # img1 = Image.open(io.BytesIO(b1))
+    # img2 = Image.open(io.BytesIO(b2))
+    # diff = ImageChops.difference(img1, img2)
+    # print(diff.getbbox())
+    # data = base64.b64encode(diff.tobytes())
+    # b = bytearray(img1.tobytes())
+    # return {"data" : "data:image/png;base64," + data.decode('utf-8')}
+    return {"data": img_model1}
 # endregion
 
 

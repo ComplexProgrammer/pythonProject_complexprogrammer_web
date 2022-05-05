@@ -55,43 +55,44 @@
 <body ng-app="App" ng-controller="ImageCompare">
 {% raw %}
 <div class="C0mplexButton float-end">
-            <a href="/#services">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                X
-            </a>
-        </div>
-    <div class="container">
-        <div id="conn" style="visibility:hidden;position:absolute;margin-left:45%;margin-top:20%;z-index:9999">
-        <img src="http://complexprogrammer.uz/static/img/buffering.gif" />
-        </div>
-        <input id="hh" type="hidden" />
-        <h2>Image Compare
-            <a href="https://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz" target="_blank">
-                <img src="http://complexprogrammer.uz/static/img/google-play.svg" />
-            </a>
-        </h2>
-        <form class="row" action="/GetImageCompareResult" method=post enctype=multipart/form-data>
-            <div class="col"><input type="file" ng-model="img_model1" id="img1" name="img1" data-height="500" class="dropify" /></div>
-            <div class="col"><input type="file" ng-model="img_model2" id="img2" name="img2" data-height="500" class="dropify" /></div>
-            <input type=submit value=Upload>
-        </form>
-        <div class="C0mplexButton Success">
-            <a href="#" style="width:100%;text-align:center" ng-click="getResult()">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <i class="fa fa-copy"></i>
-                Taqqoslash
-            </a>
-        </div>
-        <div class="row" ng-show="ShowData">
-            <div class="col"><div class="col"><input type="file" ng-model="img_result" id="result" data-height="500" class="dropify" /></div></div>
-        </div>
+    <a href="/#services">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        X
+    </a>
+</div>
+<form id="myform_id" class="container" action="/imagecompare" method=post enctype=multipart/form-data>
+    <div id="conn" style="visibility:hidden;position:absolute;margin-left:45%;margin-top:20%;z-index:9999">
+    <img src="http://complexprogrammer.uz/static/img/buffering.gif" />
     </div>
+    <input id="hh" type="hidden" />
+    <h2>Image Compare
+        <a href="https://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz" target="_blank">
+            <img src="http://complexprogrammer.uz/static/img/google-play.svg" />
+        </a>
+    </h2>
+    <div class="row">
+        <div class="col"><input type="file" ng-file-select="onFileSelect($files)" ng-model="img_model1" id="img1" name="img1" data-height="500" class="dropify" /></div>
+        <div class="col"><input type="file" ng-file-select="onFileSelect($files)" ng-model="img_model2" id="img2" name="img2" data-height="500" class="dropify" /></div>
+    </div>
+    <div class="C0mplexButton Success">
+        <a href="#" ng-click="getResult()" style="width:100%;text-align:center">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <i class="fa fa-copy"></i>
+            Taqqoslash
+        </a>
+    </div>
+    <div class="row" ng-show="ShowData">
+        {{img_result}}
+        <img ng-src="{{img_result}}" />
+        <div class="col"><div class="col"><input type="file" ng-model="img_result" id="result" data-height="500" class="dropify" /></div></div>
+    </div>
+</form>
 <script src="http://complexprogrammer.uz/static/js/dropify.min.js"></script>
 <script src="http://complexprogrammer.uz/static/js/dropifycustom.js"></script>
 {% endraw %}
