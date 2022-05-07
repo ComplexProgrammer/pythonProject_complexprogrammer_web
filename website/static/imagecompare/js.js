@@ -8,9 +8,14 @@ app.controller("ImageCompare", ["$scope", "$http", "$filter","fileReader", funct
     $scope.ShowData = false;
     $scope.getResult=function() {
         document.getElementById('conn').style.visibility = "visible";
+         $scope.SendFileModel = {
+            img_model1: $scope.img_model1,
+            img_model2: $scope.img_model2,
+        };
         $http({
-            method: 'GET',
-            url: "/GetImageCompareResult?img_model1="+$scope.img_model1+"&img_model2="+$scope.img_model2,
+            method: 'POST',
+            url: "/GetImageCompareResult",
+            data: JSON.stringify($scope.SendFileModel),
             dataType: "json"
         }).then(function (d) {
             console.log(d.data.data);
@@ -50,6 +55,7 @@ app.directive("ngFileSelect", function (fileReader, $timeout) {
         fileReader.readAsDataUrl(file, $scope).then(function (result) {
           $timeout(function () {
             $scope.ngModel = result;
+            console.log(result);
           });
         });
       }

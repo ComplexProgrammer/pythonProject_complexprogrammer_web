@@ -302,28 +302,32 @@ def ImageCompare():
     return render_template('imagecompare.html')
 
 
-@app.route("/GetImageCompareResult", methods=['GET', 'POST'])
+@app.route("/GetImageCompareResult", methods=['POST'])
 def GetImageCompareResult():
-    img_model1 = request.args.get('img_model1')
-    img_model2 = request.args.get('img_model2')
+    data = request.json
+    img_model1 = data['img_model1']
+    img_model2 = data['img_model2']
     print(img_model1)
     print(img_model2)
-    # img_model1 = img_model1.replace(img_model1[0:img_model1.index('base64,')] + 'base64,', "")
-    # img_model2 = img_model2.replace(img_model2[0:img_model2.index('base64,')] + 'base64,', "")
-    # b1 = base64.b64decode(img_model1)
-    # b2 = base64.b64decode(img_model2)
-    #
-    # print(b1)
-    # print(b2)
-    # ImageFile.LOAD_TRUNCATED_IMAGES = True
-    # img1 = Image.open(io.BytesIO(b1))
-    # img2 = Image.open(io.BytesIO(b2))
-    # diff = ImageChops.difference(img1, img2)
-    # print(diff.getbbox())
-    # data = base64.b64encode(diff.tobytes())
-    # b = bytearray(img1.tobytes())
+    img_model1 = img_model1.replace(img_model1[0:img_model1.index('base64,')] + 'base64,', "")
+    img_model2 = img_model2.replace(img_model2[0:img_model2.index('base64,')] + 'base64,', "")
+    b1 = base64.b64decode(img_model1)
+    b2 = base64.b64decode(img_model2)
+
+    print(b1)
+    print(b2)
+    ImageFile.LOAD_TRUNCATED_IMAGES = True
+    # img1 = Image.open(io.BytesIO(base64.decodebytes(bytes(img_model1, "utf-8"))))
+    # img2 = Image.open(io.BytesIO(base64.decodebytes(bytes(img_model2, "utf-8"))))
+    img1 = Image.open(io.BytesIO(b1))
+    img2 = Image.open(io.BytesIO(b2))
+    diff = ImageChops.difference(img1, img2)
+    print(diff.getbbox())
+    data = base64.b64encode(diff.tobytes())
+    b = bytearray(img1.tobytes())
+    image_string = base64.b64encode(img1.tobytes())
     # return {"data" : "data:image/png;base64," + data.decode('utf-8')}
-    return {"data": img_model1}
+    return {"data": image_string}
 # endregion
 
 
