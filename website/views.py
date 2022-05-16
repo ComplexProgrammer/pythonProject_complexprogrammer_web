@@ -4,10 +4,12 @@ import os
 import sqlite3
 import urllib
 
+import imutils
 import numpy
 import numpy as np
 from PIL import Image, ImageChops, ImageFile
 from cv2 import cv2
+from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash
 from werkzeug.utils import secure_filename
 
@@ -225,7 +227,7 @@ def GetCustomIPData():
 @app.route("/avtotest/")
 @app.route("/avtotest/<id>")
 def avtotest(id='0'):
-    return render_template('avtotest.html',bilet=id)
+    return render_template('avtotest.html', bilet=id)
 
 
 def dict_factory(cursor, row):
@@ -241,7 +243,7 @@ def GetSavol():
     conn = sqlite3.connect('website/avtotest.db')
     conn.row_factory = dict_factory
     cur = conn.cursor()
-    if(bilet):
+    if (bilet):
         savol = cur.execute('SELECT * FROM savollar where bilet=="' + bilet + '" order by raqam;').fetchall()
     else:
         savol = cur.execute('SELECT * FROM savollar order by raqam;').fetchall()
@@ -267,71 +269,75 @@ def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/imagecompare', methods=['GET', 'POST'])
+
+@app.route('/imagecompare')
 def ImageCompare():
-    if request.method == 'POST':
-        if 'img1' not in request.files:
-            flash("No file part")
-
-        if 'img2' not in request.files:
-            flash("No file part")
-
-        imgstr1 = request.files['img1'].read()
-        imgstr2 = request.files['img2'].read()
-        npimg1 = numpy.fromstring(imgstr1, numpy.uint8)
-        npimg2 = numpy.fromstring(imgstr2, numpy.uint8)
-        # img1 = cv2.imdecode(npimg1, cv2.CV_LOAD_IMAGE_UNCHANGED)
-        # img2 = cv2.imdecode(npimg2, cv2.CV_LOAD_IMAGE_UNCHANGED)
-        img1 = Image.fromarray(npimg1)
-        img2 = Image.fromarray(npimg2)
-        diff = ImageChops.difference(img1, img2)
-        print(diff.getbbox())
-        # if imgstr1.filename == '':
-        #     flash('No selected file')
-        #     return render_template('imagecompare.html')
-        # if imgstr2.filename == '':
-        #     flash('No selected file')
-        #     return render_template('imagecompare.html')
-        # if imgstr1 and allowed_file(imgstr1.filename) and imgstr2 and allowed_file(imgstr2.filename):
-        #
-        #     filename1 = secure_filename(imgstr1.filename)
-        #     filename2 = secure_filename(imgstr2.filename)
-
-            # img1.save(os.path.join(app.config['UPLOAD_FOLDER'], filename1))
-            # img2.save(os.path.join(app.config['UPLOAD_FOLDER'], filename2))
     return render_template('imagecompare.html')
 
 
 @app.route("/GetImageCompareResult", methods=['POST'])
 def GetImageCompareResult():
-    data = request.json
-    img_model1 = data['img_model1']
-    img_model2 = data['img_model2']
-    print(img_model1)
-    print(img_model2)
-    img_model1 = img_model1.replace(img_model1[0:img_model1.index('base64,')] + 'base64,', "")
-    img_model2 = img_model2.replace(img_model2[0:img_model2.index('base64,')] + 'base64,', "")
-    b1 = base64.b64decode(img_model1)
-    b2 = base64.b64decode(img_model2)
+    if 'img1' not in request.files or 'img2' not in request.files:
+        print('No file part')
+        return {"data": ''}
+    else:
+        img1_model = request.files['img1']
+        img2_model = request.files['img2']
+        print(img1_model)
+        print(img2_model)
+        image1 = np.asarray(bytearray(img1_model.read()), dtype="uint8")
+        image1 = cv2.imdecode(image1, cv2.IMREAD_COLOR)
+        image2 = np.asarray(bytearray(img2_model.read()), dtype="uint8")
+        image2 = cv2.imdecode(image2, cv2.IMREAD_COLOR)
+        grayA = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+        grayB = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+        height1, width1, channels1 = image1.shape
+        height2, width2, channels2 = image2.shape
+        print(height1, width1, channels1)
+        print(height2, width2, channels2)
+        if width1 == width2 and height1 == height2:
+            (score, diff0) = compare_ssim(grayA, grayB, full=True)
+            diff0 = (diff0 * 255).astype("uint8")
+            print("SSIM: {}".format(score))
+            thresh = cv2.threshold(diff0, 0, 255,
+                                   cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1]
+            cnts = cv2.findContours(thresh.copy(), cv2.RETR_EXTERNAL,
+                                    cv2.CHAIN_APPROX_SIMPLE)
+            cnts = imutils.grab_contours(cnts)
+            for c in cnts:
+                # compute the bounding box of the contour and then draw the
+                # bounding box on both input images to represent where the two
+                # images differ
+                (x, y, w, h) = cv2.boundingRect(c)
+                cv2.rectangle(image1, (x, y), (x + w, y + h), (0, 0, 255), 2)
+                cv2.rectangle(image2, (x, y), (x + w, y + h), (0, 0, 255), 2)
+            im_arr = cv2.imencode('.jpg', diff0)[1].tostring()  # im_arr: image in Numpy one-dim array format.
+            base64_str = base64.b64encode(im_arr)
+            print(base64_str)
+            # im_bytes = im_arr.tobytes()
+            # im_b64 = base64.b64encode(im_bytes)
+            # return {"data": im_b64}
+            ImageFile.LOAD_TRUNCATED_IMAGES = True
+            img1 = Image.open(img1_model)
+            img2 = Image.open(img2_model)
 
-    print(b1)
-    print(b2)
-    ImageFile.LOAD_TRUNCATED_IMAGES = True
-    # img1 = Image.open(io.BytesIO(base64.decodebytes(bytes(img_model1, "utf-8"))))
-    # img2 = Image.open(io.BytesIO(base64.decodebytes(bytes(img_model2, "utf-8"))))
-    img1 = Image.open(io.BytesIO(b1))
-    img2 = Image.open(io.BytesIO(b2))
-    diff = ImageChops.difference(img1, img2)
-    print(diff.getbbox())
-    data = base64.b64encode(diff.tobytes())
-    b = bytearray(img1.tobytes())
-    image_string = base64.b64encode(img1.tobytes())
-    # return {"data" : "data:image/png;base64," + data.decode('utf-8')}
-    return {"data": image_string}
+            diff = ImageChops.difference(img1, img2)
+            print(diff.getbbox())
+            with io.BytesIO() as output:
+                diff.save(output, format="png")
+                contents = output.getvalue()
+                result = "data:image/png;base64," + base64.b64encode(contents).decode('utf-8')
+                # print(result)
+                return {"data": result}
+        else:
+            return {"data": 0}
+
+
+
 # endregion
 
 
-#region online games
+# region online games
 @app.route('/snake')
 def snake():
     return render_template("snake.html")

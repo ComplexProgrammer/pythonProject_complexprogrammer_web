@@ -53,6 +53,10 @@
     <title>Image Compare</title>
 </head>
 <body ng-app="App" ng-controller="ImageCompare">
+<div id="conn" style="visibility:hidden;position:absolute;margin-left:45%;margin-top:20%;z-index:9999">
+    <img src="http://complexprogrammer.uz/static/img/buffering.gif" />
+</div>
+<input id="hh" type="hidden" />
 {% raw %}
 <div class="C0mplexButton float-end">
     <a href="/#services">
@@ -63,19 +67,19 @@
         X
     </a>
 </div>
-<form id="myform_id" class="container" action="/imagecompare" method=post enctype=multipart/form-data>
-    <div id="conn" style="visibility:hidden;position:absolute;margin-left:45%;margin-top:20%;z-index:9999">
-    <img src="http://complexprogrammer.uz/static/img/buffering.gif" />
-    </div>
-    <input id="hh" type="hidden" />
+<div class="container" >
     <h2>Image Compare
         <a href="https://play.google.com/store/apps/details?id=exchangerates.complexprogrammer.uz" target="_blank">
             <img src="http://complexprogrammer.uz/static/img/google-play.svg" />
         </a>
     </h2>
+    <div class="row text-center">
+        <div class="col"><p class="text-info">1 - Rasm</p></div>
+        <div class="col"><p class="text-info">2 - Rasm</p></div>
+    </div>
     <div class="row">
-        <div class="col"><input type="file" ng-file-select="onFileSelect($files)" ng-model="img_model1" id="img1" name="img1" data-height="500" class="dropify" /></div>
-        <div class="col"><input type="file" ng-file-select="onFileSelect($files)" ng-model="img_model2" id="img2" name="img2" data-height="500" class="dropify" /></div>
+        <div class="col"><input type="file" ng-files="getTheFiles1($files)" ng-model="img_model1" id="img1" name="img1" data-height="500" class="dropify" /></div>
+        <div class="col"><input type="file" ng-files="getTheFiles2($files)" ng-model="img_model2" id="img2" name="img2" data-height="500" class="dropify" /></div>
     </div>
     <div class="C0mplexButton Success">
         <a href="#" ng-click="getResult()" style="width:100%;text-align:center">
@@ -87,12 +91,16 @@
             Taqqoslash
         </a>
     </div>
-    <div class="row" ng-show="ShowData">
-        {{img_result}}
-        <img ng-src="{{img_result}}" />
-        <div class="col"><div class="col"><input type="file" ng-model="img_result" id="result" data-height="500" class="dropify" /></div></div>
+    <div class="row text-center" ng-show="Data!=0&&ShowData">
+        <div class="col"><p class="text-info">Natija</p></div>
     </div>
-</form>
+    <div class="row text-center" ng-show="Data==0">
+        <div class="col"><p class="text-danger">Rasm o`lchamlari bir xil bo`lishi kerak.</p></div>
+    </div>
+    <div class="row text-center" ng-show="Data!=0&&ShowData">
+        <div class="col"><img ng-src="{{img_result}}" /></div>
+    </div>
+</div>
 <script src="http://complexprogrammer.uz/static/js/dropify.min.js"></script>
 <script src="http://complexprogrammer.uz/static/js/dropifycustom.js"></script>
 {% endraw %}
