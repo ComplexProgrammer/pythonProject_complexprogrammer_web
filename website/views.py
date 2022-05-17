@@ -289,8 +289,10 @@ def GetImageCompareResult():
         image1 = cv2.imdecode(image1, cv2.IMREAD_COLOR)
         image2 = np.asarray(bytearray(img2_model.read()), dtype="uint8")
         image2 = cv2.imdecode(image2, cv2.IMREAD_COLOR)
-        grayA = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
-        grayB = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+        # grayA = cv2.cvtColor(image1, cv2.COLOR_BGR2GRAY)
+        # grayB = cv2.cvtColor(image2, cv2.COLOR_BGR2GRAY)
+        grayA = cv2.cvtColor(image1, cv2.COLOR_BGRA2GRAY)
+        grayB = cv2.cvtColor(image2, cv2.COLOR_BGRA2GRAY)
         height1, width1, channels1 = image1.shape
         height2, width2, channels2 = image2.shape
         print(height1, width1, channels1)
@@ -311,12 +313,11 @@ def GetImageCompareResult():
                 (x, y, w, h) = cv2.boundingRect(c)
                 cv2.rectangle(image1, (x, y), (x + w, y + h), (0, 0, 255), 2)
                 cv2.rectangle(image2, (x, y), (x + w, y + h), (0, 0, 255), 2)
-            im_arr = cv2.imencode('.jpg', diff0)[1].tostring()  # im_arr: image in Numpy one-dim array format.
-            base64_str = base64.b64encode(im_arr)
-            print(base64_str)
+            im_arr = cv2.imencode('.jpg', thresh)[1].tostring()  # im_arr: image in Numpy one-dim array format.
+            base64_str = "data:image/png;base64," + base64.b64encode(im_arr).decode('utf-8')
             # im_bytes = im_arr.tobytes()
             # im_b64 = base64.b64encode(im_bytes)
-            # return {"data": im_b64}
+            return {"data": base64_str}
             ImageFile.LOAD_TRUNCATED_IMAGES = True
             img1 = Image.open(img1_model)
             img2 = Image.open(img2_model)
