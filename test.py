@@ -1,5 +1,4 @@
-import requests, json
-
-response = requests.get('http://172.20.0.31:4444/Api/C0mplexApi/GetExchangeRates').content
-data = json.loads(response)
-print(data)
+import pandas as pd
+pd.read_excel(open('fulldata.xlsx', 'rb'),
+              sheet_name='10.4')
+print(pd)
