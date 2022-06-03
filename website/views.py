@@ -326,7 +326,7 @@ def GetImageCompareResult():
             dim = (512, 512)
             resized_image1 = cv2.resize(grayA, dim, interpolation=cv2.INTER_AREA)
             resized_image2 = cv2.resize(grayB, dim, interpolation=cv2.INTER_AREA)
-            return ImageCompare(image1, image2, grayA, resized_image2)
+            return ImageCompare(image1, image2, grayA, resized_image1)
             # ImageFile.LOAD_TRUNCATED_IMAGES = True
             # img1 = Image.open(img1_model)
             # img2 = Image.open(img2_model)
