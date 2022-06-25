@@ -12,6 +12,8 @@ from cv2 import cv2
 from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash
 from werkzeug.utils import secure_filename
+import googletrans
+from googletrans import Translator
 
 from website import app, ALLOWED_EXTENSIONS
 import json
@@ -21,7 +23,6 @@ import json
 @app.route('/home')
 def home_page():
     return render_template('home.html')
-
 
 # region online services
 @app.route("/exchangerates")
@@ -339,6 +340,32 @@ def GetImageCompareResult():
             #     result = "data:image/png;base64," + base64.b64encode(contents).decode('utf-8')
             #     # print(result)
             #     return {"data": result}
+
+
+@app.route('/translate')
+def C0mplexTranslate():
+    return render_template('translate.html')
+
+
+@app.route("/GetTranslateResult", methods=['POST'])
+def GetTranslateResult():
+    print(googletrans.LANGUAGES)
+    text = request.args.get('text')
+    # text = '''
+    # A Római Birodalom (latinul Imperium Romanum) az ókori Róma által létrehozott
+    # államalakulat volt a Földközi-tenger medencéjében
+    # '''
+    print(text)
+    translator = Translator()
+
+    # result = translator.translate(text)
+    result = translator.translate(text)
+    print(result.src)
+    print(result.dest)
+    print(result.origin)
+    print(result.text)
+    print(result.pronunciation)
+    return {"data": result}
 
 
 # endregion
