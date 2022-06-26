@@ -37,7 +37,8 @@
       const app = initializeApp(firebaseConfig);
       const analytics = getAnalytics(app);
     </script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+<!--    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
     <link rel="icon" sizes="16x16" href="http://complexprogrammer.uz/static/img/favicon.ico">
     <link rel="stylesheet" href="http://complexprogrammer.uz/static/C0mplexButtonStyle.css">
     <link rel="stylesheet" href="http://complexprogrammer.uz/static/alertify/alertify.default.css">
@@ -74,12 +75,16 @@
         </a>
     </h2>
     <div class="row text-center">
-        <div class="col"><p class="text-info">1 - </p></div>
-        <div class="col"><p class="text-info">natija</p></div>
+        <div class="col">
+            <select class="form-control" ng-change="getResult()" required name="src" ng-model="src" ng-options="item for item in Languages"></select>
+        </div>
+        <div class="col">
+            <select class="form-control" ng-change="getResult()" required name="dest" ng-model="dest" ng-options="item for item in Languages"></select>
+        </div>
     </div>
     <div class="row">
         <div class="col">
-            <textarea ng-model="text" class="form-control" cols="5" rows="15">
+            <textarea ng-model="text" id="text" class="form-control" cols="5" rows="15">
 
             </textarea>
         </div>
@@ -89,8 +94,22 @@
             </textarea>
         </div>
     </div>
+    <div class="row">
+        <div class="col">1
+            <i class="bi bi-volume-up"></i>
+        </div>
+        <div class="col">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-volume-up" viewBox="0 0 16 16">
+              <path d="M11.536 14.01A8.473 8.473 0 0 0 14.026 8a8.473 8.473 0 0 0-2.49-6.01l-.708.707A7.476 7.476 0 0 1 13.025 8c0 2.071-.84 3.946-2.197 5.303l.708.707z"/>
+              <path d="M10.121 12.596A6.48 6.48 0 0 0 12.025 8a6.48 6.48 0 0 0-1.904-4.596l-.707.707A5.483 5.483 0 0 1 11.025 8a5.483 5.483 0 0 1-1.61 3.89l.706.706z"/>
+              <path d="M10.025 8a4.486 4.486 0 0 1-1.318 3.182L8 10.475A3.489 3.489 0 0 0 9.025 8c0-.966-.392-1.841-1.025-2.475l.707-.707A4.486 4.486 0 0 1 10.025 8zM7 4a.5.5 0 0 0-.812-.39L3.825 5.5H1.5A.5.5 0 0 0 1 6v4a.5.5 0 0 0 .5.5h2.325l2.363 1.89A.5.5 0 0 0 7 12V4zM4.312 6.39 6 5.04v5.92L4.312 9.61A.5.5 0 0 0 4 9.5H2v-3h2a.5.5 0 0 0 .312-.11z"/>
+            </svg>
+            <i class="bi bi-volume-up"></i>
+        </div>
+
+    </div>
     <div class="C0mplexButton Success">
-        <a href="#" ng-click="getResult(text)" style="width:100%;text-align:center">
+        <a href="#" ng-click="getResult()" style="width:100%;text-align:center">
             <span></span>
             <span></span>
             <span></span>

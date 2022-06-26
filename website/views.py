@@ -14,6 +14,7 @@ from flask import render_template, request, jsonify, flash
 from werkzeug.utils import secure_filename
 import googletrans
 from googletrans import Translator
+import pyttsx3
 
 from website import app, ALLOWED_EXTENSIONS
 import json
@@ -347,10 +348,18 @@ def C0mplexTranslate():
     return render_template('translate.html')
 
 
+@app.route('/GetTranslateLanguages', methods=['POST'])
+def GetTranslateLanguages():
+    return {'data': googletrans.LANGUAGES}
+
+
 @app.route("/GetTranslateResult", methods=['POST'])
 def GetTranslateResult():
-    print(googletrans.LANGUAGES)
     text = request.args.get('text')
+    src = request.args.get('src')
+    dest = request.args.get('dest')
+    print(src)
+    print(dest)
     # text = '''
     # A Római Birodalom (latinul Imperium Romanum) az ókori Róma által létrehozott
     # államalakulat volt a Földközi-tenger medencéjében
@@ -359,14 +368,22 @@ def GetTranslateResult():
     translator = Translator()
 
     # result = translator.translate(text)
-    result = translator.translate(text)
+    result = translator.translate(text, src=src, dest=dest)
     print(result.src)
     print(result.dest)
     print(result.origin)
     print(result.text)
     print(result.pronunciation)
-    return {"data": result}
+    return {"data": result.text}
 
+
+@app.route("/TextToSpeech", methods=['POST'])
+def TextToSpeech():
+    text = request.args.get('text')
+    text_speech = pyttsx3.init()
+    text_speech.say(text)
+    text_speech.runAndWait()
+    return {"data": text}
 
 # endregion
 
