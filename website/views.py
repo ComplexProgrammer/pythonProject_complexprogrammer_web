@@ -8,7 +8,8 @@ import imutils
 import numpy
 import numpy as np
 from PIL import Image, ImageChops, ImageFile
-from cv2 import cv2
+# from cv2 import cv2
+import cv2
 from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash
 from werkzeug.utils import secure_filename
