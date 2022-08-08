@@ -349,6 +349,11 @@ def C0mplexTranslate():
     return render_template('translate.html')
 
 
+@app.route('/login')
+def login():
+    return render_template('login2.html')
+
+
 @app.route('/GetTranslateLanguages', methods=['POST'])
 def GetTranslateLanguages():
     return {'data': googletrans.LANGUAGES}
