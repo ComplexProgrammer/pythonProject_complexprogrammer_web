@@ -5,70 +5,286 @@
     <title>Login</title>
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/login/css.css">
-
-
     <script src="/static/login/js.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+<!--    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">-->
+<!--    <script src="https://apis.google.com/js/api:client.js"></script>-->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-analytics.js";
+        import { getAuth, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber   } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js";
+
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+
+        // Your web app's Firebase configuration
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+        const firebaseConfig = {
+        apiKey: "AIzaSyDpWaFi5QLTNc-yY0ieMKJtGOmbm2ofBm4",
+        authDomain: "c0mplex.firebaseapp.com",
+        projectId: "c0mplex",
+        storageBucket: "c0mplex.appspot.com",
+        messagingSenderId: "755681568857",
+        appId: "1:755681568857:web:102b1b733df55baefe2948",
+        measurementId: "G-95WQGY7X9E"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        checkAuthState()
+        window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+          'size': 'invisible',
+          'callback': (response) => {
+            console.log(response)
+            submitPhoneNumberAuth();
+            // reCAPTCHA solved, allow signInWithPhoneNumber.
+            // ...
+          },
+          'expired-callback': () => {
+            // Response expired. Ask user to solve reCAPTCHA again.
+            // ...
+          }
+        }, auth);
+        function submitPhoneNumberAuth() {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            const appVerifier = window.recaptchaVerifier;
+            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+            .then((confirmationResult) => {
+              // SMS sent. Prompt user to type the code from the message, then sign the
+              // user in with confirmationResult.confirm(code).
+              window.confirmationResult = confirmationResult;
+              // ...
+            }).catch((error) => {
+              // Error; SMS not sent
+              // ...
+            });
+        }
+        function submitPhoneNumberAuthCode() {
+            // We are using the test code we created before
+            var code = document.getElementById("code").value;
+            //var code = '123456';
+           confirmationResult.confirm(code).then((result) => {
+              console.log(result)
+              // User signed in successfully.
+              const user = result.user;
+              // ...
+            }).catch((error) => {
+              // User couldn't sign in (bad verification code?)
+              // ...
+            });
+        }
+        document.getElementById('signIn').addEventListener('click', signInUser)
+        document.getElementById('signUp').addEventListener('click', signUpUser)
+        document.getElementById('logout').addEventListener('click', out)
+        document.getElementById('phoneAuthBtn').addEventListener('click', PhoneLogin)
+        document.getElementById('sign-in-button').addEventListener('click', submitPhoneNumberAuth)
+        document.getElementById('confirm-code').addEventListener('click', submitPhoneNumberAuthCode)
+        document.getElementById('googleAuthBtn').addEventListener('click', GoogleLogin)
+        document.getElementById('gitHubAuthBtn').addEventListener('click', GitHubLogin)
+
+
+        const google_provider = new GoogleAuthProvider();
+        const github_provider = new GithubAuthProvider();
+
+        document.getElementById('phone_block').style='position:absolute'
+        document.getElementById('phone_block').style.visibility='hidden'
+        function signInUser(){
+            document.getElementById('phone_block').style='position:absolute'
+            document.getElementById('phone_block').style.visibility='hidden'
+            document.getElementById('login_block').style='position:relative'
+            document.getElementById('login_block').style.visibility='visible'
+            let email = document.getElementById('_email').value
+            let password = document.getElementById('_password').value
+            if(email != '' && password != ''){
+                signInWithEmailAndPassword(auth, email, password)
+                  .then((userCredential) => {
+                    const user = userCredential.user;
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                  });
+            }
+        }
+        function signUpUser(){
+            let email = document.getElementById('email').value
+            let user = document.getElementById('user').value
+            let password = document.getElementById('password').value
+            let confirm_password = document.getElementById('confirm_password').value
+            let warning = document.getElementById('warning')
+            if(password == confirm_password){
+                warning.style.visibility='hidden'
+                createUserWithEmailAndPassword(auth, email, password)
+                  .then((userCredential) => {
+                    const user = userCredential.user;
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                  });
+            }
+            else{
+                warning.style.visibility='visible'
+                warning.innerText='parollar bir-biriga mos emas'
+            }
+        }
+        function PhoneLogin(){
+            document.getElementById('login_block').style='position:absolute'
+            document.getElementById('login_block').style.visibility='hidden'
+            document.getElementById('phone_block').style='position:relative'
+            document.getElementById('phone_block').style.visibility='visible'
+            let phoneNumber = document.getElementById('phoneNumber').value
+            if(phoneNumber != ''){
+
+            }
+
+        }
+        function GoogleLogin(){
+            signInWithPopup(auth, google_provider)
+              .then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+              }).catch((error) => {
+                console.log(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GoogleAuthProvider.credentialFromError(error);
+              });
+        }
+        function GitHubLogin(){
+            signInWithPopup(auth, github_provider)
+              .then((result) => {
+                console.log(result)
+                const credential = GithubAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+              }).catch((error) => {
+                console.log(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GithubAuthProvider.credentialFromError(error);
+              });
+        }
+        function checkAuthState(){
+            onAuthStateChanged(auth, (user) => {
+                console.log(user)
+                if (user) {
+                    document.getElementById('cont_login').style.visibility='hidden'
+                    document.getElementById('cont_logout').style.visibility='visible'
+                    const uid = user.uid;
+                }
+                else {
+                    document.getElementById('cont_login').style.visibility='visible'
+                    document.getElementById('cont_logout').style.visibility='hidden'
+                }
+            });
+        }
+        function out(){
+            signOut(auth).then(() => {
+                document.getElementById('cont_login').style.visibility='visible'
+                document.getElementById('cont_logout').style.visibility='hidden'
+
+            }).catch((error) => {
+
+            });
+        }
+    </script>
 </head>
 <body>
-  <div class="cotn_principal">
-  <div class="cont_centrar">
+    <div class="cotn_principal">
+        <div class="cont_centrar">
+            <div id="cont_login" class="cont_login">
+                <div class="cont_info_log_sign_up">
+                <div class="col_md_login">
+                    <div class="cont_ba_opcitiy">
+                        <h2>LOGIN</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                    </div>
+                </div>
+                <div class="col_md_sign_up">
+                    <div class="cont_ba_opcitiy">
+                        <h2>SIGN UP</h2>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+                    </div>
+                </div>
+            </div>
+                <div class="cont_back_info">
+                <div class="cont_img_back_grey">
+                    <img src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d"
+                        alt="" />
+                </div>
 
-    <div class="cont_login">
-  <div class="cont_info_log_sign_up">
-        <div class="col_md_login">
-  <div class="cont_ba_opcitiy">
+            </div>
+                <div class="cont_forms">
+                <div class="cont_img_back_">
+                    <img src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d"
+                        alt="" />
+                </div>
+                <div class="cont_form_login">
+                    <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                    <h2>LOGIN</h2>
+                    <div id="login_block">
+                        <input type="text" id="_email" placeholder="Email" />
+                        <input type="password" id="_password" placeholder="Password" />
+                    </div>
+                    <div id="phone_block">
 
-          <h2>LOGIN</h2>
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                        <input type="tel" id="phoneNumber" placeholder="Phone number" />
+                        <input type="text" id="code" placeholder="Code" />
+                        <button id="sign-in-button">
+                          SIGN IN WITH PHONE
+                        </button>
+                        <button id="confirm-code">
+                          ENTER CODE
+                        </button>
+                        <div id="recaptcha-container"></div>
+
+                    </div>
+                    <button id="signIn" class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                    <div id="phoneAuthBtn" class="customGPlusSignIn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" style="margin:12px;display: inline-block;vertical-align: middle;" viewBox="0 0 16 16">
+                          <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                        </svg>
+                        <span class="buttonText">Phone</span>
+                    </div>
+                    <div id="googleAuthBtn" class="customGPlusSignIn">
+                        <span class="google_icon"></span>
+                        <span class="buttonText">Google</span>
+                    </div>
+                    <div id="gitHubAuthBtn" class="customGPlusSignIn">
+                        <span class="github_icon"></span>
+                        <span class="buttonText">GitHub</span>
+                    </div>
+
+
+                </div>
+                <div class="cont_form_sign_up">
+                        <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                        <h2>SIGN UP</h2>
+                        <span id="warning" style="color:red"></span>
+                        <input type="text" id="email" placeholder="Email" />
+                        <input type="text" id="user" placeholder="User" />
+                        <input type="password" id="password" placeholder="Password" />
+                        <input type="password" id="confirm_password" placeholder="Confirm Password" />
+                        <button id="signUp" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+                    </div>
+                </div>
+            </div>
+            <div id="cont_logout"  class="cont_login">
+                <button id="logout" class="btn_sign_up">Logout</button>
+            </div>
+        </div>
     </div>
-    </div>
-  <div class="col_md_sign_up">
-  <div class="cont_ba_opcitiy">
-    <h2>SIGN UP</h2>
 
-
-    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-
-    <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
-  </div>
-    </div>
-         </div>
-
-
-      <div class="cont_back_info">
-         <div class="cont_img_back_grey">
-         <img src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d" alt="" />
-         </div>
-
-      </div>
-  <div class="cont_forms" >
-      <div class="cont_img_back_">
-         <img src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d" alt="" />
-         </div>
-   <div class="cont_form_login">
-  <a href="#" onclick="ocultar_login_sign_up()" ><i class="material-icons">&#xE5C4;</i></a>
-     <h2>LOGIN</h2>
-   <input type="text" placeholder="Email" />
-  <input type="password" placeholder="Password" />
-  <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
-    </div>
-
-     <div class="cont_form_sign_up">
-  <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
-       <h2>SIGN UP</h2>
-  <input type="text" placeholder="Email" />
-  <input type="text" placeholder="User" />
-  <input type="password" placeholder="Password" />
-  <input type="password" placeholder="Confirm Password" />
-  <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
-
-    </div>
-
-      </div>
-
-    </div>
-   </div>
-  </div>
 </body>
 </html>

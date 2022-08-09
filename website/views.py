@@ -351,7 +351,7 @@ def C0mplexTranslate():
 
 @app.route('/login')
 def login():
-    return render_template('login2.html')
+    return render_template('login.html')
 
 
 @app.route('/GetTranslateLanguages', methods=['POST'])
