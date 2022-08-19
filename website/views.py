@@ -10,6 +10,7 @@ import numpy as np
 from PIL import Image, ImageChops, ImageFile
 # from cv2 import cv2
 import cv2
+import urllib3
 from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash
 from werkzeug.utils import secure_filename
@@ -391,6 +392,21 @@ def TextToSpeech():
     text_speech.runAndWait()
     return {"data": text}
 
+
+@app.route('/coins')
+def coins():
+    return render_template('coins.html')
+
+
+@app.route("/GetCoins", methods=['GET'])
+def GetCoins():
+    url = "https://api.minerstat.com/v2/coins"
+    http = urllib3.PoolManager()
+    r = http.request('GET', url)
+    htmlSource = r.data
+    # r = urllib3.request.urlopen(url)
+    # data = r.read()
+    return {"data": json.loads(htmlSource)}
 # endregion
 
 
