@@ -1,6 +1,27 @@
 from website import db
 
 
+class Users(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    photo_url = db.Column(db.String(length=1024), nullable=False, unique=True)
+    name = db.Column(db.String(length=1024), nullable=False)
+    email = db.Column(db.String(length=50), nullable=False, unique=True)
+    phone = db.Column(db.String(length=60), nullable=False, unique=True)
+    provider_id = db.Column(db.String(length=1024), nullable=False)
+    uid = db.Column(db.String(length=1024), nullable=False, unique=True)
+    email_verified = db.Column(db.Boolean(), nullable=False)
+
+    created_date = db.Column(db.DateTime(), nullable=False)
+    login_date = db.Column(db.DateTime(), nullable=False)
+    login_count = db.Column(db.Integer(), nullable=True, default=1)
+    logout_date = db.Column(db.DateTime(), nullable=False)
+    logout_count = db.Column(db.Integer(), nullable=True, default=0)
+    active = db.Column(db.Boolean(), nullable=False)
+
+    def toDict(self):
+        return dict(id=self.id, photo_url=self.photo_url, name=self.name, email=self.email, phone=self.phone, provider_id=self.provider_id, uid=self.uid, email_verified=self.email_verified, login_date=self.login_date, logout_date=self.logout_date, active=self.active)
+
+
 class savollar(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     savol = db.Column(db.String(length=1024), nullable=False, unique=True)

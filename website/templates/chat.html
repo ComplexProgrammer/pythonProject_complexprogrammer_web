@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/chat/style.css"/>
+
+</head>
+<body>
+
+<button class="open-button" onclick="openForm()"><img style="width:30px" src="/static/img/chat.png"/></button>
+
+<div class="chat-popup" id="myForm">
+    <iframe src="http://127.0.0.1:5000/chat2" height="500" width="1000" title="description"></iframe>
+<!--  <form action="/action_page.php" class="form-container">-->
+<!--    <h1>Chat</h1>-->
+
+<!--    <label for="msg"><b>Message</b></label>-->
+<!--    <textarea placeholder="Type message.." name="msg" required></textarea>-->
+
+<!--    <button type="submit" class="btn">Send</button>-->
+<!--    <button type="button" class="btn cancel" onclick="closeForm()">Close</button>-->
+<!--  </form>-->
+</div>
+
+<script>
+function openForm() {
+    var display = document.getElementById("myForm").style.display;
+    if(display=="block"){
+        document.getElementById("myForm").style.display = "none";
+    }
+    else{
+        document.getElementById("myForm").style.display = "block";
+    }
+
+}
+
+function closeForm() {
+  document.getElementById("myForm").style.display = "none";
+}
+</script>
+</body>
+</html>

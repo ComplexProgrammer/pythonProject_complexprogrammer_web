@@ -1,4 +1,5 @@
 import base64
+import datetime
 import io
 import os
 import sqlite3
@@ -18,8 +19,10 @@ import googletrans
 from googletrans import Translator
 import pyttsx3
 
-from website import app, ALLOWED_EXTENSIONS
+from website import app, ALLOWED_EXTENSIONS, db
 import json
+
+from website.models import Users
 
 
 @app.route('/')
@@ -27,7 +30,10 @@ import json
 def home_page():
     return render_template('home.html')
 
+
 # region online services
+
+
 @app.route("/exchangerates")
 def exchangerates():
     return render_template('exchangerates.html')
@@ -355,6 +361,74 @@ def login():
     return render_template('login.html')
 
 
+@app.route("/getUser", methods=['POST'])
+def getUser():
+    user_id = request.args.get('id')
+    name = request.args.get('name')
+    email = request.args.get('email')
+    phone = request.args.get('phone')
+    provider_id = request.args.get('provider_id')
+    uid = request.args.get('uid')
+    email_verified = request.args.get('email_verified')
+    not_me = request.args.get('not_me')
+    user = Users.query.all()
+    if not_me:
+        user = Users.query.filter(Users.uid != uid).all()
+    else:
+        if name:
+            user = Users.query.filter(Users.name == name).all()
+        if email:
+            user = Users.query.filter(Users.email == email).all()
+        if phone:
+            user = Users.query.filter(Users.phone == phone).all()
+        if uid:
+            user = Users.query.filter(Users.uid == uid).all()
+
+    return jsonify([s.toDict() for s in user])
+
+
+@app.route('/checkUser', methods=['POST'])
+def CheckUser():
+    json = request.json
+    print(json)
+    photo_url = json['photo_url']
+    name = json['name']
+    email = json['email']
+    phone = json['phone']
+    provider_id = json['provider_id']
+    uid = json['uid']
+    email_verified = json['email_verified']
+    user = Users.query.filter_by(uid=uid).first()
+    # if email_verified:
+    #     user = Users.query.filter_by(email=email).first()
+    # else:
+    #     user = Users.query.filter_by(phone=phone).first()
+    if user is None:
+        user = Users(photo_url=photo_url, name=name, email=email, phone=phone, provider_id=provider_id, uid=uid,
+                     email_verified=email_verified, created_date=datetime.datetime.now(),
+                     login_date=datetime.datetime.now(), login_count=1, active=1)
+        db.session.add(user)
+        db.session.commit()
+    else:
+        user.login_date = datetime.datetime.now()
+        user.login_count = user.login_count + 1
+        user.active = 1
+        db.session.commit()
+    return json
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    uid = request.args.get('uid')
+    user = Users.query.filter_by(uid=uid).first()
+    if user is not None:
+        user.logout_date = datetime.datetime.now()
+        user.logout_count = user.logout_count + 1
+        user.active = 0
+        db.session.commit()
+    return uid
+
+
 @app.route('/GetTranslateLanguages', methods=['POST'])
 def GetTranslateLanguages():
     return {'data': googletrans.LANGUAGES}
@@ -407,6 +481,23 @@ def GetCoins():
     # r = urllib3.request.urlopen(url)
     # data = r.read()
     return {"data": json.loads(htmlSource)}
+
+
+@app.route('/chat')
+def chat():
+    return render_template('chat.html')
+
+
+@app.route('/chat2')
+def chat2():
+    return render_template('chat2.html')
+
+
+@app.route('/chat3')
+def chat3():
+    return render_template('chat3.html')
+
+
 # endregion
 
 

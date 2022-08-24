@@ -44,10 +44,18 @@
   const app = initializeApp(firebaseConfig);
   const analytics = getAnalytics(app);
 </script>
+    <script src="http://complexprogrammer.uz/static/jquery-3.4.1.min.js"></script>
+    <script src="http://complexprogrammer.uz/static/angular.min.js"></script>
+    <script src="/static/login/auth.js"></script>
+    <script src="/static/base.js"></script>
+    <script>
+
+    </script>
     <meta name="google-site-verification" content="jl3apNi8FhHmCceWlm-SO80kOwqIq_Pv-CwaabrEEvU" />
 </head>
 
-<body>
+<body ng-app="App" ng-controller="Base">
+{% raw %}
   <!-- Header -->
   <section id="header">
     <div class="header container">
@@ -61,13 +69,14 @@
           <div class="hamburger">
             <div class="bar"></div>
           </div>
-          <ul>
-            <li><a href="#hero" data-after="Home">Home</a></li>
-            <li><a href="#services" data-after="Service">Services</a></li>
-            <li><a href="#projects" data-after="Projects">Projects</a></li>
-            <li><a href="#about" data-after="About">About</a></li>
-            <li><a href="#contact" data-after="Contact">Contact</a></li>
-          </ul>
+            <ul>
+                <li><a href="#hero" data-after="Home">Home</a></li>
+                <li><a href="#services" data-after="Service">Services</a></li>
+                <li><a href="#projects" data-after="Projects">Projects</a></li>
+                <li><a href="#about" data-after="About">About</a></li>
+                <li><a href="#contact" data-after="Contact">Contact</a></li>
+                <li><a href="/login"><img ng-show="photo_url" src="{{photo_url}}" style="width:30px;padding-top:-100px"/> {{login}}</a></li>
+            </ul>
         </div>
       </div>
     </div>
@@ -631,7 +640,7 @@
   </section>
   <!-- End Footer -->
   <script src="http://complexprogrammer.uz/static/app.js"></script>
-
+{% endraw %}
 </body>
 
 </html>
