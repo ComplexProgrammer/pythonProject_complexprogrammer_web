@@ -110,7 +110,10 @@ input:focus {
 .friend-drawer--onhover:hover .time {
   color: #fff !important;
 }
-
+.selected_user{
+	background: #74b9ff;
+	color:white;
+}
 hr {
   margin: 5px auto;
   width: 60%;
@@ -201,6 +204,9 @@ hr {
 	  border: 3px solid #f1f1f1;
 	  z-index: 9;
 	}
+	.pointer{
+		cursor:pointer
+	}
 </style>
 <div ng-app="App" ng-controller="Base">
 	{% raw %}
@@ -210,6 +216,7 @@ hr {
 			  <div class="col-md-4 border-right">
 				<div class="settings-tray">
 				  	<img class="profile-image" ng-show="photo_url" src="{{photo_url}}" alt="Profile img">
+					<label>&#128994;</label>
 					<label ng-show="name">{{name}}</label>
 					<label ng-show="name==null&&email">{{email}}</label>
 					<label ng-show="name==null&&email==null&&phone">{{phone}}</label>
@@ -227,7 +234,7 @@ hr {
 				</div>
 				<div style="overflow: auto;height: 500px;">
 					<div ng-repeat="item in Users">
-						<div class="friend-drawer friend-drawer--onhover" ng-click="loadMessageByUserId(item.id)">
+						<div class="friend-drawer friend-drawer--onhover" id="user{{$index}}" ng-click="loadMessageByUserId(item.id, $index, Users.length)">
 						  <img class="profile-image" ng-show="item.photo_url" src="{{item.photo_url}}" alt="">
 						  <div class="text">
 							<h6 ng-show="item.name">{{item.name}}</h6>
@@ -264,105 +271,30 @@ hr {
 				</div>
 				<div class="chat-panel">
 					<div style="overflow: auto;height: 473px;">
-						<div class="row no-gutters">
-		<div class="col-md-3">
-		  <div class="chat-bubble chat-bubble--left">
-			Hello dude!
-		  </div>
-		</div>
-		</div>
-						<div class="row no-gutters">
-						<div class="col-md-3 offset-md-9">
-						  <div class="chat-bubble chat-bubble--right">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3 offset-md-9">
-						  <div class="chat-bubble chat-bubble--right">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3">
-						  <div class="chat-bubble chat-bubble--left">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3">
-						  <div class="chat-bubble chat-bubble--left">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3">
-						  <div class="chat-bubble chat-bubble--left">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3 offset-md-9">
-						  <div class="chat-bubble chat-bubble--right">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3">
-						  <div class="chat-bubble chat-bubble--left">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3 offset-md-9">
-						  <div class="chat-bubble chat-bubble--right">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3">
-						  <div class="chat-bubble chat-bubble--left">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3 offset-md-9">
-						  <div class="chat-bubble chat-bubble--right">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3">
-						  <div class="chat-bubble chat-bubble--left">
-							Hello dude!
-						  </div>
-						</div>
-						</div>
-						<div class="row no-gutters">
-						<div class="col-md-3 offset-md-9">
-						  <div class="chat-bubble chat-bubble--right">
-							Hello dude! Hello dude! Hello dude! Hello dude! Hello dude! Hello dude! Hello dude! Hello dude! Hello dude! Hello dude!
-						  </div>
-						</div>
+						<div ng-repeat="item in Messages">
+							<div ng-show="user_id!=item[2]" class="row no-gutters">
+								<div class="col-md-3">
+								  <div class="chat-bubble chat-bubble--left">
+									{{item[1]}}
+								  </div>
+								</div>
+							</div>
+							<div ng-show="user_id==item[2]" class="row no-gutters">
+								<div class="col-md-3 offset-md-9">
+								  <div class="chat-bubble chat-bubble--right">
+									{{item[1]}}
+								  </div>
+								</div>
+							</div>
 						</div>
 					</div>
 					<div class="row">
 					<div class="col-12">
 					  <div class="chat-box-tray">
 						<i class="material-icons">sentiment_very_satisfied</i>
-						<input type="text" placeholder="Type your message here...">
+						<input type="text" ng-module="text" placeholder="Type your message here...">
 						<i class="material-icons">mic</i>
-						<i class="material-icons">send</i>
+						<i class="material-icons friend-drawer--onhover" ng-click="sendMessage()">send</i>
 					  </div>
 					</div>
 				  </div>

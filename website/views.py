@@ -22,7 +22,7 @@ import pyttsx3
 from website import app, ALLOWED_EXTENSIONS, db
 import json
 
-from website.models import Users
+from website.models import Users, Chat, ChatMessage, ChatUserRelation
 
 
 @app.route('/')
@@ -57,129 +57,28 @@ def changetext():
 @app.route("/ChangeTextData", methods=['POST'])
 def GetChangeTextData():
     text = request.args.get('text')
-    characrers = []
-    characrers.append(["A", "А"])
-    characrers.append(["B", "Б"])
-    characrers.append(["D", "Д"])
-    characrers.append(["E", "Е"])
-    characrers.append(["F", "Ф"])
-    characrers.append(["G", "Г"])
-    characrers.append(["H", "Ҳ"])
-    characrers.append(["I", "И"])
-    characrers.append(["J", "Ж"])
-    characrers.append(["K", "К"])
-    characrers.append(["L", "Л"])
-    characrers.append(["M", "М"])
-    characrers.append(["N", "Н"])
-    characrers.append(["O", "О"])
-    characrers.append(["P", "П"])
-    characrers.append(["Q", "Қ"])
-    characrers.append(["R", "Р"])
-    characrers.append(["S", "С"])
-    characrers.append(["T", "Т"])
-    characrers.append(["U", "У"])
-    characrers.append(["V", "В"])
-    characrers.append(["X", "Х"])
-    characrers.append(["Y", "Й"])
-    characrers.append(["Z", "З"])
-    characrers.append(["a", "а"])
-    characrers.append(["b", "б"])
-    characrers.append(["d", "д"])
-    characrers.append(["e", "е"])
-    characrers.append(["f", "ф"])
-    characrers.append(["g", "г"])
-    characrers.append(["h", "ҳ"])
-    characrers.append(["i", "и"])
-    characrers.append(["j", "ж"])
-    characrers.append(["k", "к"])
-    characrers.append(["l", "л"])
-    characrers.append(["m", "м"])
-    characrers.append(["n", "н"])
-    characrers.append(["o", "о"])
-    characrers.append(["p", "п"])
-    characrers.append(["q", "қ"])
-    characrers.append(["r", "р"])
-    characrers.append(["s", "с"])
-    characrers.append(["t", "т"])
-    characrers.append(["u", "у"])
-    characrers.append(["v", "в"])
-    characrers.append(["x", "х"])
-    characrers.append(["y", "й"])
-    characrers.append(["z", "з"])
-    characrers.append(["А", "A"])
-    characrers.append(["Б", "B"])
-    characrers.append(["С", "C"])
-    characrers.append(["Ч", "Ch"])
-    characrers.append(["Д", "D"])
-    characrers.append(["Е", "E"])
-    characrers.append(["Ф", "F"])
-    characrers.append(["Г", "G"])
-    characrers.append(["Ҳ", "H"])
-    characrers.append(["И", "I"])
-    characrers.append(["Ж", "J"])
-    characrers.append(["К", "K"])
-    characrers.append(["Л", "L"])
-    characrers.append(["М", "M"])
-    characrers.append(["Н", "N"])
-    characrers.append(["О", "O"])
-    characrers.append(["П", "P"])
-    characrers.append(["Қ", "Q"])
-    characrers.append(["Р", "R"])
-    characrers.append(["С", "S"])
-    characrers.append(["Ш", "Sh"])
-    characrers.append(["Т", "T"])
-    characrers.append(["У", "U"])
-    characrers.append(["В", "V"])
-    characrers.append(["Х", "X"])
-    characrers.append(["Й", "Y"])
-    characrers.append(["Я", "Ya"])
-    characrers.append(["Ю", "Yu"])
-    characrers.append(["Ё", "Yo"])
-    characrers.append(["З", "Z"])
-    characrers.append(["Ғ", "Gʼ"])
-    characrers.append(["а", "a"])
-    characrers.append(["б", "b"])
-    characrers.append(["с", "c"])
-    characrers.append(["ч", "ch"])
-    characrers.append(["д", "d"])
-    characrers.append(["е", "e"])
-    characrers.append(["ф", "f"])
-    characrers.append(["г", "g"])
-    characrers.append(["ҳ", "h"])
-    characrers.append(["и", "i"])
-    characrers.append(["ж", "j"])
-    characrers.append(["к", "k"])
-    characrers.append(["л", "l"])
-    characrers.append(["м", "m"])
-    characrers.append(["н", "n"])
-    characrers.append(["о", "o"])
-    characrers.append(["п", "p"])
-    characrers.append(["қ", "q"])
-    characrers.append(["р", "r"])
-    characrers.append(["с", "s"])
-    characrers.append(["ш", "sh"])
-    characrers.append(["т", "t"])
-    characrers.append(["у", "u"])
-    characrers.append(["в", "v"])
-    characrers.append(["х", "x"])
-    characrers.append(["й", "y"])
-    characrers.append(["я", "ya"])
-    characrers.append(["ю", "yu"])
-    characrers.append(["ё", "yo"])
-    characrers.append(["з", "z"])
-    characrers.append(["ғ", "gʼ"])
-
-    characrers.append(["ъ", "`"])
-
-    characrers.append(["`", "ъ"])
-    characrers.append(["'", "ъ"])
+    characters = [["A", "А"], ["B", "Б"], ["D", "Д"], ["E", "Е"], ["F", "Ф"], ["G", "Г"], ["H", "Ҳ"], ["I", "И"],
+                  ["J", "Ж"], ["K", "К"], ["L", "Л"], ["M", "М"], ["N", "Н"], ["O", "О"], ["P", "П"], ["Q", "Қ"],
+                  ["R", "Р"], ["S", "С"], ["T", "Т"], ["U", "У"], ["V", "В"], ["X", "Х"], ["Y", "Й"], ["Z", "З"],
+                  ["a", "а"], ["b", "б"], ["d", "д"], ["e", "е"], ["f", "ф"], ["g", "г"], ["h", "ҳ"], ["i", "и"],
+                  ["j", "ж"], ["k", "к"], ["l", "л"], ["m", "м"], ["n", "н"], ["o", "о"], ["p", "п"], ["q", "қ"],
+                  ["r", "р"], ["s", "с"], ["t", "т"], ["u", "у"], ["v", "в"], ["x", "х"], ["y", "й"], ["z", "з"],
+                  ["А", "A"], ["Б", "B"], ["С", "C"], ["Ч", "Ch"], ["Д", "D"], ["Е", "E"], ["Ф", "F"], ["Г", "G"],
+                  ["Ҳ", "H"], ["И", "I"], ["Ж", "J"], ["К", "K"], ["Л", "L"], ["М", "M"], ["Н", "N"], ["О", "O"],
+                  ["П", "P"], ["Қ", "Q"], ["Р", "R"], ["С", "S"], ["Ш", "Sh"], ["Т", "T"], ["У", "U"], ["В", "V"],
+                  ["Х", "X"], ["Й", "Y"], ["Я", "Ya"], ["Ю", "Yu"], ["Ё", "Yo"], ["З", "Z"], ["Ғ", "Gʼ"], ["а", "a"],
+                  ["б", "b"], ["с", "c"], ["ч", "ch"], ["д", "d"], ["е", "e"], ["ф", "f"], ["г", "g"], ["ҳ", "h"],
+                  ["и", "i"], ["ж", "j"], ["к", "k"], ["л", "l"], ["м", "m"], ["н", "n"], ["о", "o"], ["п", "p"],
+                  ["қ", "q"], ["р", "r"], ["с", "s"], ["ш", "sh"], ["т", "t"], ["у", "u"], ["в", "v"], ["х", "x"],
+                  ["й", "y"], ["я", "ya"], ["ю", "yu"], ["ё", "yo"], ["з", "z"], ["ғ", "gʼ"], ["ъ", "`"], ["`", "ъ"],
+                  ["'", "ъ"]]
 
     lotin = False
     arr = list(text)
     for ar in arr:
         if 0 < ord(ar) < 1024:
             lotin = True
-        for obj in characrers:
+        for obj in characters:
             if obj[0] == ar:
                 text = text.replace(ar, obj[1])
 
@@ -398,11 +297,8 @@ def CheckUser():
     provider_id = json['provider_id']
     uid = json['uid']
     email_verified = json['email_verified']
-    user = Users.query.filter_by(uid=uid).first()
-    # if email_verified:
-    #     user = Users.query.filter_by(email=email).first()
-    # else:
-    #     user = Users.query.filter_by(phone=phone).first()
+    # user = Users.query.filter_by(uid=uid).first()
+    user = Users.query.filter_by(uid=uid).all()
     if user is None:
         user = Users(photo_url=photo_url, name=name, email=email, phone=phone, provider_id=provider_id, uid=uid,
                      email_verified=email_verified, created_date=datetime.datetime.now(),
@@ -410,11 +306,14 @@ def CheckUser():
         db.session.add(user)
         db.session.commit()
     else:
-        user.login_date = datetime.datetime.now()
-        user.login_count = user.login_count + 1
-        user.active = 1
+        user[0].login_date = datetime.datetime.now()
+        user[0].login_count = user[0].login_count + 1
+        user[0].active = 1
         db.session.commit()
-    return json
+    print(user)
+    print(type(user))
+    print(user[0].email)
+    return jsonify([s.toDict() for s in user])
 
 
 @app.route('/logout', methods=['POST'])
@@ -427,6 +326,69 @@ def logout():
         user.active = 0
         db.session.commit()
     return uid
+
+
+@app.route('/getChatMessageByUserId', methods=['POST'])
+def getChatMessageByUserId():
+    user_id = request.args.get('user_id')
+    result = ChatMessage.query.join(Chat, Chat.id == ChatMessage.chat_id).join(ChatUserRelation, ChatUserRelation.chat_id == Chat.id).filter(ChatUserRelation.user_id == user_id).all()
+    query = db.session.query(
+        Chat.type,
+        ChatMessage.text,
+        ChatMessage.sender_id,
+        ChatUserRelation.count_new_message,
+        ChatUserRelation.user_id,
+        ChatUserRelation.chat_id,
+    )
+    join_query = query.join(ChatMessage).join(ChatUserRelation).filter(ChatUserRelation.user_id == user_id)
+    print(join_query.all())
+    results = join_query.all()
+    # results = db.session.query(ChatMessage.text, Chat.id, Chat.type).join(Chat).all()
+    results = [tuple(row) for row in results]
+
+    json_string = json.dumps(results)
+    return {"data": json.loads(json_string)}
+    # return jsonify([s.toDict() for s in result])
+
+
+@app.route('/sendMessage', methods=['POST'])
+def sendMessage():
+    json_data = request.json
+    print(json)
+    chat_id = json_data['chat_id']
+    sender_id = json_data['sender_id']
+    receiver_id = json_data['receiver_id']
+    text = json_data['text']
+    chat = Chat.query.filter_by(id=chat_id).first()
+    if chat is None:
+        chat = Chat(type=0, created_by=sender_id, created_date=datetime.datetime.now())
+        db.session.add(chat)
+        chat_message = ChatMessage(chat_id=chat.id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
+                                   created_date=datetime.datetime.now())
+        db.session.add(chat_message)
+        chat_user_relation = ChatUserRelation(user_id=receiver_id, chat_id=chat.id, count_new_message=1)
+        db.session.add(chat_user_relation)
+        db.session.commit()
+    else:
+        # query = db.session.query(
+        #     Chat.type,
+        #     ChatMessage.text,
+        #     ChatMessage.sender_id,
+        #     ChatUserRelation.count_new_message,
+        #     ChatUserRelation.message_view,
+        #     ChatUserRelation.user_id,
+        #     ChatUserRelation.chat_id,
+        # )
+        # chat_message = query.join(ChatMessage).join(ChatUserRelation).filter(Chat.id == chat_id).all()
+        chat.last_modified_by = sender_id
+        chat.last_modified_date = datetime.datetime.now()
+        chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
+                                   created_date=datetime.datetime.now())
+        db.session.add(chat_message)
+        chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id).first()
+        chat_user_relation.count_new_message = chat_user_relation.count_new_message+1
+        db.session.commit()
+    return {"data": ""}
 
 
 @app.route('/GetTranslateLanguages', methods=['POST'])

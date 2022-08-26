@@ -1,7 +1,10 @@
+from sqlalchemy.orm import relationship
+
 from website import db
 
 
 class Users(db.Model):
+    __tablename__ = "user"
     id = db.Column(db.Integer(), primary_key=True)
     photo_url = db.Column(db.String(length=1024), nullable=False, unique=True)
     name = db.Column(db.String(length=1024), nullable=False)
@@ -17,9 +20,89 @@ class Users(db.Model):
     logout_date = db.Column(db.DateTime(), nullable=False)
     logout_count = db.Column(db.Integer(), nullable=True, default=0)
     active = db.Column(db.Boolean(), nullable=False)
+    # chat_message = relationship("ChatMessage")
 
     def toDict(self):
-        return dict(id=self.id, photo_url=self.photo_url, name=self.name, email=self.email, phone=self.phone, provider_id=self.provider_id, uid=self.uid, email_verified=self.email_verified, login_date=self.login_date, logout_date=self.logout_date, active=self.active)
+        return dict(
+            id=self.id,
+            photo_url=self.photo_url,
+            name=self.name,
+            email=self.email,
+            phone=self.phone,
+            provider_id=self.provider_id,
+            uid=self.uid,
+            email_verified=self.email_verified,
+            active=self.active,
+        )
+
+
+class Chat(db.Model):
+    __tablename__ = "chat"
+    id = db.Column(db.Integer(), primary_key=True)
+    type = db.Column(db.Boolean())
+    created_by = db.Column(db.Integer())
+    created_date = db.Column(db.DateTime())
+    last_modified_by = db.Column(db.Integer())
+    last_modified_date = db.Column(db.DateTime())
+    is_deleted = db.Column(db.Boolean(), default=False)
+
+
+class ChatMessage(db.Model):
+    __tablename__ = "chat_message"
+    id = db.Column(db.Integer(), primary_key=True)
+    chat_id = db.Column(db.Integer(), db.ForeignKey('chat.id'))
+    type = db.Column(db.Boolean())
+    text = db.Column(db.String(length=1024))
+    file_name = db.Column(db.String(length=1024))
+    sender_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    created_by = db.Column(db.Integer())
+    created_date = db.Column(db.DateTime())
+    last_modified_by = db.Column(db.Integer())
+    last_modified_date = db.Column(db.DateTime())
+    is_seen = db.Column(db.Boolean(), default=False)
+    is_deleted = db.Column(db.Boolean(), default=False)
+    text_type = db.Column(db.String(20))
+    parent_id = db.Column(db.Integer(), db.ForeignKey("chat_message.id"))
+
+    def toDict(self):
+        return dict(
+            id=self.id,
+            type=self.type,
+            text=self.text,
+            file_name=self.file_name,
+            sender_id=self.sender_id,
+            chat_id=self.chat_id,
+            created_by=self.created_by,
+            created_date=self.created_date,
+            last_modified_by=self.last_modified_by,
+            last_modified_date=self.last_modified_date,
+            is_seen=self.is_seen,
+            is_deleted=self.is_deleted,
+            text_type=self.text_type,
+            parent_id=self.parent_id,
+        )
+
+
+class ChatUserRelation(db.Model):
+    __tablename__ = "chat_user_relation"
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    chat_id = db.Column(db.Integer(), db.ForeignKey('chat.id'))
+    count_new_message = db.Column(db.Integer())
+    role = db.Column(db.Boolean())
+    title = db.Column(db.String(length=1024))
+    is_deleted = db.Column(db.Boolean(), default=False)
+
+    def toDict(self):
+        return dict(
+            id=self.id,
+            count_new_message=self.count_new_message,
+            role=self.role,
+            title=self.title,
+            user_id=self.user_id,
+            chat_id=self.chat_id,
+            is_deleted=self.is_deleted,
+        )
 
 
 class savollar(db.Model):
