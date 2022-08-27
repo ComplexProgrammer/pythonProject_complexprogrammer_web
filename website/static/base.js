@@ -50,6 +50,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
 
     }
 
+    function loadMessageByUserId()
     $scope.loadMessageByUserId = function(id, index, count){
         $scope.id=id
         $scope.index=index
