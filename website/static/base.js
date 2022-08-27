@@ -49,7 +49,11 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
         document.getElementById('messageTextArea').style.display = "none"
 
     }
+
     $scope.loadMessageByUserId = function(id, index, count){
+        $scope.id=id
+        $scope.index=index
+        $scope.count=count
         for(i=0;i<count;i++){
            document.getElementById("user"+i).className = "friend-drawer friend-drawer--onhover";
         }
@@ -61,26 +65,31 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
             console.log(d.data);
             $scope.Messages = d.data.data;
         }, function (error) {
-            console.log("error in GetImageCompareResult -> ", error);
+            console.log("error in getChatMessageByUserId -> ", error);
         });
         $scope.selectedUser=$scope.Users.filter(user => user.id == id)[0]
         document.getElementById('messageTextArea').style.display = "block"
         $(".chat-bubble").hide("slow").show("slow");
     }
     $scope.sendMessage=function(){
-        $scope.model={
-            chat_id:
+        if($scope.Messages.length>0){
+            $scope.model={
+                chat_id:$scope.Messages[0][5],
+                user_id:$scope.Messages[0][4],
+                text:$scope.text
+            }
         }
+        console.log($scope.model)
         $http({
             method: 'POST',
-            url: "/sendMessage?user_id="+id,
+            url: "/sendMessage",
             data: JSON.stringify($scope.model),
             dataType: "json"
         }).then(function (d) {
             console.log(d.data);
-            $scope.Messages = d.data.data;
+            loadMessageByUserId($scope.id, $scope.index, $scope.count)
         }, function (error) {
-            console.log("error in GetImageCompareResult -> ", error);
+            console.log("error in sendMessage -> ", error);
         });
     }
 

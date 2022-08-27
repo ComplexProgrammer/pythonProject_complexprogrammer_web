@@ -340,7 +340,7 @@ def getChatMessageByUserId():
         ChatUserRelation.user_id,
         ChatUserRelation.chat_id,
     )
-    join_query = query.join(ChatMessage).join(ChatUserRelation).filter(ChatUserRelation.user_id == user_id)
+    join_query = query.join(ChatMessage).join(ChatUserRelation).filter(ChatUserRelation.user_id == user_id).order_by(ChatMessage.id)
     print(join_query.all())
     results = join_query.all()
     # results = db.session.query(ChatMessage.text, Chat.id, Chat.type).join(Chat).all()
@@ -354,19 +354,19 @@ def getChatMessageByUserId():
 @app.route('/sendMessage', methods=['POST'])
 def sendMessage():
     json_data = request.json
-    print(json)
+    print(json_data)
     chat_id = json_data['chat_id']
-    sender_id = json_data['sender_id']
-    receiver_id = json_data['receiver_id']
+    user_id = json_data['user_id']
     text = json_data['text']
+    print(chat_id)
     chat = Chat.query.filter_by(id=chat_id).first()
     if chat is None:
-        chat = Chat(type=0, created_by=sender_id, created_date=datetime.datetime.now())
+        chat = Chat(type=0, created_by=user_id, created_date=datetime.datetime.now())
         db.session.add(chat)
-        chat_message = ChatMessage(chat_id=chat.id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
+        chat_message = ChatMessage(chat_id=chat.id, type=1, text=text, sender_id=user_id, created_by=user_id,
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
-        chat_user_relation = ChatUserRelation(user_id=receiver_id, chat_id=chat.id, count_new_message=1)
+        chat_user_relation = ChatUserRelation(user_id=user_id, chat_id=chat.id, count_new_message=1)
         db.session.add(chat_user_relation)
         db.session.commit()
     else:
@@ -380,9 +380,9 @@ def sendMessage():
         #     ChatUserRelation.chat_id,
         # )
         # chat_message = query.join(ChatMessage).join(ChatUserRelation).filter(Chat.id == chat_id).all()
-        chat.last_modified_by = sender_id
+        chat.last_modified_by = user_id
         chat.last_modified_date = datetime.datetime.now()
-        chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
+        chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=user_id, created_by=user_id,
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
         chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id).first()
