@@ -28,21 +28,31 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
                 if($scope.user.phone)
                     $scope.login=$scope.user.phone;
     }
-    function getUsers(){
+    function getContacts(){
             $http({
                 method: 'POST',
                 url: "/getUser?uid="+$scope.uid+"&not_me=1",
             }).then(function (d) {
-                $scope.ShowData = true;
                 console.log(d.data);
-                $scope.Users = d.data;
+                $scope.Contacts = d.data;
             }, function (error) {
                 console.log("error in GetImageCompareResult -> ", error);
             });
     }
+    function getChatUserRelations(){
+            $http({
+                method: 'POST',
+                url: "/getChatUserRelations?user_id="+$scope.user_id,
+            }).then(function (d) {
+                console.log(d.data);
+                $scope.ChatUserRelations = d.data;
+            }, function (error) {
+                console.log("error in getChatUserRelations -> ", error);
+            });
+    }
     $scope.openForm = function() {
-        if($scope.Users==null){
-            getUsers()
+        if($scope.ChatUserRelations==null){
+            getChatUserRelations()
         }
         document.getElementById("myForm").style.display = "block";
         document.getElementById("openChatBtn").style.display = "none";
@@ -50,27 +60,29 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
 
     }
 
-    function loadMessageByUserId()
-    $scope.loadMessageByUserId = function(id, index, count){
-        $scope.id=id
-        $scope.index=index
-        $scope.count=count
-        for(i=0;i<count;i++){
-           document.getElementById("user"+i).className = "friend-drawer friend-drawer--onhover";
-        }
-        document.getElementById("user"+index).className = "friend-drawer selected_user";
+    function loadMessageByChatId(user_id, chat_id){
         $http({
             method: 'POST',
-            url: "/getChatMessageByUserId?user_id="+id,
+            url: "/getChatMessages?user_id="+user_id+"&chat_id"+chat_id,
         }).then(function (d) {
             console.log(d.data);
             $scope.Messages = d.data.data;
         }, function (error) {
-            console.log("error in getChatMessageByUserId -> ", error);
+            console.log("error in getChatMessages -> ", error);
         });
-        $scope.selectedUser=$scope.Users.filter(user => user.id == id)[0]
+    }
+    $scope.loadMessageByChatId = function(user_id, chat_id, index, count){
+        $scope.user_id=user_id
+        $scope.chat_id=chat_id
+        for(i=0;i<count;i++){
+           document.getElementById("user"+i).className = "friend-drawer friend-drawer--onhover";
+        }
+        document.getElementById("user"+index).className = "friend-drawer selected_user";
+        console.log($scope.ChatUserRelations)
+        $scope.selectedUser=$scope.ChatUserRelations.filter(user => user.user.id == user_id)[0]
         document.getElementById('messageTextArea').style.display = "block"
         $(".chat-bubble").hide("slow").show("slow");
+        loadMessageByChatId(user_id, chat_id)
     }
     $scope.sendMessage=function(){
         if($scope.Messages.length>0){
@@ -88,7 +100,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
             dataType: "json"
         }).then(function (d) {
             console.log(d.data);
-            loadMessageByUserId($scope.id, $scope.index, $scope.count)
+            loadMessageByChatId($scope.user_id, $scope.chat_id)
         }, function (error) {
             console.log("error in sendMessage -> ", error);
         });

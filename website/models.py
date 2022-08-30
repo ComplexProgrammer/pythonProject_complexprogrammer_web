@@ -1,6 +1,6 @@
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship, joinedload
 
-from website import db
+from website import db, ma
 
 
 class Users(db.Model):
@@ -20,7 +20,14 @@ class Users(db.Model):
     logout_date = db.Column(db.DateTime(), nullable=False)
     logout_count = db.Column(db.Integer(), nullable=True, default=0)
     active = db.Column(db.Boolean(), nullable=False)
-    # chat_message = relationship("ChatMessage")
+    chat_user_relation = relationship("ChatUserRelation", back_populates="user")
+
+    @property
+    def serializable(self):
+        return {
+            self.id,
+            self.name
+        }
 
     def toDict(self):
         return dict(
@@ -45,12 +52,15 @@ class Chat(db.Model):
     last_modified_by = db.Column(db.Integer())
     last_modified_date = db.Column(db.DateTime())
     is_deleted = db.Column(db.Boolean(), default=False)
+    chat_user_relation = relationship("ChatUserRelation", back_populates="chat")
+    chat_message = relationship("ChatUserRelation", back_populates="chat")
 
 
 class ChatMessage(db.Model):
     __tablename__ = "chat_message"
     id = db.Column(db.Integer(), primary_key=True)
     chat_id = db.Column(db.Integer(), db.ForeignKey('chat.id'))
+    chat = relationship("Chat", back_populates="chat_message")
     type = db.Column(db.Boolean())
     text = db.Column(db.String(length=1024))
     file_name = db.Column(db.String(length=1024))
@@ -87,11 +97,25 @@ class ChatUserRelation(db.Model):
     __tablename__ = "chat_user_relation"
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('user.id'))
+    user = relationship("Users", back_populates="chat_user_relation")
     chat_id = db.Column(db.Integer(), db.ForeignKey('chat.id'))
+    chat = relationship("Chat", back_populates="chat_user_relation")
     count_new_message = db.Column(db.Integer())
     role = db.Column(db.Boolean())
     title = db.Column(db.String(length=1024))
     is_deleted = db.Column(db.Boolean(), default=False)
+
+    @property
+    def serializable(self):
+        return {
+            self.id,
+            self.count_new_message,
+            self.role,
+            self.title,
+            self.user_id,
+            self.chat_id,
+            self.is_deleted,
+        }
 
     def toDict(self):
         return dict(
@@ -103,6 +127,49 @@ class ChatUserRelation(db.Model):
             chat_id=self.chat_id,
             is_deleted=self.is_deleted,
         )
+
+
+class ChatSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Chat
+        include_fk = True
+
+
+chat_schema = ChatSchema()
+chats_schema = ChatSchema(many=True)
+
+
+class UserSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Users
+        include_fk = True
+
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
+
+
+class ChatUserRelationSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = ChatUserRelation
+        include_fk = True
+    user = ma.Nested(UserSchema)
+    chat = ma.Nested(ChatSchema)
+
+
+chat_user_relation_schema = ChatUserRelationSchema()
+chat_user_relations_schema = ChatUserRelationSchema(many=True)
+
+
+class ChatMessageSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = ChatUserRelation
+        include_fk = True
+    chat = ma.Nested(ChatSchema)
+
+
+chat_message_schema = ChatMessageSchema()
+chat_messages_schema = ChatMessageSchema(many=True)
 
 
 class savollar(db.Model):

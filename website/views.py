@@ -14,6 +14,8 @@ import cv2
 import urllib3
 from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash
+from sqlalchemy import func
+from sqlalchemy.orm import joinedload
 from werkzeug.utils import secure_filename
 import googletrans
 from googletrans import Translator
@@ -22,7 +24,8 @@ import pyttsx3
 from website import app, ALLOWED_EXTENSIONS, db
 import json
 
-from website.models import Users, Chat, ChatMessage, ChatUserRelation
+from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
+    users_schema, chat_user_relations_schema, chat_messages_schemas_schema, chat_messages_schema
 
 
 @app.route('/')
@@ -283,7 +286,7 @@ def getUser():
         if uid:
             user = Users.query.filter(Users.uid == uid).all()
 
-    return jsonify([s.toDict() for s in user])
+    return jsonify(users_schema.dump(user))
 
 
 @app.route('/checkUser', methods=['POST'])
@@ -328,27 +331,20 @@ def logout():
     return uid
 
 
-@app.route('/getChatMessageByUserId', methods=['POST'])
-def getChatMessageByUserId():
+@app.route("/getChatUserRelations", methods=['POST'])
+def getChatUserRelations():
     user_id = request.args.get('user_id')
-    result = ChatMessage.query.join(Chat, Chat.id == ChatMessage.chat_id).join(ChatUserRelation, ChatUserRelation.chat_id == Chat.id).filter(ChatUserRelation.user_id == user_id).all()
-    query = db.session.query(
-        Chat.type,
-        ChatMessage.text,
-        ChatMessage.sender_id,
-        ChatUserRelation.count_new_message,
-        ChatUserRelation.user_id,
-        ChatUserRelation.chat_id,
-    )
-    join_query = query.join(ChatMessage).join(ChatUserRelation).filter(ChatUserRelation.user_id == user_id).order_by(ChatMessage.id)
-    print(join_query.all())
-    results = join_query.all()
-    # results = db.session.query(ChatMessage.text, Chat.id, Chat.type).join(Chat).all()
-    results = [tuple(row) for row in results]
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id != user_id).order_by(ChatUserRelation.id).all()
+    return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 
-    json_string = json.dumps(results)
-    return {"data": json.loads(json_string)}
-    # return jsonify([s.toDict() for s in result])
+
+@app.route('/getChatMessages', methods=['POST'])
+def getChatMessages():
+    chat_id = request.args.get('chat_id')
+    user_id = request.args.get('user_id')
+    chat_message = ChatMessage.query.filter(ChatMessage.chat_id == chat_id and ChatMessage.user_id == user_id).order_by(
+        ChatMessage.id).all()
+    return jsonify(chat_messages_schema.dump(chat_message))
 
 
 @app.route('/sendMessage', methods=['POST'])
