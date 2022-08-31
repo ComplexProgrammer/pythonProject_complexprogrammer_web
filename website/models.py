@@ -53,7 +53,7 @@ class Chat(db.Model):
     last_modified_date = db.Column(db.DateTime())
     is_deleted = db.Column(db.Boolean(), default=False)
     chat_user_relation = relationship("ChatUserRelation", back_populates="chat")
-    chat_message = relationship("ChatUserRelation", back_populates="chat")
+    chat_message = relationship("ChatMessage", back_populates="chat")
 
 
 class ChatMessage(db.Model):
@@ -163,7 +163,7 @@ chat_user_relations_schema = ChatUserRelationSchema(many=True)
 
 class ChatMessageSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
-        model = ChatUserRelation
+        model = ChatMessage
         include_fk = True
     chat = ma.Nested(ChatSchema)
 

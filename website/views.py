@@ -25,7 +25,7 @@ from website import app, ALLOWED_EXTENSIONS, db
 import json
 
 from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
-    users_schema, chat_user_relations_schema, chat_messages_schemas_schema, chat_messages_schema
+    users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema
 
 
 @app.route('/')
@@ -342,7 +342,7 @@ def getChatUserRelations():
 def getChatMessages():
     chat_id = request.args.get('chat_id')
     user_id = request.args.get('user_id')
-    chat_message = ChatMessage.query.filter(ChatMessage.chat_id == chat_id and ChatMessage.user_id == user_id).order_by(
+    chat_message = ChatMessage.query.filter(ChatMessage.chat_id == chat_id and ChatMessage.sender_id == user_id).order_by(
         ChatMessage.id).all()
     return jsonify(chat_messages_schema.dump(chat_message))
 
@@ -366,16 +366,6 @@ def sendMessage():
         db.session.add(chat_user_relation)
         db.session.commit()
     else:
-        # query = db.session.query(
-        #     Chat.type,
-        #     ChatMessage.text,
-        #     ChatMessage.sender_id,
-        #     ChatUserRelation.count_new_message,
-        #     ChatUserRelation.message_view,
-        #     ChatUserRelation.user_id,
-        #     ChatUserRelation.chat_id,
-        # )
-        # chat_message = query.join(ChatMessage).join(ChatUserRelation).filter(Chat.id == chat_id).all()
         chat.last_modified_by = user_id
         chat.last_modified_date = datetime.datetime.now()
         chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=user_id, created_by=user_id,
@@ -384,7 +374,7 @@ def sendMessage():
         chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id).first()
         chat_user_relation.count_new_message = chat_user_relation.count_new_message+1
         db.session.commit()
-    return {"data": ""}
+    return jsonify(chat_message_schema.dump(chat_message))
 
 
 @app.route('/GetTranslateLanguages', methods=['POST'])

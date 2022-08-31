@@ -234,7 +234,7 @@ hr {
 				</div>
 				<div style="overflow: auto;height: 500px;">
 					<div ng-repeat="item in ChatUserRelations">
-						<div class="friend-drawer friend-drawer--onhover" id="user{{$index}}" ng-click="loadMessageByChatId(item.user.id, ChatUserRelations.chat_id, $index, ChatUserRelations.length)">
+						<div class="friend-drawer friend-drawer--onhover" id="user{{$index}}" ng-click="loadMessageByChatId(item.user.id, item.chat_id, $index, ChatUserRelations.length)">
 						  <img class="profile-image" ng-show="item.user.photo_url" src="{{item.user.photo_url}}" alt="">
 						  <div class="text">
 							<h6 ng-show="item.user.name">{{item.user.name}}</h6>
@@ -272,17 +272,17 @@ hr {
 				<div class="chat-panel">
 					<div style="overflow: auto;height: 473px;">
 						<div ng-repeat="item in Messages">
-							<div ng-show="user_id==item[2]" class="row no-gutters">
+							<div ng-show="user_id==item.sender_id" class="row no-gutters">
 								<div class="col-md-3">
 								  <div class="chat-bubble chat-bubble--left">
-									{{item[1]}}
+									{{item.text}}
 								  </div>
 								</div>
 							</div>
-							<div ng-show="user_id!=item[2]" class="row no-gutters">
+							<div ng-show="user_id!=item.sender_id" class="row no-gutters">
 								<div class="col-md-3 offset-md-9">
 								  <div class="chat-bubble chat-bubble--right">
-									{{item[1]}}{{user_id}}
+									{{item.text}}
 								  </div>
 								</div>
 							</div>

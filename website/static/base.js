@@ -63,10 +63,10 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
     function loadMessageByChatId(user_id, chat_id){
         $http({
             method: 'POST',
-            url: "/getChatMessages?user_id="+user_id+"&chat_id"+chat_id,
+            url: "/getChatMessages?user_id="+user_id+"&chat_id="+chat_id,
         }).then(function (d) {
             console.log(d.data);
-            $scope.Messages = d.data.data;
+            $scope.Messages = d.data;
         }, function (error) {
             console.log("error in getChatMessages -> ", error);
         });
@@ -78,8 +78,8 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
            document.getElementById("user"+i).className = "friend-drawer friend-drawer--onhover";
         }
         document.getElementById("user"+index).className = "friend-drawer selected_user";
-        console.log($scope.ChatUserRelations)
-        $scope.selectedUser=$scope.ChatUserRelations.filter(user => user.user.id == user_id)[0]
+        $scope.selectedUser=$scope.ChatUserRelations.filter(user => user.user_id == user_id)[0].user
+        console.log($scope.selectedUser)
         document.getElementById('messageTextArea').style.display = "block"
         $(".chat-bubble").hide("slow").show("slow");
         loadMessageByChatId(user_id, chat_id)
@@ -87,8 +87,8 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
     $scope.sendMessage=function(){
         if($scope.Messages.length>0){
             $scope.model={
-                chat_id:$scope.Messages[0][5],
-                user_id:$scope.Messages[0][4],
+                chat_id:$scope.Messages[0].chat_id,
+                user_id:$scope.Messages[0].user_id,
                 text:$scope.text
             }
         }
