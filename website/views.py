@@ -341,8 +341,8 @@ def getChatUserRelations():
 @app.route('/getChatMessages', methods=['POST'])
 def getChatMessages():
     chat_id = request.args.get('chat_id')
-    user_id = request.args.get('user_id')
-    chat_message = ChatMessage.query.filter(ChatMessage.chat_id == chat_id and ChatMessage.sender_id == user_id).order_by(
+    sender_id = request.args.get('sender_id')
+    chat_message = ChatMessage.query.filter(ChatMessage.chat_id == chat_id and ChatMessage.sender_id == sender_id).order_by(
         ChatMessage.id).all()
     return jsonify(chat_messages_schema.dump(chat_message))
 

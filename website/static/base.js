@@ -60,10 +60,10 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
 
     }
 
-    function loadMessageByChatId(user_id, chat_id){
+    function loadMessageByChatId(sender_id, chat_id){
         $http({
             method: 'POST',
-            url: "/getChatMessages?user_id="+user_id+"&chat_id="+chat_id,
+            url: "/getChatMessages?sender_id="+sender_id+"&chat_id="+chat_id,
         }).then(function (d) {
             console.log(d.data);
             $scope.Messages = d.data;
@@ -71,18 +71,18 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
             console.log("error in getChatMessages -> ", error);
         });
     }
-    $scope.loadMessageByChatId = function(user_id, chat_id, index, count){
-        $scope.user_id=user_id
+    $scope.loadMessageByChatId = function(sender_id, chat_id, index, count){
+        $scope.sender_id=sender_id
         $scope.chat_id=chat_id
         for(i=0;i<count;i++){
            document.getElementById("user"+i).className = "friend-drawer friend-drawer--onhover";
         }
         document.getElementById("user"+index).className = "friend-drawer selected_user";
-        $scope.selectedUser=$scope.ChatUserRelations.filter(user => user.user_id == user_id)[0].user
+        $scope.selectedUser=$scope.ChatUserRelations.filter(user => user.user_id == sender_id)[0].user
         console.log($scope.selectedUser)
         document.getElementById('messageTextArea').style.display = "block"
         $(".chat-bubble").hide("slow").show("slow");
-        loadMessageByChatId(user_id, chat_id)
+        loadMessageByChatId(sender_id, chat_id)
     }
     $scope.sendMessage=function(){
         if($scope.Messages.length>0){
@@ -100,7 +100,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
             dataType: "json"
         }).then(function (d) {
             console.log(d.data);
-            loadMessageByChatId($scope.user_id, $scope.chat_id)
+            loadMessageByChatId($scope.sender_id, $scope.chat_id)
         }, function (error) {
             console.log("error in sendMessage -> ", error);
         });
