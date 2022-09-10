@@ -334,7 +334,12 @@ def logout():
 @app.route("/getChatUserRelations", methods=['POST'])
 def getChatUserRelations():
     user_id = request.args.get('user_id')
-    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id != user_id).order_by(ChatUserRelation.id).all()
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(ChatUserRelation.id).all()
+    chat_ids = []
+    for item in chat_user_relation:
+        chat_ids.append(item.chat_id)
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id.in_(chat_ids)).order_by(
+        ChatUserRelation.id).all()
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 
 
@@ -352,28 +357,29 @@ def sendMessage():
     json_data = request.json
     print(json_data)
     chat_id = json_data['chat_id']
-    user_id = json_data['user_id']
+    sender_id = json_data['sender_id']
     text = json_data['text']
-    print(chat_id)
     chat = Chat.query.filter_by(id=chat_id).first()
     if chat is None:
-        chat = Chat(type=0, created_by=user_id, created_date=datetime.datetime.now())
+        chat = Chat(type=0, created_by=sender_id, created_date=datetime.datetime.now())
         db.session.add(chat)
-        chat_message = ChatMessage(chat_id=chat.id, type=1, text=text, sender_id=user_id, created_by=user_id,
+        chat_message = ChatMessage(chat_id=chat.id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
-        chat_user_relation = ChatUserRelation(user_id=user_id, chat_id=chat.id, count_new_message=1)
+        chat_user_relation = ChatUserRelation(user_id=sender_id, chat_id=chat.id, count_new_message=1)
         db.session.add(chat_user_relation)
         db.session.commit()
     else:
-        chat.last_modified_by = user_id
+        chat.last_modified_by = sender_id
         chat.last_modified_date = datetime.datetime.now()
-        chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=user_id, created_by=user_id,
+        chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
+        db.session.commit()
         chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id).first()
         chat_user_relation.count_new_message = chat_user_relation.count_new_message+1
         db.session.commit()
+        # db.session.close_all()
     return jsonify(chat_message_schema.dump(chat_message))
 
 

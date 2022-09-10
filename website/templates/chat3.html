@@ -272,14 +272,14 @@ hr {
 				<div class="chat-panel">
 					<div style="overflow: auto;height: 473px;">
 						<div ng-repeat="item in Messages">
-							<div ng-show="user_id==item.sender_id" class="row no-gutters">
+							<div ng-show="user_id!=item.sender_id" class="row no-gutters">
 								<div class="col-md-3">
 								  <div class="chat-bubble chat-bubble--left">
 									{{item.text}}
 								  </div>
 								</div>
 							</div>
-							<div ng-show="user_id!=item.sender_id" class="row no-gutters">
+							<div ng-show="user_id==item.sender_id" class="row no-gutters">
 								<div class="col-md-3 offset-md-9">
 								  <div class="chat-bubble chat-bubble--right">
 									{{item.text}}

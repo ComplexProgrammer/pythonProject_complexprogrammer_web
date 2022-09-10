@@ -88,7 +88,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
         if($scope.Messages.length>0){
             $scope.model={
                 chat_id:$scope.Messages[0].chat_id,
-                user_id:$scope.Messages[0].user_id,
+                sender_id:$scope.Messages[0].sender_id,
                 text:$scope.text
             }
         }
