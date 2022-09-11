@@ -334,10 +334,12 @@ def logout():
 @app.route("/getChatUserRelations", methods=['POST'])
 def getChatUserRelations():
     user_id = request.args.get('user_id')
+    print(user_id)
     chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(ChatUserRelation.id).all()
     chat_ids = []
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
+    print(chat_ids)
     chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id.in_(chat_ids)).order_by(
         ChatUserRelation.id).all()
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
