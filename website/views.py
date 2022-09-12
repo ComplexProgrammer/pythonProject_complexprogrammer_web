@@ -291,33 +291,28 @@ def getUser():
 
 @app.route('/checkUser', methods=['POST'])
 def CheckUser():
-    try:
-        json = request.json
-        print(json)
-        photo_url = json['photo_url']
-        name = json['name']
-        email = json['email']
-        phone = json['phone']
-        provider_id = json['provider_id']
-        uid = json['uid']
-        email_verified = json['email_verified']
-        user = Users.query.filter_by(uid=uid).first()
-        if user is None:
-            user = Users(photo_url=photo_url, name=name, email=email, phone=phone, provider_id=provider_id, uid=uid,
-                         email_verified=email_verified, created_date=datetime.datetime.now(),
-                         login_date=datetime.datetime.now(), login_count=1, active=1)
-            db.session.add(user)
-            db.session.commit()
-        else:
-            user.login_date = datetime.datetime.now()
-            user.login_count = user.login_count + 1
-            user.active = 1
-            db.session.commit()
-        return jsonify(user_schema.dump(user))
-    except ValueError:
-        f = open("error.txt", "a")
-        f.write(ValueError.__str__())
-        f.close()
+    json = request.json
+    print(json)
+    photo_url = json['photo_url']
+    name = json['name']
+    email = json['email']
+    phone = json['phone']
+    provider_id = json['provider_id']
+    uid = json['uid']
+    email_verified = json['email_verified']
+    user = Users.query.filter_by(uid=uid).first()
+    if user is None:
+        user = Users(photo_url=photo_url, name=name, email=email, phone=phone, provider_id=provider_id, uid=uid,
+                     email_verified=email_verified, created_date=datetime.datetime.now(),
+                     login_date=datetime.datetime.now(), login_count=1, active=1)
+        db.session.add(user)
+        db.session.commit()
+    else:
+        user.login_date = datetime.datetime.now()
+        user.login_count = user.login_count + 1
+        user.active = 1
+        db.session.commit()
+    return jsonify(user_schema.dump(user))
 
 
 @app.route('/logout', methods=['POST'])
