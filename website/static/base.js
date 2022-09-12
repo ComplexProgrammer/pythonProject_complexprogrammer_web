@@ -88,7 +88,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
         if($scope.Messages.length>0){
             $scope.model={
                 chat_id:$scope.Messages[0].chat_id,
-                sender_id:$scope.Messages[0].sender_id,
+                sender_id:$scope.user_id,
                 text:$scope.text
             }
         }
@@ -100,6 +100,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
             dataType: "json"
         }).then(function (d) {
             console.log(d.data);
+            $scope.text=''
             loadMessageByChatId($scope.sender_id, $scope.chat_id)
         }, function (error) {
             console.log("error in sendMessage -> ", error);
