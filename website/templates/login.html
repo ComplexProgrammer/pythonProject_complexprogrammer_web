@@ -68,7 +68,8 @@
             var code = document.getElementById("code").value;
             if(code != ''){
                 confirmationResult.confirm(code).then((result) => {
-
+                    document.getElementById('code_block').style='position:absolute'
+                    document.getElementById('code_block').style.visibility='hidden'
                   const user = result.user;
                   checkUser(user);
                 }).catch((error) => {

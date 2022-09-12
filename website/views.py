@@ -263,32 +263,6 @@ def login():
     return render_template('login.html')
 
 
-@app.route("/getUser", methods=['POST'])
-def getUser():
-    user_id = request.args.get('id')
-    name = request.args.get('name')
-    email = request.args.get('email')
-    phone = request.args.get('phone')
-    provider_id = request.args.get('provider_id')
-    uid = request.args.get('uid')
-    email_verified = request.args.get('email_verified')
-    not_me = request.args.get('not_me')
-    user = Users.query.all()
-    if not_me:
-        user = Users.query.filter(Users.uid != uid).all()
-    else:
-        if name:
-            user = Users.query.filter(Users.name == name).all()
-        if email:
-            user = Users.query.filter(Users.email == email).all()
-        if phone:
-            user = Users.query.filter(Users.phone == phone).all()
-        if uid:
-            user = Users.query.filter(Users.uid == uid).all()
-
-    return jsonify(users_schema.dump(user))
-
-
 @app.route('/checkUser', methods=['POST'])
 def CheckUser():
     json = request.json
@@ -327,17 +301,48 @@ def logout():
     return uid
 
 
+@app.route("/getUser", methods=['POST'])
+def getUser():
+    user_id = request.args.get('id')
+    name = request.args.get('name')
+    email = request.args.get('email')
+    phone = request.args.get('phone')
+    provider_id = request.args.get('provider_id')
+    uid = request.args.get('uid')
+    email_verified = request.args.get('email_verified')
+    not_me = request.args.get('not_me')
+    user = Users.query.all()
+    if not_me:
+        user = Users.query.filter(Users.uid != uid).all()
+    else:
+        if name:
+            user = Users.query.filter(Users.name == name).all()
+        if email:
+            user = Users.query.filter(Users.email == email).all()
+        if phone:
+            user = Users.query.filter(Users.phone == phone).all()
+        if uid:
+            user = Users.query.filter(Users.uid == uid).all()
+
+    return jsonify(users_schema.dump(user))
+
+
+@app.route("/getMyContacts", methods=['POST'])
+def getMyContacts():
+    user_id = request.args.get('user_id')
+    user = Users.query.filter(Users.id != user_id).all()
+    return jsonify(users_schema.dump(user))
+
+
 @app.route("/getChatUserRelations", methods=['POST'])
 def getChatUserRelations():
     user_id = request.args.get('user_id')
-    print(user_id)
     chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(
         ChatUserRelation.id).all()
     chat_ids = []
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
-    print(chat_ids)
-    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id.in_(chat_ids)).order_by(
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids), ChatUserRelation.user_id!=user_id).order_by(
         ChatUserRelation.id).all()
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 
@@ -345,11 +350,35 @@ def getChatUserRelations():
 @app.route('/getChatMessages', methods=['POST'])
 def getChatMessages():
     chat_id = request.args.get('chat_id')
+    user_id = request.args.get('user_id')
     sender_id = request.args.get('sender_id')
+    if user_id is not None and chat_id is None:
+        chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id).order_by(
+            ChatUserRelation.id).all()
+        chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(
+            ChatUserRelation.id).all()
+        chat_ids1 = []
+        for item in chat_user_relation1:
+            chat_ids1.append(item.chat_id)
+        chat_ids2 = []
+        for item in chat_user_relation2:
+            chat_ids2.append(item.chat_id)
+        chat_id = common_data(chat_ids1, chat_ids2)
+        print(chat_id)
+
     chat_message = ChatMessage.query.filter(
-        ChatMessage.chat_id == chat_id and ChatMessage.sender_id == sender_id).order_by(
+        ChatMessage.chat_id == chat_id, ChatMessage.sender_id == sender_id).order_by(
         ChatMessage.id).all()
     return jsonify(chat_messages_schema.dump(chat_message))
+
+
+def common_data(list1, list2):
+    for x in list1:
+        for y in list2:
+            if x == y:
+                return x
+
+    return 0
 
 
 @app.route('/sendMessage', methods=['POST'])

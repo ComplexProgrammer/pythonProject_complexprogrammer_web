@@ -50,14 +50,55 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
                 console.log("error in getChatUserRelations -> ", error);
             });
     }
+    function getMyContacts(){
+            $http({
+                method: 'POST',
+                url: "/getMyContacts?user_id="+$scope.user_id,
+            }).then(function (d) {
+                console.log(d.data);
+                $scope.MyContacts = d.data;
+            }, function (error) {
+                console.log("error in getMyContacts -> ", error);
+            });
+    }
+    $scope.loadContacts = function(){
+        getMyContacts()
+        if($scope.MyContacts==null){
+//            getMyContacts()
+        }
+    }
+    function loadMessageByContactId(contact_id){
+        $http({
+            method: 'POST',
+            url: "/getChatMessages?sender_id="+contact_id+"&user_id="+$scope.user_id,
+        }).then(function (d) {
+            console.log(d.data);
+            $scope.Messages = d.data;
+        }, function (error) {
+            console.log("error in getChatMessages -> ", error);
+        });
+    }
+    $scope.loadMessageByContactId = function(contact_id, index, count){
+        for(i=0;i<count;i++){
+           document.getElementById("contact"+i).className = "friend-drawer friend-drawer--onhover";
+        }
+        document.getElementById("contact"+index).className = "friend-drawer selected_user";
+        $scope.selectedUser=$scope.MyContacts.filter(user => user.user_id == contact_id)[0]
+        console.log($scope.selectedUser)
+        document.getElementById('messageTextArea').style.display = "block"
+        $(".chat-bubble").hide("slow").show("slow");
+        loadMessageByContactId(contact_id)
+    }
     $scope.openForm = function() {
         if($scope.ChatUserRelations==null){
             getChatUserRelations()
         }
+        for(i=0;i<document.getElementsByClassName('friend-drawer selected_user').length;i++){
+           document.getElementsByClassName('friend-drawer selected_user')[i].className = "friend-drawer friend-drawer--onhover";
+        }
         document.getElementById("myForm").style.display = "block";
         document.getElementById("openChatBtn").style.display = "none";
         document.getElementById('messageTextArea').style.display = "none"
-
     }
 
     function loadMessageByChatId(sender_id, chat_id){
