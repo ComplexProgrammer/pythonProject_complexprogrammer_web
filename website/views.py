@@ -265,6 +265,9 @@ def login():
 
 @app.route("/getUser", methods=['POST'])
 def getUser():
+    f = open("demofile2.txt", "a")
+    f.write("Now the file has more content!")
+    f.close()
     user_id = request.args.get('id')
     name = request.args.get('name')
     email = request.args.get('email')
