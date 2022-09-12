@@ -36,7 +36,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
                 console.log(d.data);
                 $scope.Contacts = d.data;
             }, function (error) {
-                console.log("error in GetImageCompareResult -> ", error);
+                console.log("error in getUser -> ", error);
             });
     }
     function getChatUserRelations(){
