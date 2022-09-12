@@ -292,6 +292,9 @@ def getUser():
 @app.route('/checkUser', methods=['POST'])
 def CheckUser():
     try:
+        f = open("demofile2.txt", "a")
+        f.write("Now the file has more content!")
+        f.close()
         json = request.json
         print(json)
         photo_url = json['photo_url']
