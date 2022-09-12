@@ -300,8 +300,7 @@ def CheckUser():
     provider_id = json['provider_id']
     uid = json['uid']
     email_verified = json['email_verified']
-    # user = Users.query.filter_by(uid=uid).first()
-    user = Users.query.filter_by(uid=uid).all()
+    user = Users.query.filter_by(uid=uid).first()
     if user is None:
         user = Users(photo_url=photo_url, name=name, email=email, phone=phone, provider_id=provider_id, uid=uid,
                      email_verified=email_verified, created_date=datetime.datetime.now(),
@@ -309,14 +308,11 @@ def CheckUser():
         db.session.add(user)
         db.session.commit()
     else:
-        user[0].login_date = datetime.datetime.now()
-        user[0].login_count = user[0].login_count + 1
-        user[0].active = 1
+        user.login_date = datetime.datetime.now()
+        user.login_count = user.login_count + 1
+        user.active = 1
         db.session.commit()
-    print(user)
-    print(type(user))
-    print(user[0].email)
-    return jsonify([s.toDict() for s in user])
+    return jsonify(user_schema.dump(user))
 
 
 @app.route('/logout', methods=['POST'])

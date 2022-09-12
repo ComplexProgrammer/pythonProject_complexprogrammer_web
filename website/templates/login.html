@@ -257,7 +257,6 @@
                 uid:user.uid,
                 email_verified:user.emailVerified
             };
-            alert(model);
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
@@ -265,18 +264,7 @@
                 data: JSON.stringify(model),
                 success: function (data) {
                     console.log(data);
-                    var user_model = {
-                        id:data[0].id,
-                        photo_url:data[0].photo_url,
-                        name:data[0].name,
-                        email:data[0].email,
-                        phone:data[0].phone,
-                        provider_id:data[0].provider_id,
-                        uid:data[0].uid,
-                        email_verified:data[0].email_verified,
-                        active:data[0].active
-                    };
-                    setCookie("user", JSON.stringify(user_model), 365);
+                    setCookie("user", JSON.stringify(data), 365);
                 },
                 dataType: "json"
             });
