@@ -257,6 +257,7 @@
                 uid:user.uid,
                 email_verified:user.emailVerified
             };
+            alert($scope.model)
             $.ajax({
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
