@@ -291,8 +291,7 @@ def getUser():
 
 @app.route('/checkUser', methods=['POST'])
 def CheckUser():
-    from flask import jsonify
-    if request.method == 'POST':
+    try:
         json = request.json
         print(json)
         photo_url = json['photo_url']
@@ -315,6 +314,10 @@ def CheckUser():
             user.active = 1
             db.session.commit()
         return jsonify(user_schema.dump(user))
+    except ValueError:
+        f = open("error.txt")
+        f.write(ValueError.__str__())
+        f.close()
 
 
 @app.route('/logout', methods=['POST'])
@@ -333,7 +336,8 @@ def logout():
 def getChatUserRelations():
     user_id = request.args.get('user_id')
     print(user_id)
-    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(ChatUserRelation.id).all()
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(
+        ChatUserRelation.id).all()
     chat_ids = []
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
@@ -347,7 +351,8 @@ def getChatUserRelations():
 def getChatMessages():
     chat_id = request.args.get('chat_id')
     sender_id = request.args.get('sender_id')
-    chat_message = ChatMessage.query.filter(ChatMessage.chat_id == chat_id and ChatMessage.sender_id == sender_id).order_by(
+    chat_message = ChatMessage.query.filter(
+        ChatMessage.chat_id == chat_id and ChatMessage.sender_id == sender_id).order_by(
         ChatMessage.id).all()
     return jsonify(chat_messages_schema.dump(chat_message))
 
@@ -377,7 +382,7 @@ def sendMessage():
         db.session.add(chat_message)
         db.session.commit()
         chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id).first()
-        chat_user_relation.count_new_message = chat_user_relation.count_new_message+1
+        chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
     return jsonify(chat_message_schema.dump(chat_message))
