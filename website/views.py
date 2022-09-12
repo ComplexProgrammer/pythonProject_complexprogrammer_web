@@ -315,7 +315,7 @@ def CheckUser():
             db.session.commit()
         return jsonify(user_schema.dump(user))
     except ValueError:
-        f = open("error.txt")
+        f = open("error.txt", "a")
         f.write(ValueError.__str__())
         f.close()
 
