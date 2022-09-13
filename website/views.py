@@ -337,12 +337,14 @@ def getMyContacts():
 @app.route("/getChatUserRelations", methods=['POST'])
 def getChatUserRelations():
     user_id = request.args.get('user_id')
-    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id,
+                                                       ChatUserRelation.is_deleted == False).order_by(
         ChatUserRelation.id).all()
     chat_ids = []
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
-    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids), ChatUserRelation.user_id!=user_id).order_by(
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids),
+                                                       ChatUserRelation.user_id != user_id).order_by(
         ChatUserRelation.id).all()
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 
@@ -350,12 +352,14 @@ def getChatUserRelations():
 @app.route('/getChatMessages', methods=['POST'])
 def getChatMessages():
     chat_id = request.args.get('chat_id')
-    user_id = request.args.get('user_id')
     sender_id = request.args.get('sender_id')
-    if user_id is not None and chat_id is None:
-        chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id).order_by(
+    receiver_id = request.args.get('receiver_id')
+    if sender_id is not None and chat_id is None:
+        chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == receiver_id,
+                                                            ChatUserRelation.is_deleted == False).order_by(
             ChatUserRelation.id).all()
-        chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(
+        chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id,
+                                                            ChatUserRelation.is_deleted == False).order_by(
             ChatUserRelation.id).all()
         chat_ids1 = []
         for item in chat_user_relation1:
@@ -367,7 +371,7 @@ def getChatMessages():
         print(chat_id)
 
     chat_message = ChatMessage.query.filter(
-        ChatMessage.chat_id == chat_id, ChatMessage.sender_id == sender_id).order_by(
+        ChatMessage.chat_id == chat_id).order_by(
         ChatMessage.id).all()
     return jsonify(chat_messages_schema.dump(chat_message))
 
@@ -387,15 +391,19 @@ def sendMessage():
     print(json_data)
     chat_id = json_data['chat_id']
     sender_id = json_data['sender_id']
+    receiver_id = json_data['receiver_id']
     text = json_data['text']
     chat = Chat.query.filter_by(id=chat_id).first()
     if chat is None:
         chat = Chat(type=0, created_by=sender_id, created_date=datetime.datetime.now())
         db.session.add(chat)
+        db.session.commit()
         chat_message = ChatMessage(chat_id=chat.id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
-        chat_user_relation = ChatUserRelation(user_id=sender_id, chat_id=chat.id, count_new_message=1)
+        chat_user_relation = ChatUserRelation(user_id=sender_id, chat_id=chat.id, count_new_message=0)
+        db.session.add(chat_user_relation)
+        chat_user_relation = ChatUserRelation(user_id=receiver_id, chat_id=chat.id, count_new_message=1)
         db.session.add(chat_user_relation)
         db.session.commit()
     else:
@@ -405,7 +413,7 @@ def sendMessage():
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
         db.session.commit()
-        chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id).first()
+        chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id, user_id=receiver_id).first()
         chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
