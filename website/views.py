@@ -432,10 +432,6 @@ def GetTranslateResult():
     dest = request.args.get('dest')
     print(src)
     print(dest)
-    # text = '''
-    # A Római Birodalom (latinul Imperium Romanum) az ókori Róma által létrehozott
-    # államalakulat volt a Földközi-tenger medencéjében
-    # '''
     print(text)
     translator = Translator()
 
