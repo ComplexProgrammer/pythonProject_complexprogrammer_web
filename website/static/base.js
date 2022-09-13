@@ -7,6 +7,10 @@ app.filter('jsonDate', ['$filter', function ($filter) {
     };
 }]);
 app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
+     function goalert(){
+        alert()
+    }
+
     $scope.login="Login";
     $scope.user=checkAuth();
     $scope.user_name=checkUserName();
