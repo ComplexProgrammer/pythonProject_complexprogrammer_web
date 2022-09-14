@@ -26,6 +26,9 @@ import json
 
 from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
     users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema
+import pytube
+import youtube_downloader
+import file_converter
 
 
 @app.route('/')
@@ -35,6 +38,30 @@ def home_page():
 
 
 # region online services
+@app.route("/youtube_downloader", methods=['GET'])
+def youtube_downloader():
+    choice = request.args.get('choice')
+    quality = request.args.get('quality')   # low, medium, high, very high
+    link = request.args.get('link')
+    if choice == "1" or choice == "2":
+        if choice == "2":
+            print("Pleylist yuklab olinmoqda...")
+            youtube_downloader.download_playlist(link, quality)
+            print("Yuklab olish tugadi!")
+        if choice == "1":
+            links = youtube_downloader.input_links()
+            for link in links:
+                youtube_downloader.download_video(link, quality)
+    elif choice == "3":
+        links = youtube_downloader.input_links()
+        for link in links:
+            print("Yuklab olinmoqda...")
+            filename = youtube_downloader.download_video(link, 'low')
+            print("Oʻzgartirilmoqda...")
+            file_converter.convert_to_mp3(filename)
+    else:
+        print("Yaroqsiz kiritish! Tugatilmoqda...")
+    return render_template('youtube_downloader.html')
 
 
 @app.route("/exchangerates")
