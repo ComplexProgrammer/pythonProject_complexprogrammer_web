@@ -21,14 +21,12 @@ import googletrans
 from googletrans import Translator
 import pyttsx3
 
-from website import app, ALLOWED_EXTENSIONS, db
+from website import app, ALLOWED_EXTENSIONS, db, youtube_downloader, file_converter
 import json
 
 from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
     users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema
 import pytube
-import youtube_downloader
-import file_converter
 
 
 @app.route('/')
@@ -49,11 +47,11 @@ def youtube_downloader():
             youtube_downloader.download_playlist(link, quality)
             print("Yuklab olish tugadi!")
         if choice == "1":
-            links = youtube_downloader.input_links()
+            links = request.args.get('links')
             for link in links:
                 youtube_downloader.download_video(link, quality)
     elif choice == "3":
-        links = youtube_downloader.input_links()
+        links = request.args.get('links')
         for link in links:
             print("Yuklab olinmoqda...")
             filename = youtube_downloader.download_video(link, 'low')
