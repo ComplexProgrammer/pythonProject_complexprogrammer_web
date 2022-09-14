@@ -349,26 +349,33 @@ def getChatUserRelations():
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 
 
+@app.route('/getChatMessagesByChatId', methods=['POST'])
+def getChatMessagesByChatId():
+    chat_id = request.args.get('chat_id')
+    chat_message = ChatMessage.query.filter(
+        ChatMessage.chat_id == chat_id).order_by(
+        ChatMessage.id).all()
+    return jsonify(chat_messages_schema.dump(chat_message))
+
+
 @app.route('/getChatMessages', methods=['POST'])
 def getChatMessages():
-    chat_id = request.args.get('chat_id')
     sender_id = request.args.get('sender_id')
     receiver_id = request.args.get('receiver_id')
-    if sender_id is not None and chat_id is None:
-        chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == receiver_id,
-                                                            ChatUserRelation.is_deleted == False).order_by(
-            ChatUserRelation.id).all()
-        chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id,
-                                                            ChatUserRelation.is_deleted == False).order_by(
-            ChatUserRelation.id).all()
-        chat_ids1 = []
-        for item in chat_user_relation1:
-            chat_ids1.append(item.chat_id)
-        chat_ids2 = []
-        for item in chat_user_relation2:
-            chat_ids2.append(item.chat_id)
-        chat_id = common_data(chat_ids1, chat_ids2)
-        print(chat_id)
+    chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == receiver_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_ids1 = []
+    for item in chat_user_relation1:
+        chat_ids1.append(item.chat_id)
+    chat_ids2 = []
+    for item in chat_user_relation2:
+        chat_ids2.append(item.chat_id)
+    chat_id = common_data(chat_ids1, chat_ids2)
+    print(chat_id)
 
     chat_message = ChatMessage.query.filter(
         ChatMessage.chat_id == chat_id).order_by(
@@ -389,12 +396,23 @@ def common_data(list1, list2):
 def sendMessage():
     json_data = request.json
     print(json_data)
-    chat_id = json_data['chat_id']
     sender_id = json_data['sender_id']
     receiver_id = json_data['receiver_id']
     text = json_data['text']
-    chat = Chat.query.filter_by(id=chat_id).first()
-    if chat is None:
+    chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == receiver_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_ids1 = []
+    for item in chat_user_relation1:
+        chat_ids1.append(item.chat_id)
+    chat_ids2 = []
+    for item in chat_user_relation2:
+        chat_ids2.append(item.chat_id)
+    chat_id = common_data(chat_ids1, chat_ids2)
+    if chat_id == 0:
         chat = Chat(type=0, created_by=sender_id, created_date=datetime.datetime.now())
         db.session.add(chat)
         db.session.commit()
@@ -407,6 +425,7 @@ def sendMessage():
         db.session.add(chat_user_relation)
         db.session.commit()
     else:
+        chat = Chat.query.filter_by(id=chat_id).first()
         chat.last_modified_by = sender_id
         chat.last_modified_date = datetime.datetime.now()
         chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
