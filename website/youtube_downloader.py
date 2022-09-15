@@ -10,23 +10,26 @@ def download_video(url, resolution):
 
 
 def download_videos(urls, resolution):
+    filenames = []
     for url in urls:
-        download_video(url, resolution)
+        filename = download_video(url, resolution)
+        filenames.append(filename)
+    return filenames
 
 
 def download_playlist(url, resolution):
     playlist = pytube.Playlist(url)
-    download_videos(playlist.video_urls, resolution)
+    return download_videos(playlist.video_urls, resolution)
 
 
 def choose_resolution(resolution):
-    if resolution in ["1", "low", "360", "360p"]:
+    if resolution in ["low", "360", "360p"]:
         itag = 18
-    elif resolution in ["2", "medium", "720", "720p", "hd"]:
+    elif resolution in ["medium", "720", "720p", "hd"]:
         itag = 22
-    elif resolution in ["3", "high", "1080", "1080p", "fullhd", "full_hd", "full hd"]:
+    elif resolution in ["high", "1080", "1080p", "fullhd", "full_hd", "full hd"]:
         itag = 137
-    elif resolution in ["4", "very high", "2160", "2160p", "4K", "4k"]:
+    elif resolution in ["very high", "2160", "2160p", "4K", "4k"]:
         itag = 313
     else:
         itag = 18

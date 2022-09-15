@@ -7,8 +7,36 @@ app.filter('jsonDate', ['$filter', function ($filter) {
     };
 }]);
 app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
-     function goalert(){
-        alert()
+    $scope.convert_choice = 1;
+    $scope.UrlTo = function(choice){
+        $scope.convert_choice = choice
+    }
+
+    $scope.youtube_downloader = function(){
+        document.getElementById('conn').style.visibility = "visible";
+        $scope.links = $scope.link.split(",");
+        console.log($scope.link)
+        console.log($scope.links)
+        $scope.model = {
+            choice:$scope.convert_choice,
+            quality:"low",
+            link:$scope.link,
+            links:$scope.links
+        }
+        console.dir($scope.model)
+        $http({
+            method: 'POST',
+            url: "/youtube_downloader",
+            data: JSON.stringify($scope.model),
+            dataType: "json"
+        }).then(function (d) {
+            console.log(d.data);
+            window.location.href = "/send_file?filename="+d.data;
+            document.getElementById('conn').style.visibility = "hidden";
+        }, function (error) {
+            document.getElementById('conn').style.visibility = "hidden";
+            console.log("error in youtube_downloader -> ", error);
+        });
     }
 
     $scope.login="Login";
@@ -101,7 +129,6 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
         document.getElementById('contactsArea').style.display = "block"
 
 	}
-
     function loadMessageByChatId(chat_id){
         $http({
             method: 'POST',

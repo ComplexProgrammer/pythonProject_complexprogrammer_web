@@ -5,6 +5,7 @@ import os
 import sqlite3
 import urllib
 
+import flask
 import imutils
 import numpy
 import numpy as np
@@ -13,7 +14,7 @@ from PIL import Image, ImageChops, ImageFile
 import cv2
 import urllib3
 from skimage.metrics import structural_similarity as compare_ssim
-from flask import render_template, request, jsonify, flash
+from flask import render_template, request, jsonify, flash, send_file, send_from_directory
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from werkzeug.utils import secure_filename
@@ -36,30 +37,49 @@ def home_page():
 
 
 # region online services
-@app.route("/youtube_downloader", methods=['GET'])
-def youtube_downloader():
-    choice = request.args.get('choice')
-    quality = request.args.get('quality')   # low, medium, high, very high
-    link = request.args.get('link')
-    if choice == "1" or choice == "2":
-        if choice == "2":
-            print("Pleylist yuklab olinmoqda...")
-            youtube_downloader.download_playlist(link, quality)
-            print("Yuklab olish tugadi!")
-        if choice == "1":
-            links = request.args.get('links')
+@app.route("/youtube_downloader", methods=['GET', 'POST'])
+def youtube_downloader_():
+    if request.method == 'GET':
+        return render_template('youtube_downloader.html')
+    if request.method == 'POST':
+        json_data = request.json
+        print(json_data)
+        choice = json_data['choice']
+        quality = json_data['quality']   # low, medium, high, very high
+        link = json_data['link']
+        links = json_data['links']
+        print(choice)
+        print(quality)
+        print(link)
+        print(links)
+        if choice == 1 or choice == 2:
+            if choice == 2:
+                print("Pleylist yuklab olinmoqda...")
+                filenames = youtube_downloader.download_playlist(link, quality)
+                print("Yuklab olish tugadi!")
+                print(filenames)
+            if choice == 1:
+                for link in links:
+                    print(link)
+                    filename = youtube_downloader.download_video(link, quality)
+                    result = app.root_path.replace('website', '') + filename
+                    return result
+        elif choice == 3:
             for link in links:
-                youtube_downloader.download_video(link, quality)
-    elif choice == "3":
-        links = request.args.get('links')
-        for link in links:
-            print("Yuklab olinmoqda...")
-            filename = youtube_downloader.download_video(link, 'low')
-            print("Oʻzgartirilmoqda...")
-            file_converter.convert_to_mp3(filename)
-    else:
-        print("Yaroqsiz kiritish! Tugatilmoqda...")
-    return render_template('youtube_downloader.html')
+                print("Yuklab olinmoqda...")
+                filename = youtube_downloader.download_video(link, 'low')
+                print("Oʻzgartirilmoqda...")
+                file_converter.convert_to_mp3(filename)
+                result = app.root_path.replace('website', '') + filename.replace('.mp4', '.mp3')
+                return result
+        else:
+            print("Yaroqsiz kiritish! Tugatilmoqda...")
+
+
+@app.route("/send_file")
+def send_file_():
+    filename = request.args.get('filename')
+    return send_file(filename, as_attachment=True)
 
 
 @app.route("/exchangerates")
@@ -69,8 +89,6 @@ def exchangerates():
 
 @app.route("/GetExchangeRates", methods=['GET'])
 def GetExchangeRates():
-    print(1)
-    # url = "http://195.158.6.195:4444/Api/C0mplexApi/GetExchangeRates"
     url = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/"
     r = urllib.request.urlopen(url)
     data = r.read()

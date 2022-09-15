@@ -18,4 +18,5 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'av
 db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
+
 from website import views
