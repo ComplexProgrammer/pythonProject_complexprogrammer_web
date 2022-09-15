@@ -100,7 +100,7 @@ class ChatUserRelation(db.Model):
     user = relationship("Users", back_populates="chat_user_relation")
     chat_id = db.Column(db.Integer(), db.ForeignKey('chat.id'))
     chat = relationship("Chat", back_populates="chat_user_relation")
-    count_new_message = db.Column(db.Integer())
+    count_new_message = db.Column(db.Integer(), default=0)
     role = db.Column(db.Boolean())
     title = db.Column(db.String(length=1024))
     is_deleted = db.Column(db.Boolean(), default=False)

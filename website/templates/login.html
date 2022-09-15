@@ -68,7 +68,8 @@
             var code = document.getElementById("code").value;
             if(code != ''){
                 confirmationResult.confirm(code).then((result) => {
-
+                    document.getElementById('code_block').style='position:absolute'
+                    document.getElementById('code_block').style.visibility='hidden'
                   const user = result.user;
                   checkUser(user);
                 }).catch((error) => {
@@ -264,18 +265,7 @@
                 data: JSON.stringify(model),
                 success: function (data) {
                     console.log(data);
-                    var user_model = {
-                        id:data[0].id,
-                        photo_url:data[0].photo_url,
-                        name:data[0].name,
-                        email:data[0].email,
-                        phone:data[0].phone,
-                        provider_id:data[0].provider_id,
-                        uid:data[0].uid,
-                        email_verified:data[0].email_verified,
-                        active:data[0].active
-                    };
-                    setCookie("user", JSON.stringify(user_model), 365);
+                    setCookie("user", JSON.stringify(data), 365);
                 },
                 dataType: "json"
             });
@@ -290,9 +280,11 @@
           return output.slice(0, -1);
         };
     </script>
+
 </head>
 <body ng-app="App" ng-controller="Base">
 {% raw %}
+
     <div class="cotn_principal">
         <div class="C0mplexButton">
             <a href="/">

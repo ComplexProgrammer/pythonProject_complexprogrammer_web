@@ -5,6 +5,7 @@ import os
 import sqlite3
 import urllib
 
+import flask
 import imutils
 import numpy
 import numpy as np
@@ -13,7 +14,7 @@ from PIL import Image, ImageChops, ImageFile
 import cv2
 import urllib3
 from skimage.metrics import structural_similarity as compare_ssim
-from flask import render_template, request, jsonify, flash
+from flask import render_template, request, jsonify, flash, send_file, send_from_directory
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from werkzeug.utils import secure_filename
@@ -21,11 +22,12 @@ import googletrans
 from googletrans import Translator
 import pyttsx3
 
-from website import app, ALLOWED_EXTENSIONS, db
+from website import app, ALLOWED_EXTENSIONS, db, youtube_downloader, file_converter
 import json
 
 from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
     users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema
+import pytube
 
 
 @app.route('/')
@@ -35,6 +37,49 @@ def home_page():
 
 
 # region online services
+@app.route("/youtube_downloader", methods=['GET', 'POST'])
+def youtube_downloader_():
+    if request.method == 'GET':
+        return render_template('youtube_downloader.html')
+    if request.method == 'POST':
+        json_data = request.json
+        print(json_data)
+        choice = json_data['choice']
+        quality = json_data['quality']   # low, medium, high, very high
+        link = json_data['link']
+        links = json_data['links']
+        print(choice)
+        print(quality)
+        print(link)
+        print(links)
+        if choice == 1 or choice == 2:
+            if choice == 2:
+                print("Pleylist yuklab olinmoqda...")
+                filenames = youtube_downloader.download_playlist(link, quality)
+                print("Yuklab olish tugadi!")
+                print(filenames)
+            if choice == 1:
+                for link in links:
+                    print(link)
+                    filename = youtube_downloader.download_video(link, quality)
+                    result = app.root_path.replace('website', '') + filename
+                    return result
+        elif choice == 3:
+            for link in links:
+                print("Yuklab olinmoqda...")
+                filename = youtube_downloader.download_video(link, 'low')
+                print("Oʻzgartirilmoqda...")
+                file_converter.convert_to_mp3(filename)
+                result = app.root_path.replace('website', '') + filename.replace('.mp4', '.mp3')
+                return result
+        else:
+            print("Yaroqsiz kiritish! Tugatilmoqda...")
+
+
+@app.route("/send_file")
+def send_file_():
+    filename = request.args.get('filename')
+    return send_file(filename, as_attachment=True)
 
 
 @app.route("/exchangerates")
@@ -44,8 +89,6 @@ def exchangerates():
 
 @app.route("/GetExchangeRates", methods=['GET'])
 def GetExchangeRates():
-    print(1)
-    # url = "http://195.158.6.195:4444/Api/C0mplexApi/GetExchangeRates"
     url = "https://cbu.uz/uz/arkhiv-kursov-valyut/json/"
     r = urllib.request.urlopen(url)
     data = r.read()
@@ -263,6 +306,44 @@ def login():
     return render_template('login.html')
 
 
+@app.route('/checkUser', methods=['POST'])
+def CheckUser():
+    json = request.json
+    print(json)
+    photo_url = json['photo_url']
+    name = json['name']
+    email = json['email']
+    phone = json['phone']
+    provider_id = json['provider_id']
+    uid = json['uid']
+    email_verified = json['email_verified']
+    user = Users.query.filter_by(uid=uid).first()
+    if user is None:
+        user = Users(photo_url=photo_url, name=name, email=email, phone=phone, provider_id=provider_id, uid=uid,
+                     email_verified=email_verified, created_date=datetime.datetime.now(),
+                     login_date=datetime.datetime.now(), login_count=1, active=1)
+        db.session.add(user)
+        db.session.commit()
+    else:
+        user.login_date = datetime.datetime.now()
+        user.login_count = user.login_count + 1
+        user.active = 1
+        db.session.commit()
+    return jsonify(user_schema.dump(user))
+
+
+@app.route('/logout', methods=['POST'])
+def logout():
+    uid = request.args.get('uid')
+    user = Users.query.filter_by(uid=uid).first()
+    if user is not None:
+        user.logout_date = datetime.datetime.now()
+        user.logout_count = user.logout_count + 1
+        user.active = 0
+        db.session.commit()
+    return uid
+
+
 @app.route("/getUser", methods=['POST'])
 def getUser():
     user_id = request.args.get('id')
@@ -289,97 +370,113 @@ def getUser():
     return jsonify(users_schema.dump(user))
 
 
-@app.route('/checkUser', methods=['POST'])
-def CheckUser():
-    json = request.json
-    print(json)
-    photo_url = json['photo_url']
-    name = json['name']
-    email = json['email']
-    phone = json['phone']
-    provider_id = json['provider_id']
-    uid = json['uid']
-    email_verified = json['email_verified']
-    # user = Users.query.filter_by(uid=uid).first()
-    user = Users.query.filter_by(uid=uid).all()
-    if user is None:
-        user = Users(photo_url=photo_url, name=name, email=email, phone=phone, provider_id=provider_id, uid=uid,
-                     email_verified=email_verified, created_date=datetime.datetime.now(),
-                     login_date=datetime.datetime.now(), login_count=1, active=1)
-        db.session.add(user)
-        db.session.commit()
-    else:
-        user[0].login_date = datetime.datetime.now()
-        user[0].login_count = user[0].login_count + 1
-        user[0].active = 1
-        db.session.commit()
-    print(user)
-    print(type(user))
-    print(user[0].email)
-    return jsonify([s.toDict() for s in user])
-
-
-@app.route('/logout', methods=['POST'])
-def logout():
-    uid = request.args.get('uid')
-    user = Users.query.filter_by(uid=uid).first()
-    if user is not None:
-        user.logout_date = datetime.datetime.now()
-        user.logout_count = user.logout_count + 1
-        user.active = 0
-        db.session.commit()
-    return uid
+@app.route("/getMyContacts", methods=['POST'])
+def getMyContacts():
+    user_id = request.args.get('user_id')
+    user = Users.query.filter(Users.id != user_id).all()
+    return jsonify(users_schema.dump(user))
 
 
 @app.route("/getChatUserRelations", methods=['POST'])
 def getChatUserRelations():
     user_id = request.args.get('user_id')
-    print(user_id)
-    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id).order_by(ChatUserRelation.id).all()
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id,
+                                                       ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
     chat_ids = []
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
-    print(chat_ids)
-    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id.in_(chat_ids)).order_by(
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids),
+                                                       ChatUserRelation.user_id != user_id).order_by(
         ChatUserRelation.id).all()
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 
 
-@app.route('/getChatMessages', methods=['POST'])
-def getChatMessages():
+@app.route('/getChatMessagesByChatId', methods=['POST'])
+def getChatMessagesByChatId():
     chat_id = request.args.get('chat_id')
-    sender_id = request.args.get('sender_id')
-    chat_message = ChatMessage.query.filter(ChatMessage.chat_id == chat_id and ChatMessage.sender_id == sender_id).order_by(
+    chat_message = ChatMessage.query.filter(
+        ChatMessage.chat_id == chat_id).order_by(
         ChatMessage.id).all()
     return jsonify(chat_messages_schema.dump(chat_message))
+
+
+@app.route('/getChatMessages', methods=['POST'])
+def getChatMessages():
+    sender_id = request.args.get('sender_id')
+    receiver_id = request.args.get('receiver_id')
+    chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == receiver_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_ids1 = []
+    for item in chat_user_relation1:
+        chat_ids1.append(item.chat_id)
+    chat_ids2 = []
+    for item in chat_user_relation2:
+        chat_ids2.append(item.chat_id)
+    chat_id = common_data(chat_ids1, chat_ids2)
+    print(chat_id)
+
+    chat_message = ChatMessage.query.filter(
+        ChatMessage.chat_id == chat_id).order_by(
+        ChatMessage.id).all()
+    return jsonify(chat_messages_schema.dump(chat_message))
+
+
+def common_data(list1, list2):
+    for x in list1:
+        for y in list2:
+            if x == y:
+                return x
+
+    return 0
 
 
 @app.route('/sendMessage', methods=['POST'])
 def sendMessage():
     json_data = request.json
     print(json_data)
-    chat_id = json_data['chat_id']
     sender_id = json_data['sender_id']
+    receiver_id = json_data['receiver_id']
     text = json_data['text']
-    chat = Chat.query.filter_by(id=chat_id).first()
-    if chat is None:
+    chat_user_relation1 = ChatUserRelation.query.filter(ChatUserRelation.user_id == receiver_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_user_relation2 = ChatUserRelation.query.filter(ChatUserRelation.user_id == sender_id,
+                                                        ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_ids1 = []
+    for item in chat_user_relation1:
+        chat_ids1.append(item.chat_id)
+    chat_ids2 = []
+    for item in chat_user_relation2:
+        chat_ids2.append(item.chat_id)
+    chat_id = common_data(chat_ids1, chat_ids2)
+    if chat_id == 0:
         chat = Chat(type=0, created_by=sender_id, created_date=datetime.datetime.now())
         db.session.add(chat)
+        db.session.commit()
         chat_message = ChatMessage(chat_id=chat.id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
-        chat_user_relation = ChatUserRelation(user_id=sender_id, chat_id=chat.id, count_new_message=1)
+        chat_user_relation = ChatUserRelation(user_id=sender_id, chat_id=chat.id, count_new_message=0)
+        db.session.add(chat_user_relation)
+        chat_user_relation = ChatUserRelation(user_id=receiver_id, chat_id=chat.id, count_new_message=1)
         db.session.add(chat_user_relation)
         db.session.commit()
     else:
+        chat = Chat.query.filter_by(id=chat_id).first()
         chat.last_modified_by = sender_id
         chat.last_modified_date = datetime.datetime.now()
         chat_message = ChatMessage(chat_id=chat_id, type=1, text=text, sender_id=sender_id, created_by=sender_id,
                                    created_date=datetime.datetime.now())
         db.session.add(chat_message)
         db.session.commit()
-        chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id).first()
-        chat_user_relation.count_new_message = chat_user_relation.count_new_message+1
+        chat_user_relation = ChatUserRelation.query.filter_by(chat_id=chat_id, user_id=receiver_id).first()
+        chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
     return jsonify(chat_message_schema.dump(chat_message))
@@ -397,10 +494,6 @@ def GetTranslateResult():
     dest = request.args.get('dest')
     print(src)
     print(dest)
-    # text = '''
-    # A Római Birodalom (latinul Imperium Romanum) az ókori Róma által létrehozott
-    # államalakulat volt a Földközi-tenger medencéjében
-    # '''
     print(text)
     translator = Translator()
 
