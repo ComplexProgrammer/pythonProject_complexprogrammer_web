@@ -48,6 +48,8 @@
     <script src="/static/login/auth.js"></script>
     <script src="/static/base.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,900|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <link rel="stylesheet" href="/static/css/dropify.min.css">
     <title>Youtube Downloader</title>
     <style>
@@ -57,11 +59,11 @@
         }
     </style>
 </head>
-<body ng-app="App" ng-controller="Base">
+<body ng-app="App" ng-controller="Base" class="modal-open">
 <div id="conn" style="visibility:hidden;position:absolute;margin-left:45%;margin-top:20%;z-index:9999">
     <img src="http://complexprogrammer.uz/static/img/buffering.gif" />
 </div>
-<input id="hh" type="hidden" />
+<input id="hh" type="text" class="fade hide" />
 {% raw %}
 <div class="C0mplexButton float-end">
     <a href="/#services">
@@ -79,6 +81,10 @@
             <img src="http://complexprogrammer.uz/static/img/C0mplex.png" class="img-fluid" alt="...">
         </div>
         <div class="col"></div>
+        <div class="col">
+            <img src="/static/img/youtube.png" class="img-fluid" alt="...">
+        </div>
+        <div class="col"></div>
     </div>
     <div class="row">
         <div class="col">
@@ -91,17 +97,17 @@
                     <p class="card-text">A simple Website that is able to download YouTube videos or playlists and convert them into MP3.</p>
                     <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                       <li class="nav-item" role="presentation">
-                        <button ng-click="UrlTo(1)" class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Video url to mp4</button>
+                        <button ng-click="UrlTo(1)" class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true"><span class="material-icons">video_file</span> .mp4</button>
                       </li>
+<!--                      <li class="nav-item" role="presentation">-->
+<!--                        <button ng-click="UrlTo(2)" class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Playlist url to mp4s</button>-->
+<!--                      </li>-->
                       <li class="nav-item" role="presentation">
-                        <button ng-click="UrlTo(2)" class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Playlist url to mp4s</button>
-                      </li>
-                      <li class="nav-item" role="presentation">
-                        <button ng-click="UrlTo(3)" class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false">Video url to mp3</button>
+                        <button ng-click="UrlTo(3)" class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false"><span class="material-icons">audio_file</span> .mp3</button>
                       </li>
                     </ul>
                     <div class="input-group mb-3">
-                      <input type="text" ng-model="link" class="form-control" placeholder="Youtube video or playlist url" aria-label="Youtube video or playlist url" aria-describedby="button-addon2">
+                      <input type="text" ng-model="link" class="form-control" placeholder="Youtube video url" aria-label="Youtube video or playlist url" aria-describedby="button-addon2">
                       <button class="btn btn-outline-success" type="button" ng-click="youtube_downloader()" id="button-addon2">Convert</button>
                     </div>
               </div>

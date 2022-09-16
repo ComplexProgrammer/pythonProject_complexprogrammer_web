@@ -47,39 +47,56 @@ def youtube_downloader_():
         choice = json_data['choice']
         quality = json_data['quality']   # low, medium, high, very high
         link = json_data['link']
-        links = json_data['links']
-        print(choice)
-        print(quality)
-        print(link)
-        print(links)
-        if choice == 1 or choice == 2:
-            if choice == 2:
-                print("Pleylist yuklab olinmoqda...")
-                filenames = youtube_downloader.download_playlist(link, quality)
-                print("Yuklab olish tugadi!")
-                print(filenames)
-            if choice == 1:
+        if link[0:23] == "https://www.youtube.com":
+            links = json_data['links']
+            print(choice)
+            print(quality)
+            print(link)
+            print(links)
+            if choice == 1 or choice == 2:
+                if choice == 2:
+                    print("Pleylist yuklab olinmoqda...")
+                    filenames = youtube_downloader.download_playlist(link, quality)
+                    print("Yuklab olish tugadi!")
+                    print(filenames)
+                if choice == 1:
+                    for link in links:
+                        print(link)
+                        filename = youtube_downloader.download_video(link, quality)
+                        result = app.root_path.replace('website', '') + filename
+                        return result
+            elif choice == 3:
                 for link in links:
-                    print(link)
-                    filename = youtube_downloader.download_video(link, quality)
-                    result = app.root_path.replace('website', '') + filename
+                    print("Yuklab olinmoqda...")
+                    filename = youtube_downloader.download_video(link, 'low')
+                    print("Oʻzgartirilmoqda...")
+                    file_converter.convert_to_mp3(filename)
+                    result = app.root_path.replace('website', '') + filename.replace('.mp4', '.mp3')
                     return result
-        elif choice == 3:
-            for link in links:
-                print("Yuklab olinmoqda...")
-                filename = youtube_downloader.download_video(link, 'low')
-                print("Oʻzgartirilmoqda...")
-                file_converter.convert_to_mp3(filename)
-                result = app.root_path.replace('website', '') + filename.replace('.mp4', '.mp3')
-                return result
+            else:
+                print("Yaroqsiz kiritish! Tugatilmoqda...")
         else:
-            print("Yaroqsiz kiritish! Tugatilmoqda...")
+            return "0"
 
 
 @app.route("/send_file")
 def send_file_():
     filename = request.args.get('filename')
     return send_file(filename, as_attachment=True)
+
+
+@app.route("/remove_file", methods=['POST'])
+def remove_file_():
+    filename = request.args.get('filename')
+    if os.path.exists(filename):
+        if filename[-4:] == ".mp3":
+            filename_ = filename[:-4] + ".mp4"
+            if os.path.exists(filename_):
+                os.remove(filename_)
+        os.remove(filename)
+        return "1"
+    else:
+        return "0"
 
 
 @app.route("/exchangerates")

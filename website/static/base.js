@@ -11,9 +11,9 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
     $scope.UrlTo = function(choice){
         $scope.convert_choice = choice
     }
-
     $scope.youtube_downloader = function(){
         document.getElementById('conn').style.visibility = "visible";
+        document.getElementById('hh').className= "modal-backdrop fade show";
         $scope.links = $scope.link.split(",");
         console.log($scope.link)
         console.log($scope.links)
@@ -31,9 +31,32 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
             dataType: "json"
         }).then(function (d) {
             console.log(d.data);
-            window.location.href = "/send_file?filename="+d.data;
-            document.getElementById('conn').style.visibility = "hidden";
+            if(d.data=="0"){
+                alertify.error("Youtube video url manzili kiritilmagan");
+                document.getElementById('hh').className= "fade hide";
+                document.getElementById('conn').style.visibility = "hidden";
+            }
+            else{
+                window.location.href = "/send_file?filename="+d.data;
+                setTimeout(function() {
+                    $http({
+                        method: 'POST',
+                        url: "/remove_file?filename="+d.data,
+                    }).then(function (d) {
+                        console.log(d.data);
+                        document.getElementById('hh').className= "fade hide";
+                        document.getElementById('conn').style.visibility = "hidden";
+                    }, function (error) {
+                        document.getElementById('hh').className= "fade hide";
+                        document.getElementById('conn').style.visibility = "hidden";
+                        console.log("error in remove_file -> ", error);
+                    });
+                }, 3000);
+                alertify.success("Fayl yuklanmoqda...");
+            }
         }, function (error) {
+            alertify.error("Xatolik yuz berdi");
+            document.getElementById('hh').className= "fade hide";
             document.getElementById('conn').style.visibility = "hidden";
             console.log("error in youtube_downloader -> ", error);
         });
@@ -110,15 +133,19 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
         loadMessageByContactId(receiver_id)
     }
     $scope.openForm = function() {
-
-        if($scope.MyContacts==null){
-            getMyContacts()
+        if($scope.login=="Login"){
+            document.getElementById("openChatBtn").style.display = "none";
         }
-        for(i=0;i<document.getElementsByClassName('friend-drawer selected_user').length;i++){
-           document.getElementsByClassName('friend-drawer selected_user')[i].className = "friend-drawer friend-drawer--onhover";
+        else{
+            if($scope.MyContacts==null){
+                getMyContacts()
+            }
+            for(i=0;i<document.getElementsByClassName('friend-drawer selected_user').length;i++){
+               document.getElementsByClassName('friend-drawer selected_user')[i].className = "friend-drawer friend-drawer--onhover";
+            }
+            document.getElementById("myForm").style.display = "block";
+            document.getElementById("openChatBtn").style.display = "none";
         }
-        document.getElementById("myForm").style.display = "block";
-        document.getElementById("openChatBtn").style.display = "none";
     }
     $scope.closeForm = function() {
 	  document.getElementById("myForm").style.display = "none";
