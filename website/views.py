@@ -56,7 +56,7 @@ def youtube_downloader_():
         choice = json_data['choice']
         quality = json_data['quality']   # low, medium, high, very high
         link = json_data['link']
-        if link[0:23] == "https://www.youtube.com" and link[0:16] == "https://youtu.be":
+        if link[0:23] == "https://www.youtube.com" or link[0:16] == "https://youtu.be":
             links = json_data['links']
             print(choice)
             print(quality)
