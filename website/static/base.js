@@ -31,17 +31,17 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
             dataType: "json"
         }).then(function (d) {
             console.log(d.data);
-            if(d.data=="0"){
+            if(d.data.result=="0"){
                 alertify.error("Youtube video url manzili kiritilmagan");
                 document.getElementById('hh').className= "fade hide";
                 document.getElementById('conn').style.visibility = "hidden";
             }
             else{
-                window.location.href = "/send_file?filename="+d.data;
+                window.location.href = "/send_file?filename="+d.data.result;
                 setTimeout(function() {
                     $http({
                         method: 'POST',
-                        url: "/remove_file?filename="+d.data,
+                        url: "/remove_file?filename="+d.data.result,
                     }).then(function (d) {
                         console.log(d.data);
                         document.getElementById('hh').className= "fade hide";

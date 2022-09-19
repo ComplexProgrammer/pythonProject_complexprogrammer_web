@@ -52,7 +52,6 @@ def youtube_downloader_():
         return render_template('youtube_downloader.html')
     if request.method == 'POST':
         json_data = request.json
-        print(json_data)
         choice = json_data['choice']
         quality = json_data['quality']   # low, medium, high, very high
         link = json_data['link']
@@ -66,18 +65,19 @@ def youtube_downloader_():
                 if choice == 1:
                     filename = youtube_downloader.download_video(link, quality)
                     result = app.root_path.replace('website', '') + filename
-                    return result
+                    print(result)
+                    return {"result": result}
             elif choice == 3:
                 print("Yuklab olinmoqda...")
                 filename = youtube_downloader.download_video(link, 'low')
                 print("Oʻzgartirilmoqda...")
                 file_converter.convert_to_mp3(filename)
                 result = app.root_path.replace('website', '') + filename.replace('.mp4', '.mp3')
-                return result
+                return {"result": result}
             else:
                 print("Yaroqsiz kiritish! Tugatilmoqda...")
         else:
-            return "0"
+            return {"result": "0"}
 
 
 @app.route("/send_file")
