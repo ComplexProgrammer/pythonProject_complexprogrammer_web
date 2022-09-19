@@ -57,11 +57,6 @@ def youtube_downloader_():
         quality = json_data['quality']   # low, medium, high, very high
         link = json_data['link']
         if link[0:23] == "https://www.youtube.com" or link[0:16] == "https://youtu.be":
-            links = json_data['links']
-            print(choice)
-            print(quality)
-            print(link)
-            print(links)
             if choice == 1 or choice == 2:
                 if choice == 2:
                     print("Pleylist yuklab olinmoqda...")
@@ -69,19 +64,16 @@ def youtube_downloader_():
                     print("Yuklab olish tugadi!")
                     print(filenames)
                 if choice == 1:
-                    for link in links:
-                        print(link)
-                        filename = youtube_downloader.download_video(link, quality)
-                        result = app.root_path.replace('website', '') + filename
-                        return result
-            elif choice == 3:
-                for link in links:
-                    print("Yuklab olinmoqda...")
-                    filename = youtube_downloader.download_video(link, 'low')
-                    print("Oʻzgartirilmoqda...")
-                    file_converter.convert_to_mp3(filename)
-                    result = app.root_path.replace('website', '') + filename.replace('.mp4', '.mp3')
+                    filename = youtube_downloader.download_video(link, quality)
+                    result = app.root_path.replace('website', '') + filename
                     return result
+            elif choice == 3:
+                print("Yuklab olinmoqda...")
+                filename = youtube_downloader.download_video(link, 'low')
+                print("Oʻzgartirilmoqda...")
+                file_converter.convert_to_mp3(filename)
+                result = app.root_path.replace('website', '') + filename.replace('.mp4', '.mp3')
+                return result
             else:
                 print("Yaroqsiz kiritish! Tugatilmoqda...")
         else:
