@@ -55,7 +55,7 @@ def youtube_downloader_():
         choice = json_data['choice']
         quality = json_data['quality']   # low, medium, high, very high
         link = json_data['link']
-        if link[0:23] == "https://www.youtube.com" or link[0:16] == "https://youtu.be":
+        if link[0:23] == "https://www.youtube.com" or link[0:19] == "https://youtube.com" or link[0:16] == "https://youtu.be":
             if choice == 1 or choice == 2:
                 if choice == 2:
                     print("Pleylist yuklab olinmoqda...")
