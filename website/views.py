@@ -33,6 +33,7 @@ import twilio.jwt.access_token
 import twilio.jwt.access_token.grants
 import twilio.rest
 from flask_socketio import SocketIO, send
+from vpn.controller import VPNServer
 account_sid = TWILIO_ACCOUNT_SID
 api_key = TWILIO_API_KEY_SID
 api_secret = TWILIO_API_KEY_SECRET
@@ -43,6 +44,31 @@ twilio_client = twilio.rest.Client(api_key, api_secret, account_sid)
 @app.route('/home')
 def home_page():
     return render_template('home.html')
+
+
+@app.route('/vpn_server')
+def vpn_server():
+    vpn_server = VPNServer()
+    print(vpn_server.vpn_password)
+    print(vpn_server.phone)
+    print(vpn_server.ec2_client)
+    print(vpn_server.ec2_resource)
+    print(vpn_server.gmail_pass)
+    print(vpn_server.gmail_user)
+    print(vpn_server.log_file)
+    print(vpn_server.logger)
+    print(vpn_server.port)
+    print(vpn_server.recipient)
+    print(vpn_server.region)
+    # vpn_server.create_vpn_server()  # Create a VPN Server
+    print(vpn_server)
+    vpn_server.reconfigure_vpn()  # Re-configure an existing VPN Server
+    print(vpn_server)
+    vpn_server.test_vpn()  # Test an existing VPN Server
+    print(vpn_server)
+    vpn_server.delete_vpn_server()  # Delete the VPN Server
+    print(vpn_server)
+    return "0"
 
 
 # region online services
