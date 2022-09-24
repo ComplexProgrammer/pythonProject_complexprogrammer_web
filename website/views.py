@@ -40,6 +40,11 @@ api_secret = TWILIO_API_KEY_SECRET
 twilio_client = twilio.rest.Client(api_key, api_secret, account_sid)
 
 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template('404.html')
+
+
 @app.route('/')
 @app.route('/home')
 def home_page():
