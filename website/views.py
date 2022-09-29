@@ -50,6 +50,11 @@ def home_page():
     return render_template('home.html')
 
 
+@app.route('/app-ads.txt')
+def send_adstxt():
+    return send_from_directory(app.static_folder, 'app-ads.txt')
+
+
 # region online services
 @app.route("/youtube_downloader", methods=['GET', 'POST'])
 def youtube_downloader_():
