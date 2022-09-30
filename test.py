@@ -4,17 +4,16 @@ import instaloader
 from instaloader import Instaloader, Profile
 print("start...")
 L = Instaloader()
-PROFILE = "it_programmerr"
+PROFILE = "benbucihanatv"
 profile = Profile.from_username(L.context, PROFILE)
 
 posts_sorted_by_likes = sorted(profile.get_posts(), key=lambda post: post.likes,reverse=True)
 
 try:
     for post in posts_sorted_by_likes:
-        if post.is_video:
-            print(post)
-            print(post.url)
-            L.download_post(post, PROFILE)
+        print(post)
+        print(post.url)
+        L.download_post(post, PROFILE)
 except IndexError:
     print("You have no saved posts yet.")
 print("end...")
