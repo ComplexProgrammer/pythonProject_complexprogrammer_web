@@ -56,7 +56,7 @@ def send_yandex_verification():
 
 
 @app.route('/sitemap.xml')
-def send_rss():
+def send_sitemap():
     return send_from_directory(app.static_folder, 'sitemap.xml')
 
 
