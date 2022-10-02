@@ -55,6 +55,11 @@ def send_yandex_verification():
     return send_from_directory(app.template_folder, 'yandex_6bd5e2cc7d84e7b1.html')
 
 
+@app.route('/sitemap.xml')
+def send_rss():
+    return send_from_directory(app.static_folder, 'sitemap.xml')
+
+
 @app.route('/rss.xml')
 def send_rss():
     return send_from_directory(app.static_folder, 'rss.xml')
