@@ -55,6 +55,11 @@ def send_yandex_verification():
     return send_from_directory(app.template_folder, 'yandex_6bd5e2cc7d84e7b1.html')
 
 
+@app.route('/zen_7l9bCOKi66HKyY4ilLYmulKUQTlrZLJrS3HSjTiMhq0GoD4ap8COxE7Bjw1oYf26.html')
+def send_zen_verification():
+    return send_from_directory(app.template_folder, 'zen_7l9bCOKi66HKyY4ilLYmulKUQTlrZLJrS3HSjTiMhq0GoD4ap8COxE7Bjw1oYf26.html')
+
+
 @app.route('/sitemap.xml')
 def send_sitemap():
     return send_from_directory(app.static_folder, 'sitemap.xml')
