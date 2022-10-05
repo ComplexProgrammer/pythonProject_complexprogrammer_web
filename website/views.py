@@ -65,6 +65,11 @@ def send_sitemap():
     return send_from_directory(app.static_folder, 'sitemap.xml')
 
 
+@app.route('/BingSiteAuth.xml')
+def send_bing_site_auth():
+    return send_from_directory(app.static_folder, 'BingSiteAuth.xml')
+
+
 @app.route('/rss.xml')
 def send_rss():
     return send_from_directory(app.static_folder, 'rss.xml')
