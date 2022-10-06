@@ -80,6 +80,11 @@ def send_adstxt():
     return send_from_directory(app.static_folder, 'app-ads.txt')
 
 
+@app.route('/robots.txt')
+def send_robots():
+    return send_from_directory(app.static_folder, 'robots.txt')
+
+
 # region online services
 @app.route("/youtube_downloader", methods=['GET', 'POST'])
 def youtube_downloader_():
