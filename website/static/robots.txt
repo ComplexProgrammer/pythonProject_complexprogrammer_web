@@ -3,4 +3,3 @@ Disallow: /bin/ # prohibits links from the Shopping Cart.
 Disallow: /search/ #  prohibits page links of the search embedded on the website
 Disallow: /admin/ # prohibits links from the admin panel
 Sitemap: http://complexprogrammer.uz/sitemap # specifies the path to the website's Sitemap file for the robot
-Clean-param: ref /some_dir/get_book.pl
