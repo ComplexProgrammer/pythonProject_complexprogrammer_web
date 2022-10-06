@@ -2,9 +2,12 @@ import base64
 import datetime
 import io
 import os
+import shutil
 import sqlite3
+import time
 import urllib
 import uuid
+
 
 import flask
 import imutils
@@ -23,7 +26,8 @@ import googletrans
 from googletrans import Translator
 import pyttsx3
 
-from website import app, ALLOWED_EXTENSIONS, db, youtube_downloader, file_converter, TWILIO_ACCOUNT_SID, TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, socketio
+from website import app, ALLOWED_EXTENSIONS, db, youtube_downloader, file_converter, TWILIO_ACCOUNT_SID, \
+    TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, socketio, instagram_downloader
 import json
 
 from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
@@ -91,6 +95,31 @@ def send_robots():
 
 
 # region online services
+@app.route("/instagram_downloader", methods=['GET', 'POST'])
+def instagram_downloader_():
+    if request.method == 'GET':
+        return render_template('instagram_downloader.html')
+    if request.method == 'POST':
+        json_data = request.json
+        user_name = json_data['user_name']
+        if user_name is None:
+            return {"result": "0"}
+        else:
+            result = instagram_downloader.save_insta_collection(user_name)
+            basedir = os.path.abspath(os.path.dirname(__file__))
+            print(basedir)
+            if result == user_name and os.path.exists(basedir.replace('website', result)):
+                shutil.make_archive(result, 'zip', basedir.replace('website', result))
+                now = time.time()
+                future = now + 3
+                while True:
+                    print(future)
+                    if time.time() > future:
+                        return {"result": basedir.replace('website', result) + '.zip'}
+            else:
+                return {"result": "0"}
+
+
 @app.route("/youtube_downloader", methods=['GET', 'POST'])
 def youtube_downloader_():
     if request.method == 'GET':
@@ -139,6 +168,19 @@ def remove_file_():
             filename_ = filename[:-4] + ".mp4"
             if os.path.exists(filename_):
                 os.remove(filename_)
+        if filename[-4:] == ".zip":
+            filename_ = filename[:-4]
+            path = filename_
+            print(path)
+            shutil.rmtree(path, ignore_errors=True)
+            # for file_name in os.listdir(path):
+            #     print(file_name)
+            #     file = path + file_name
+            #     print(file)
+            #     if os.path.isfile(file):
+            #         print('Deleting file:', file)
+            #         os.remove(file)
+        print(filename)
         os.remove(filename)
         return "1"
     else:
