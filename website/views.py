@@ -55,6 +55,11 @@ def send_yandex_verification():
     return send_from_directory(app.template_folder, 'yandex_6bd5e2cc7d84e7b1.html')
 
 
+@app.route('/googleed00602540a61448.html')
+def send_google_verification():
+    return send_from_directory(app.template_folder, 'googleed00602540a61448.html')
+
+
 @app.route('/zen_7l9bCOKi66HKyY4ilLYmulKUQTlrZLJrS3HSjTiMhq0GoD4ap8COxE7Bjw1oYf26.html')
 def send_zen_verification():
     return send_from_directory(app.template_folder, 'zen_7l9bCOKi66HKyY4ilLYmulKUQTlrZLJrS3HSjTiMhq0GoD4ap8COxE7Bjw1oYf26.html')
