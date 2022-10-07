@@ -178,7 +178,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
     }
     $scope.openForm = function() {
         if($scope.login=="Login"){
-            document.getElementById("openChatBtn").style.display = "none";
+            window.location.href = "/login"
         }
         else{
             if($scope.MyContacts==null){
