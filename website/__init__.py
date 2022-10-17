@@ -1,4 +1,5 @@
 import os
+
 from flask_socketio import SocketIO
 
 from flask import Flask
@@ -13,7 +14,9 @@ UPLOAD_FOLDER = 'C:/Users/odilj/OneDrive/Документы/ImageCompare'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 basedir = os.path.abspath(os.path.dirname(__file__))
 print(basedir)
+
 app = Flask(__name__)
+
 socketio = SocketIO(app, cors_allowed_origins="*")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000 * 1000
