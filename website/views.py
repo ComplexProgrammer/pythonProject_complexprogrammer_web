@@ -124,6 +124,11 @@ def send_robots():
     return send_from_directory(app.static_folder, 'robots.txt')
 
 
+@app.route('//.well-known/pki-validation/057563D5748D2753B84E7944B00F213F.txt')
+def send_ssl():
+    return send_from_directory(app.static_folder, '057563D5748D2753B84E7944B00F213F.txt')
+
+
 # region online services
 wb_cartoonizer = WB_Cartoonize(os.path.abspath("website/white_box_cartoonizer/saved_models/"), opts['gpu'])
 
