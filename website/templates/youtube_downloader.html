@@ -147,6 +147,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                         <button ng-click="UrlTo(3)" class="nav-link" id="pills-contact-tab" data-bs-toggle="pill" data-bs-target="#pills-contact" type="button" role="tab" aria-controls="pills-contact" aria-selected="false"><span class="material-icons">audio_file</span> .mp3</button>
                       </li>
                     </ul>
+                    <ul class="nav nav-pills mb-3" id="quality-tab" role="tablist">
+                      <li class="nav-item" role="presentation">
+                        <button ng-click="Quality('low')" class="nav-link text-danger active" id="low" data-bs-toggle="pill" data-bs-target="#low" type="button" role="tab" aria-controls="low" aria-selected="true">low</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button ng-click="Quality('medium')" class="nav-link text-danger" id="medium" data-bs-toggle="pill" data-bs-target="#medium" type="button" role="tab" aria-controls="medium" aria-selected="false">medium</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button ng-click="Quality('high')" class="nav-link text-danger" id="high" data-bs-toggle="pill" data-bs-target="#high" type="button" role="tab" aria-controls="high" aria-selected="false">high</button>
+                      </li>
+                      <li class="nav-item" role="presentation">
+                        <button ng-click="Quality('very high')" class="nav-link text-danger" id="very_high" data-bs-toggle="pill" data-bs-target="#very_high" type="button" role="tab" aria-controls="very_high" aria-selected="false">very high</button>
+                      </li>
+                    </ul>
                     <div class="input-group mb-3">
                       <input type="text" ng-model="link" class="form-control" placeholder="Youtube video url" aria-label="Youtube video or playlist url" aria-describedby="button-addon2">
                       <button class="btn btn-outline-success" type="button" ng-click="youtube_downloader()" id="button-addon2">Convert</button>

@@ -8,8 +8,18 @@ app.filter('jsonDate', ['$filter', function ($filter) {
 }]);
 app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
     $scope.convert_choice = 1;
+    $scope.convert_quality = "low";
     $scope.UrlTo = function(choice){
-        $scope.convert_choice = choice
+        $scope.convert_choice = choice;
+        if(choice==1){
+            document.getElementById('quality-tab').style = "display:visible";
+        }
+        else{
+            document.getElementById('quality-tab').style = "display:none";
+        }
+    }
+    $scope.Quality = function(quality){
+        $scope.convert_quality = quality
     }
     $scope.youtube_downloader = function(){
         document.getElementById('conn').style.visibility = "visible";
@@ -19,7 +29,7 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
         console.log($scope.links)
         $scope.model = {
             choice:$scope.convert_choice,
-            quality:"low",
+            quality:$scope.convert_quality,
             link:$scope.link,
             links:$scope.links
         }

@@ -282,6 +282,8 @@ def cartoonize():
             return render_template("index_cartoonized.html")
     else:
         return render_template("index_cartoonized.html")
+
+
 @app.route("/instagram_downloader", methods=['GET', 'POST'])
 def instagram_downloader_():
     if request.method == 'GET':
