@@ -117,6 +117,9 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
         }
 
     $scope.login="Login";
+    $scope.clickLogin = function(){
+        myModal.show();
+    }
     $scope.user=checkAuth();
     if($scope.user!=false){
         $scope.login=checkUserName();
@@ -188,7 +191,8 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
     }
     $scope.openForm = function() {
         if($scope.login=="Login"){
-            window.location.href = "/login"
+            myModal.show();
+//            window.location.href = "/login"
         }
         else{
             if($scope.MyContacts==null){

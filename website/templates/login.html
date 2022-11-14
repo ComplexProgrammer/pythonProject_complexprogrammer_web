@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="text/javascript">
+<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "e815a36ng3");
 </script>
-        <!-- Yandex.Metrika counter -->
+<!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();
@@ -29,9 +29,9 @@
     <title>Login</title>
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/login/css.css">
-    <link rel="stylesheet" href="http://complexprogrammer.uz/static/C0mplexButtonStyle.css">
-    <script src="http://complexprogrammer.uz/static/jquery-3.4.1.min.js"></script>
-    <script src="http://complexprogrammer.uz/static/angular.min.js"></script>
+    <link rel="stylesheet" href="/static/C0mplexButtonStyle.css">
+    <script src="/static/jquery-3.4.1.min.js"></script>
+    <script src="/static/angular.min.js"></script>
     <script src="/static/login/js.js"></script>
     <script src="/static/login/auth.js"></script>
     <script src="/static/base.js"></script>
@@ -57,6 +57,7 @@
         const analytics = getAnalytics(app);
         const auth = getAuth(app);
         var user_='';
+        alert()
         checkAuthState()
         recaptchaVerifier()
         function recaptchaVerifier() {
@@ -251,6 +252,7 @@
                     success: function (data) {
                         console.log(data);
                         removeCookie("user")
+                        myModal.hide();
                     },
                     error: function(error){
                         console.log(error);
@@ -311,15 +313,15 @@
 {% raw %}
 
     <div class="cotn_principal">
-        <div class="C0mplexButton">
-            <a href="/">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                X
-            </a>
-        </div>
+<!--        <div class="C0mplexButton">-->
+<!--            <a href="/">-->
+<!--                <span></span>-->
+<!--                <span></span>-->
+<!--                <span></span>-->
+<!--                <span></span>-->
+<!--                X-->
+<!--            </a>-->
+<!--        </div>-->
         <div class="cont_centrar">
             <div id="cont_login" class="cont_login">
                 <div class="cont_info_log_sign_up">

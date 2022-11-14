@@ -32,10 +32,12 @@
 <script src="https://yandex.ru/ads/system/context.js" async></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<!--    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="icon" sizes="16x16" href="http://complexprogrammer.uz/static/img/favicon.ico">
     <link rel="stylesheet" href="/static/style.css">
     <link rel="stylesheet" href="http://complexprogrammer.uz/static/C0mplexButtonStyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/f7eccd980a.js" crossorigin="anonymous"></script>
     <title>C0mplex</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7773722896374259"
@@ -49,40 +51,295 @@
 
   gtag('config', 'G-8DHWL20H58');
 </script>
-    <!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+<!-- Google Tag Manager -->
+<script>
+(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NW763C2');</script>
-<!-- End Google Tag Manager -->
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.6.6/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyDpWaFi5QLTNc-yY0ieMKJtGOmbm2ofBm4",
-    authDomain: "c0mplex.firebaseapp.com",
-    projectId: "c0mplex",
-    storageBucket: "c0mplex.appspot.com",
-    messagingSenderId: "755681568857",
-    appId: "1:755681568857:web:102b1b733df55baefe2948",
-    measurementId: "G-95WQGY7X9E"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
+})(window,document,'script','dataLayer','GTM-NW763C2');
 </script>
+<!-- End Google Tag Manager -->
+        <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-analytics.js";
+        import { getAuth, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber   } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js";
+        const firebaseConfig = {
+            apiKey: "AIzaSyDpWaFi5QLTNc-yY0ieMKJtGOmbm2ofBm4",
+            authDomain: "c0mplex.firebaseapp.com",
+            projectId: "c0mplex",
+            storageBucket: "c0mplex.appspot.com",
+            messagingSenderId: "755681568857",
+            appId: "1:755681568857:web:102b1b733df55baefe2948",
+            measurementId: "G-95WQGY7X9E"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+        const auth = getAuth(app);
+        var user_='';
+        alert()
+        checkAuthState()
+        recaptchaVerifier()
+        function recaptchaVerifier() {
+            window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+                'size': 'invisible',
+                'callback': (response) => {
+                    document.getElementById('phoneNumber_block').style='position:absolute'
+                    document.getElementById('phoneNumber_block').style.visibility='hidden'
+                    document.getElementById('code_block').style='position:relative'
+                    document.getElementById('code_block').style.visibility='visible'
+                    console.log(response)
+                    submitPhoneNumberAuth()
+                },
+                'expired-callback': () => {
+
+                }
+            }, auth);
+        }
+        function submitPhoneNumberAuth(){
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            if(phoneNumber != ''){
+                const appVerifier = window.recaptchaVerifier;
+                signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+                .then((confirmationResult) => {
+
+                  window.confirmationResult = confirmationResult;
+                }).catch((error) => {
+
+                });
+            }
+        }
+        function submitPhoneNumberAuthCode() {
+            var code = document.getElementById("code").value;
+            if(code != ''){
+                confirmationResult.confirm(code).then((result) => {
+                    document.getElementById('code_block').style='position:absolute'
+                    document.getElementById('code_block').style.visibility='hidden'
+                  const user = result.user;
+                  checkUser(user);
+                }).catch((error) => {
+
+                });
+            }
+        }
+        document.getElementById('back').addEventListener('click', back)
+        document.getElementById('signIn').addEventListener('click', signInUser)
+        document.getElementById('signUp').addEventListener('click', signUpUser)
+        document.getElementById('logout').addEventListener('click', out)
+        document.getElementById('phoneAuthBtn').addEventListener('click', PhoneLogin)
+        document.getElementById('sign-in-button').addEventListener('click', submitPhoneNumberAuth)
+        document.getElementById('confirm-code').addEventListener('click', submitPhoneNumberAuthCode)
+        document.getElementById('googleAuthBtn').addEventListener('click', GoogleLogin)
+        document.getElementById('gitHubAuthBtn').addEventListener('click', GitHubLogin)
+
+
+        const google_provider = new GoogleAuthProvider();
+        const github_provider = new GithubAuthProvider();
+
+        document.getElementById('phone_block').style='position:absolute'
+        document.getElementById('phone_block').style.visibility='hidden'
+        function signInUser(){
+            document.getElementById('phone_block').style='position:absolute'
+            document.getElementById('phone_block').style.visibility='hidden'
+            //document.getElementById('login_block').style='position:relative'
+            //document.getElementById('login_block').style.visibility='visible'
+            let email = document.getElementById('_email').value
+            let password = document.getElementById('_password').value
+            if(email != '' && password != ''){
+                signInWithEmailAndPassword(auth, email, password)
+                  .then((userCredential) => {
+                    const user = userCredential.user;
+                    checkUser(user);
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                  });
+            }
+        }
+        function signUpUser(){
+            let email = document.getElementById('email').value
+            let user = document.getElementById('user').value
+            let password = document.getElementById('password').value
+            let confirm_password = document.getElementById('confirm_password').value
+            let warning = document.getElementById('warning')
+            if(password == confirm_password){
+                warning.style.visibility='hidden'
+                createUserWithEmailAndPassword(auth, email, password)
+                  .then((userCredential) => {
+                    const user = userCredential.user;
+                    checkUser(user);
+                  })
+                  .catch((error) => {
+                    console.log(error)
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                  });
+            }
+            else{
+                warning.style.visibility='visible'
+                warning.innerText='parollar bir-biriga mos emas'
+            }
+        }
+        function back(){
+            document.getElementById('or').style='position:relative'
+            document.getElementById('or').style.visibility='visible'
+            document.getElementById('phoneAuthBtn').style='position:relative'
+            document.getElementById('phoneAuthBtn').style.visibility='visible'
+            document.getElementById('googleAuthBtn').style='position:relative'
+            document.getElementById('googleAuthBtn').style.visibility='visible'
+            document.getElementById('gitHubAuthBtn').style='position:relative'
+            document.getElementById('gitHubAuthBtn').style.visibility='visible'
+            document.getElementById('login_block').style='position:relative'
+            document.getElementById('login_block').style.visibility='visible'
+            document.getElementById('phone_block').style='position:absolute'
+            document.getElementById('phone_block').style.visibility='hidden'
+            document.getElementById('code_block').style='position:absolute'
+            document.getElementById('code_block').style.visibility='hidden'
+            document.getElementById('phoneNumber_block').style='position:absolute'
+            document.getElementById('phoneNumber_block').style.visibility='hidden'
+
+        }
+        function PhoneLogin(){
+            document.getElementById('or').style='position:absolute'
+            document.getElementById('or').style.visibility='hidden'
+            document.getElementById('phoneAuthBtn').style='position:absolute'
+            document.getElementById('phoneAuthBtn').style.visibility='hidden'
+            document.getElementById('googleAuthBtn').style='position:absolute'
+            document.getElementById('googleAuthBtn').style.visibility='hidden'
+            document.getElementById('gitHubAuthBtn').style='position:absolute'
+            document.getElementById('gitHubAuthBtn').style.visibility='hidden'
+            document.getElementById('login_block').style='position:absolute'
+            document.getElementById('login_block').style.visibility='hidden'
+            document.getElementById('phone_block').style='position:relative'
+            document.getElementById('phone_block').style.visibility='visible'
+            document.getElementById('code_block').style='position:absolute'
+            document.getElementById('code_block').style.visibility='hidden'
+            document.getElementById('phoneNumber_block').style='position:relative'
+            document.getElementById('phoneNumber_block').style.visibility='visible'
+        }
+        function GoogleLogin(){
+            signInWithPopup(auth, google_provider)
+              .then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+                checkUser(user);
+              }).catch((error) => {
+                console.log(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GoogleAuthProvider.credentialFromError(error);
+              });
+        }
+        function GitHubLogin(){
+            signInWithPopup(auth, github_provider)
+              .then((result) => {
+                console.log(result)
+                const credential = GithubAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+                checkUser(user);
+              }).catch((error) => {
+                console.log(error)
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GithubAuthProvider.credentialFromError(error);
+              });
+        }
+        function checkAuthState(){
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    document.getElementById('cont_login').style.visibility='hidden'
+                    document.getElementById('cont_logout').style.visibility='visible'
+                    user_ = user;
+                    const uid = user.uid;
+                }
+                else {
+                    document.getElementById('cont_login').style.visibility='visible'
+                    document.getElementById('cont_logout').style.visibility='hidden'
+                }
+            });
+        }
+        function out(){
+            signOut(auth).then(() => {
+                $.ajax({
+                    type: "POST",
+                    url: "/logout?uid=" + user_.uid,
+                    success: function (data) {
+                        console.log(data);
+                        removeCookie("user")
+                        myModal.hide();
+                    },
+                    error: function(error){
+                        console.log(error);
+                    }
+                });
+                document.getElementById('cont_login').style.visibility='visible'
+                document.getElementById('cont_logout').style.visibility='hidden'
+            }).catch((error) => {
+
+            });
+
+        }
+        function checkUser(user){
+            console.log(user)
+            console.log(user.photoURL)
+            console.log(user.displayName)
+            console.log(user.email)
+            console.log(user.phoneNumber)
+            console.log(user.providerId)
+            console.log(user.uid)
+            console.log(user.emailVerified)
+            console.log(JSON.stringify(user))
+            var model = {
+                photo_url:user.photoURL,
+                name:user.displayName,
+                email:user.email,
+                phone:user.phoneNumber,
+                provider_id:user.providerId,
+                uid:user.uid,
+                email_verified:user.emailVerified
+            };
+            $.ajax({
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                url: "/checkUser",
+                data: JSON.stringify(model),
+                success: function (data) {
+                    console.log(data);
+                    setCookie("user", JSON.stringify(data), 365);
+                    myModal.hide();
+<!--                    window.location.href = "/"-->
+                },
+                dataType: "json"
+            });
+        }
+        var serializeObject = function(obj) {
+          var output = '';
+          for(var attr in obj) {
+            if(obj.hasOwnProperty(attr)) {
+              output += attr + '=' + obj + '&';
+            }
+          }
+          return output.slice(0, -1);
+        };
+    </script>
+    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/static/login/css.css">
     <script src="http://complexprogrammer.uz/static/jquery-3.4.1.min.js"></script>
     <script src="http://complexprogrammer.uz/static/angular.min.js"></script>
+    <script src="/static/login/js.js"></script>
     <script src="/static/login/auth.js"></script>
     <script src="/static/base.js"></script>
+
     <meta name="google-site-verification" content="jl3apNi8FhHmCceWlm-SO80kOwqIq_Pv-CwaabrEEvU" />
 <style>
         body,html{
@@ -308,6 +565,127 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 {% raw %}
+<!-- Modal -->
+<div class="modal fade bd-example-modal-xl" id="loginStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginStaticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginStaticBackdropLabel">Login</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+            <div class="cont_centrar">
+                <div id="cont_login" class="cont_login">
+                    <div class="cont_info_log_sign_up">
+                        <div class="col_md_login">
+                            <div class="cont_ba_opcitiy">
+                                <h2>LOGIN</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                <button class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                            </div>
+                        </div>
+                        <div class="col_md_sign_up">
+                            <div class="cont_ba_opcitiy">
+                                <h2>SIGN UP</h2>
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                <button class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cont_back_info">
+                        <div class="cont_img_back_grey">
+                            <img src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d" alt="" />
+                        </div>
+
+                    </div>
+                    <div class="cont_forms">
+                        <div class="cont_img_back_">
+                            <img src="https://images.unsplash.com/42/U7Fc1sy5SCUDIu4tlJY3_NY_by_PhilippHenzler_philmotion.de.jpg?ixlib=rb-0.3.5&q=50&fm=jpg&crop=entropy&s=7686972873678f32efaf2cd79671673d" alt="" />
+                        </div>
+                        <div class="cont_form_login">
+                            <a href="#" id="back" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                            <h2>LOGIN</h2>
+                            <div id="login_block">
+                                <input type="text" id="_email" placeholder="Email" />
+                                <input type="password" id="_password" placeholder="Password" />
+                                <button id="signIn" class="btn_login" onclick="cambiar_login()">LOGIN</button>
+                            </div>
+                            <div id="phone_block">
+                                <div id="phoneNumber_block">
+                                    <input type="tel" id="phoneNumber" placeholder="Phone number" />
+                                    <button id="sign-in-button" class="next">
+                                      SIGN IN WITH PHONE &raquo;
+                                    </button>
+                                </div>
+                                <div id="code_block">
+                                    <input type="text" id="code" placeholder="Code" />
+                                    <button id="confirm-code" class="next">
+                                      ENTER CODE &raquo;
+                                    </button>
+                                </div>
+                                <div id="recaptcha-container"></div>
+                            </div>
+                            <div id="or">or</div>
+                            <div id="phoneAuthBtn" class="customGPlusSignIn">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill" style="margin:12px;display: inline-block;vertical-align: middle;" viewBox="0 0 16 16">
+                                  <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+                                </svg>
+                                <span class="buttonText">Phone</span>
+                            </div>
+                            <div id="googleAuthBtn" class="customGPlusSignIn">
+                                <span class="google_icon"></span>
+                                <span class="buttonText">Google</span>
+                            </div>
+                            <div id="gitHubAuthBtn" class="customGPlusSignIn">
+                                <span class="github_icon"></span>
+                                <span class="buttonText">GitHub</span>
+                            </div>
+                        </div>
+                        <div class="cont_form_sign_up">
+                                <a href="#" onclick="ocultar_login_sign_up()"><i class="material-icons">&#xE5C4;</i></a>
+                                <h2>SIGN UP</h2>
+                                <span id="warning" style="color:red"></span>
+                                <input type="text" id="email" placeholder="Email" />
+                                <input type="text" id="user" placeholder="User" />
+                                <input type="password" id="password" placeholder="Password" />
+                                <input type="password" id="confirm_password" placeholder="Confirm Password" />
+                                <button id="signUp" class="btn_sign_up" onclick="cambiar_sign_up()">SIGN UP</button>
+                            </div>
+                    </div>
+                </div>
+                <div id="cont_logout"  class="cont_login">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th><img ng-show="photo_url" src="{{photo_url}}"/> </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{name}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{email}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{phone}}</td>
+                            </tr>
+                            <tr>
+                                <td>{{provider_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button id="logout" class="btn_sign_up">Logout</button>
+                </div>
+            </div>
+<!--        <iframe src="/login" title="login" height="100%" width="100%" frameborder="0"></iframe>-->
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop'));
+</script>
     <!--start chat-->
     <button class="open-button" id="openChatBtn" ng-click="openForm()"><img style="width:30px" src="/static/img/chat.png"/></button>
     <div id="myForm" class="container chat-popup" style="min-height:0vh;">
@@ -442,7 +820,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 <li><a href="#projects" data-after="Projects">Projects</a></li>
                 <li><a href="#about" data-after="About">About</a></li>
                 <li><a href="#contact" data-after="Contact">Contact</a></li>
-                <li><a href="/login"><img ng-show="user.photo_url" src="{{user.photo_url}}" style="width:30px;padding-top:-100px"/> {{login}}</a></li>
+                <li><a href="#" ng-click="clickLogin()"><img ng-show="user.photo_url" src="{{user.photo_url}}" style="width:30px;padding-top:-100px"/> {{login}}</a></li>
             </ul>
         </div>
       </div>
