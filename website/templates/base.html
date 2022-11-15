@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-    <script type="text/javascript">
+<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
         y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
     })(window, document, "clarity", "script", "e815a36ng3");
 </script>
-    <!-- Yandex.Metrika counter -->
+<!-- Yandex.Metrika counter -->
 <script type="text/javascript" >
    (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
    m[i].l=1*new Date();
@@ -60,9 +60,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','GTM-NW763C2');
 </script>
 <!-- End Google Tag Manager -->
-        <script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
-    <link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
-    <script type="module">
+<script src="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.js"></script>
+<link type="text/css" rel="stylesheet" href="https://www.gstatic.com/firebasejs/ui/6.0.1/firebase-ui-auth.css" />
+<script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-analytics.js";
         import { getAuth, signOut, onAuthStateChanged, signInWithPopup, GoogleAuthProvider, GithubAuthProvider, createUserWithEmailAndPassword, signInWithEmailAndPassword, RecaptchaVerifier, signInWithPhoneNumber   } from "https://www.gstatic.com/firebasejs/9.9.2/firebase-auth.js";
@@ -81,7 +81,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         const analytics = getAnalytics(app);
         const auth = getAuth(app);
         var user_='';
-        alert()
         checkAuthState()
         recaptchaVerifier()
         function recaptchaVerifier() {
@@ -258,12 +257,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     document.getElementById('cont_login').style.visibility='hidden'
+                    document.getElementById('cont_logout').style='position:relative'
                     document.getElementById('cont_logout').style.visibility='visible'
                     user_ = user;
                     const uid = user.uid;
                 }
                 else {
                     document.getElementById('cont_login').style.visibility='visible'
+                    document.getElementById('cont_logout').style='position:absolute'
                     document.getElementById('cont_logout').style.visibility='hidden'
                 }
             });
@@ -283,11 +284,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     }
                 });
                 document.getElementById('cont_login').style.visibility='visible'
+                document.getElementById('cont_logout').style='position:absolute'
                 document.getElementById('cont_logout').style.visibility='hidden'
             }).catch((error) => {
 
             });
-
         }
         function checkUser(user){
             console.log(user)
@@ -316,8 +317,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 success: function (data) {
                     console.log(data);
                     setCookie("user", JSON.stringify(data), 365);
-                    myModal.hide();
-<!--                    window.location.href = "/"-->
+                    window.location.href = "/"
                 },
                 dataType: "json"
             });
@@ -566,8 +566,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
 {% raw %}
 <!-- Modal -->
-<div class="modal fade bd-example-modal-xl" id="loginStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginStaticBackdropLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered modal-xl">
+<div class="modal fade bd-example-modal-lg" id="loginStaticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="loginStaticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="loginStaticBackdropLabel">Login</h5>
@@ -575,6 +575,29 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <div class="modal-body">
             <div class="cont_centrar">
+                <div id="cont_logout">
+                    <table class="table table-hover">
+                        <thead ng-show="user.photo_url">
+                            <tr>
+                                <th>
+                                    <img src="{{user.photo_url}}" style="width:10%"/>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-show="user.name">
+                                <td>{{user.name}}</td>
+                            </tr>
+                            <tr ng-show="user.email">
+                                <td>{{user.email}}</td>
+                            </tr>
+                            <tr ng-show="user.phone">
+                                <td>{{user.phone}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button id="logout" class="btn_sign_up">Logout</button>
+                </div>
                 <div id="cont_login" class="cont_login">
                     <div class="cont_info_log_sign_up">
                         <div class="col_md_login">
@@ -653,32 +676,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             </div>
                     </div>
                 </div>
-                <div id="cont_logout"  class="cont_login">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th><img ng-show="photo_url" src="{{photo_url}}"/> </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>{{name}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{email}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{phone}}</td>
-                            </tr>
-                            <tr>
-                                <td>{{provider_id}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <button id="logout" class="btn_sign_up">Logout</button>
-                </div>
             </div>
-<!--        <iframe src="/login" title="login" height="100%" width="100%" frameborder="0"></iframe>-->
       </div>
     </div>
   </div>
