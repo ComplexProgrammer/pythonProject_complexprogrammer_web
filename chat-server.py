@@ -2,7 +2,7 @@
 import socket
 import threading
 
-HOST = '127.0.0.1'
+HOST = '127.18.45.73'
 PORT = 1234  # You can use any port between 0 to 65535
 LISTENER_LIMIT = 5
 active_clients = []  # List of all currently connected users
@@ -25,6 +25,7 @@ def listen_for_messages(client, username):
 # Function to send message to a single client
 def send_message_to_client(client, message):
     client.sendall(message.encode())
+    print(message)
 
 
 # Function to send any new message to all the clients that

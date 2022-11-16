@@ -10,12 +10,12 @@ import urllib
 import uuid
 import yaml
 
-
 import flask
 import imutils
 import numpy
 import numpy as np
 import skvideo
+
 skvideo.setFFmpegPath(r'C:\Python310\Lib\site-packages\ffmpeg')
 import skvideo.io
 from PIL import Image, ImageChops, ImageFile
@@ -33,7 +33,6 @@ import pyttsx3
 
 from website import app, ALLOWED_EXTENSIONS, db, youtube_downloader, file_converter, TWILIO_ACCOUNT_SID, \
     TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, socketio, instagram_downloader
-
 
 import json
 
@@ -55,7 +54,7 @@ twilio_client = twilio.rest.Client(api_key, api_secret, account_sid)
 with open('./website/config.yaml', 'r') as fd:
     opts = yaml.safe_load(fd)
 if opts['colab-mode']:
-    from flask_ngrok import run_with_ngrok #to run the application on colab using ngrok
+    from flask_ngrok import run_with_ngrok  # to run the application on colab using ngrok
 
 if not opts['run_local']:
     if 'GOOGLE_APPLICATION_CREDENTIALS' in os.environ:
@@ -65,7 +64,7 @@ if not opts['run_local']:
     from website.video_api import api_request
     # Algorithmia (GPU inference)
 if opts['colab-mode']:
-    run_with_ngrok(app)   #starts ngrok when the app is run
+    run_with_ngrok(app)  # starts ngrok when the app is run
 
 app.config['UPLOAD_FOLDER_VIDEOS'] = 'website/static/uploaded_videos'
 app.config['CARTOONIZED_FOLDER'] = 'website/static/cartoonized_images'
@@ -96,7 +95,8 @@ def send_google_verification():
 
 @app.route('/zen_7l9bCOKi66HKyY4ilLYmulKUQTlrZLJrS3HSjTiMhq0GoD4ap8COxE7Bjw1oYf26.html')
 def send_zen_verification():
-    return send_from_directory(app.template_folder, 'zen_7l9bCOKi66HKyY4ilLYmulKUQTlrZLJrS3HSjTiMhq0GoD4ap8COxE7Bjw1oYf26.html')
+    return send_from_directory(app.template_folder,
+                               'zen_7l9bCOKi66HKyY4ilLYmulKUQTlrZLJrS3HSjTiMhq0GoD4ap8COxE7Bjw1oYf26.html')
 
 
 @app.route('/sitemap.xml')
@@ -182,7 +182,8 @@ def cartoonize():
                     os.system("rm " + cartoonized_img_name)
                     cartoonized_img_name = generate_signed_url(output_uri)
                 print(cartoonized_img_name)
-                return render_template("index_cartoonized.html", cartoonized_image=cartoonized_img_name.replace('website/', ''))
+                return render_template("index_cartoonized.html",
+                                       cartoonized_image=cartoonized_img_name.replace('website/', ''))
 
             if flask.request.files.get('video'):
 
@@ -316,9 +317,10 @@ def youtube_downloader_():
     if request.method == 'POST':
         json_data = request.json
         choice = json_data['choice']
-        quality = json_data['quality']   # low, medium, high, very high
+        quality = json_data['quality']  # low, medium, high, very high
         link = json_data['link']
-        if link[0:23] == "https://www.youtube.com" or link[0:19] == "https://youtube.com" or link[0:16] == "https://youtu.be":
+        if link[0:23] == "https://www.youtube.com" or link[0:19] == "https://youtube.com" or link[
+                                                                                             0:16] == "https://youtu.be":
             if choice == 1 or choice == 2:
                 if choice == 2:
                     print("Pleylist yuklab olinmoqda...")
@@ -712,7 +714,7 @@ def getMyContacts():
 
 @socketio.on('message')
 def handle_message(message):
-    print("Received message "+message)
+    print("Received message " + message)
     if message != "User connected!":
         send(message, broadcast=True)
 

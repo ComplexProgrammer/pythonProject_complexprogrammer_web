@@ -269,9 +269,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 }
             });
         }
-        function a(){
-
-        }
         function out(){
             signOut(auth).then(() => {
                 $.ajax({
@@ -280,7 +277,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     success: function (data) {
                         console.log(data);
                         removeCookie("user")
-                        myModal.hide();
+                        window.location.href = "/"
                     },
                     error: function(error){
                         console.log(error);
@@ -767,23 +764,23 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 						<div class="card-body msg_card_body"  id="scroll-to-bottom">
                             <div ng-repeat="item in Messages">
                                 <div ng-show="user.id!=item.sender_id" class="d-flex justify-content-start mb-4">
-								<div class="img_cont_msg">
-									<img ng-show="selectedUser.photo_url" src="{{selectedUser.photo_url}}" class="rounded-circle user_img_msg">
-								</div>
-								<div class="msg_cotainer">
-									{{item.text}}
-									<span class="msg_time">8:40 AM, Today</span>
-								</div>
-							</div>
+                                    <div class="img_cont_msg">
+                                        <img ng-show="selectedUser.photo_url" src="{{selectedUser.photo_url}}" class="rounded-circle user_img_msg">
+                                    </div>
+                                    <div class="msg_cotainer">
+                                        {{item.text}}
+                                        <span class="msg_time">8:40 AM, Today</span>
+                                    </div>
+                                </div>
 							    <div ng-show="user.id==item.sender_id" class="d-flex justify-content-end mb-4">
-								<div class="msg_cotainer_send">
-									{{item.text}}
-									<span class="msg_time_send">8:55 AM, Today</span>
-								</div>
-								<div class="img_cont_msg">
-							        <img  ng-show="user.photo_url" src="{{user.photo_url}}" class="rounded-circle user_img_msg">
-								</div>
-							</div>
+                                    <div class="msg_cotainer_send">
+                                        {{item.text}}
+                                        <span class="msg_time_send">8:55 AM, Today</span>
+                                    </div>
+                                    <div class="img_cont_msg">
+                                        <img  ng-show="user.photo_url" src="{{user.photo_url}}" class="rounded-circle user_img_msg">
+                                    </div>
+                                </div>
                             </div>
 						</div>
 						<div class="card-footer">

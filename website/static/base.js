@@ -6,7 +6,7 @@ app.filter('jsonDate', ['$filter', function ($filter) {
             : '';
     };
 }]);
-app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
+app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scope, $window, $http, $filter) {
     $scope.convert_choice = 1;
     $scope.convert_quality = "low";
     $scope.UrlTo = function(choice){
@@ -115,7 +115,6 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
                 console.log("error in instagram_downloader -> ", error);
             });
         }
-
     $scope.login="Login";
     $scope.clickLogin = function(){
         myModal.show();
@@ -124,6 +123,10 @@ app.controller("Base", ["$scope", "$http", "$filter", function ($scope, $http, $
     if($scope.user!=false){
         $scope.login=checkUserName();
     }
+    $window.angFoo = function() {
+        $scope.login="Login";
+        console.log($scope.login)
+    };
     function getContacts(){
             $http({
                 method: 'POST',
