@@ -277,7 +277,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     success: function (data) {
                         console.log(data);
                         removeCookie("user")
-                        window.location.href = "/"
+                        window.leave_room();
                     },
                     error: function(error){
                         console.log(error);
@@ -317,7 +317,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 success: function (data) {
                     console.log(data);
                     setCookie("user", JSON.stringify(data), 365);
-                    window.location.href = "/"
+                    window.join_room();
                 },
                 dataType: "json"
             });
@@ -334,12 +334,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     </script>
     <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="/static/login/css.css">
-    <script src="http://complexprogrammer.uz/static/jquery-3.4.1.min.js"></script>
+<!--    <script src="http://complexprogrammer.uz/static/jquery-3.4.1.min.js"></script>-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.3/socket.io.min.js" integrity="sha512-GtM/5c/Ie0lStj6QwEG0HkpMQuGr9vrOAgFD4nNmImviyZvsJxN7TYU7b+R7Kthob0zFBUpuxfl3R3Mn1qekTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="http://complexprogrammer.uz/static/angular.min.js"></script>
     <script src="/static/login/js.js"></script>
     <script src="/static/login/auth.js"></script>
     <script src="/static/base.js"></script>
+    <script type="text/javascript" charset="utf-8">
 
+    </script>
     <meta name="google-site-verification" content="jl3apNi8FhHmCceWlm-SO80kOwqIq_Pv-CwaabrEEvU" />
 <style>
         body,html{

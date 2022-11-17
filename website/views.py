@@ -14,16 +14,12 @@ import flask
 import imutils
 import numpy
 import numpy as np
-import skvideo
-
-skvideo.setFFmpegPath(r'C:\Python310\Lib\site-packages\ffmpeg')
-import skvideo.io
 from PIL import Image, ImageChops, ImageFile
 # from cv2 import cv2
 import cv2
 import urllib3
 from skimage.metrics import structural_similarity as compare_ssim
-from flask import render_template, request, jsonify, flash, send_file, send_from_directory, abort
+from flask import render_template, request, jsonify, flash, send_file, send_from_directory, abort, session
 from sqlalchemy import func
 from sqlalchemy.orm import joinedload
 from werkzeug.utils import secure_filename
@@ -42,10 +38,12 @@ import pytube
 import twilio.jwt.access_token
 import twilio.jwt.access_token.grants
 import twilio.rest
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, emit, leave_room
 
 from website.white_box_cartoonizer.cartoonize import WB_Cartoonize
-
+import skvideo
+import skvideo.io
+skvideo.setFFmpegPath(r'C:\Python310\Lib\site-packages\ffmpeg')
 account_sid = TWILIO_ACCOUNT_SID
 api_key = TWILIO_API_KEY_SID
 api_secret = TWILIO_API_KEY_SECRET
@@ -70,7 +68,6 @@ app.config['UPLOAD_FOLDER_VIDEOS'] = 'website/static/uploaded_videos'
 app.config['CARTOONIZED_FOLDER'] = 'website/static/cartoonized_images'
 
 app.config['OPTS'] = opts
-
 
 @app.errorhandler(404)
 def not_found(e):
@@ -664,6 +661,7 @@ def CheckUser():
         user.login_count = user.login_count + 1
         user.active = 1
         db.session.commit()
+    session['user_id'] = user.id
     return jsonify(user_schema.dump(user))
 
 
@@ -712,11 +710,19 @@ def getMyContacts():
     return jsonify(users_schema.dump(user))
 
 
-@socketio.on('message')
-def handle_message(message):
-    print("Received message " + message)
-    if message != "User connected!":
-        send(message, broadcast=True)
+@socketio.on('join', namespace='/chat')
+def join(message):
+    room = session.get('user_id')
+    join_room(room)
+    emit('status', {'msg':  session.get('user_id') + ' has entered the room.'}, room=room)
+
+
+@socketio.on('left', namespace='/chat')
+def left(message):
+    room = session.get('user_id')
+    leave_room(room)
+    session.clear()
+    emit('status', {'msg': session.get('user_id') + ' has left the room.'}, room=room)
 
 
 @app.route("/getChatUserRelations", methods=['POST'])
@@ -761,7 +767,7 @@ def getChatMessages():
         chat_ids2.append(item.chat_id)
     chat_id = common_data(chat_ids1, chat_ids2)
     print(chat_id)
-
+    session['chat_id'] = chat_id
     chat_message = ChatMessage.query.filter(
         ChatMessage.chat_id == chat_id).order_by(
         ChatMessage.id).all()
@@ -821,6 +827,7 @@ def sendMessage():
         chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
+        emit('message', {'msg': session.get('user_id') + ' : ' + text}, room=session.get('user_id'))
     return jsonify(chat_message_schema.dump(chat_message))
 
 
@@ -874,9 +881,9 @@ def GetCoins():
     return {"data": json.loads(htmlSource)}
 
 
-@app.route('/chat')
-def chat():
-    return render_template('chat.html')
+# @app.route('/chat')
+# def chat():
+#     return render_template('chat.html')
 
 
 @app.route('/chat2')
