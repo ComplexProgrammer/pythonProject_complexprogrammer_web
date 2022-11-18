@@ -38,7 +38,7 @@ import pytube
 import twilio.jwt.access_token
 import twilio.jwt.access_token.grants
 import twilio.rest
-from flask_socketio import SocketIO, send, emit, leave_room
+from flask_socketio import SocketIO, send, emit, join_room, leave_room
 
 from website.white_box_cartoonizer.cartoonize import WB_Cartoonize
 import skvideo
@@ -375,22 +375,22 @@ def remove_file_():
         return "0"
 
 
-@app.route("/video_chat")
-def video_chat():
-    return render_template('video_chat.html')
-
-
-@app.route("/join-room", methods=["POST"])
-def join_room():
-    username = request.get_json(force=True).get('username')
-    if not username:
-        abort(401)
-
-    token = twilio.AccessToken(account_sid, api_key,
-                               api_secret, identity=username)
-    token.add_grant(twilio.VideoGrant(room='My Room'))
-
-    return {'token': token.to_jwt().decode()}
+# @app.route("/video_chat")
+# def video_chat():
+#     return render_template('video_chat.html')
+#
+#
+# @app.route("/join-room", methods=["POST"])
+# def join_room():
+#     username = request.get_json(force=True).get('username')
+#     if not username:
+#         abort(401)
+#
+#     token = twilio.AccessToken(account_sid, api_key,
+#                                api_secret, identity=username)
+#     token.add_grant(twilio.VideoGrant(room='My Room'))
+#
+#     return {'token': token.to_jwt().decode()}
 
 
 def find_or_create_room(room_name):
@@ -661,7 +661,9 @@ def CheckUser():
         user.login_count = user.login_count + 1
         user.active = 1
         db.session.commit()
+    session.permanent = True
     session['user_id'] = user.id
+    session['room'] = 'ComplexProgrammerChat'
     return jsonify(user_schema.dump(user))
 
 
@@ -712,17 +714,19 @@ def getMyContacts():
 
 @socketio.on('join', namespace='/chat')
 def join(message):
-    room = session.get('user_id')
-    join_room(room)
-    emit('status', {'msg':  session.get('user_id') + ' has entered the room.'}, room=room)
+    room = session.get('room')
+    if room is not None:
+        join_room(room)
+        emit('status', {'user_id': session.get('user_id'), 'text': str(room) + '  contected', 'active': True}, room=room)
 
 
 @socketio.on('left', namespace='/chat')
 def left(message):
-    room = session.get('user_id')
-    leave_room(room)
+    user_id = session.get('user_id')
+    room = session.get('room')
     session.clear()
-    emit('status', {'msg': session.get('user_id') + ' has left the room.'}, room=room)
+    emit('status', {'user_id': user_id, 'text': str(room) + ' disconnected', 'active': False}, room=room)
+    leave_room(room)
 
 
 @app.route("/getChatUserRelations", methods=['POST'])
@@ -827,7 +831,7 @@ def sendMessage():
         chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
-        emit('message', {'msg': session.get('user_id') + ' : ' + text}, room=session.get('user_id'))
+        emit('message', {'user_id': session.get('user_id'), 'chat_id': chat.id, 'text': text}, room=session.get('room'), namespace='/chat')
     return jsonify(chat_message_schema.dump(chat_message))
 
 
@@ -879,11 +883,6 @@ def GetCoins():
     # r = urllib3.request.urlopen(url)
     # data = r.read()
     return {"data": json.loads(htmlSource)}
-
-
-# @app.route('/chat')
-# def chat():
-#     return render_template('chat.html')
 
 
 @app.route('/chat2')

@@ -189,34 +189,39 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         loadMessageByContactId(receiver_id)
     }
     var socket;
+    $(document).ready(function(){
+
+    });
     socket = io.connect('http://' + document.domain + ':' + location.port + '/chat');
     socket.on('connect', function() {
-            socket.emit('join', {});
-        });
+        socket.emit('join', {});
+    });
     socket.on('status', function(data) {
-        $('#chat').val($('#chat').val() + '<' + data.msg + '>\n');
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        if(data.active){
+            alertify.success(data.text);
+        }
+        else{
+            alertify.error(data.text);
+        }
     });
     socket.on('message', function(data) {
-        $('#chat').val($('#chat').val() + data.msg + '\n');
-        $('#chat').scrollTop($('#chat')[0].scrollHeight);
+        console.log($scope.Messages)
+        console.log(data)
+//            $('#chat').val($('#chat').val() + data.text + '\n');
+//            $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
     $('#send').click(function(e) {
-            text = $('#text').val();
-            $('#text').val('');
-            socket.emit('text', {msg: text});
+        text = $('#text').val();
+        $('#text').val('');
+        socket.emit('text', {msg: text});
     });
-
     $window.join_room = function() {
-        window.location.href = "/"
+        myModal.hide();
+        socket.emit('join', {});
     };
     $window.leave_room = function() {
-        alert('leave_room')
-        socket.emit('left', {}, function() {
-            alert('disconnect')
-            socket.disconnect();
-            window.location.href = "/";
-        });
+        myModal.hide();
+        socket.emit('left', {});
     };
     $scope.openForm = function() {
         if($scope.login=="Login"){
@@ -283,12 +288,12 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         }).then(function (d) {
             console.log(d.data);
             $scope.text=''
-            if($scope.is_chat==1){
-                loadMessageByChatId(d.data[0].chat_id)
-            }
-            if($scope.is_contact==1){
-                loadMessageByContactId($scope.receiver_id)
-            }
+//            if($scope.is_chat==1){
+//                loadMessageByChatId(d.data[0].chat_id)
+//            }
+//            if($scope.is_contact==1){
+//                loadMessageByContactId($scope.receiver_id)
+//            }
         }, function (error) {
             console.log("error in sendMessage -> ", error);
         });
