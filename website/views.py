@@ -717,7 +717,7 @@ def join(message):
     room = session.get('room')
     if room is not None:
         join_room(room)
-        emit('status', {'user_id': session.get('user_id'), 'text': str(room) + '  contected', 'active': True}, room=room)
+        emit('status', {'sender_id': session.get('user_id'), 'text': str(room) + '  contected', 'active': True}, room=room)
 
 
 @socketio.on('left', namespace='/chat')
@@ -725,7 +725,7 @@ def left(message):
     user_id = session.get('user_id')
     room = session.get('room')
     session.clear()
-    emit('status', {'user_id': user_id, 'text': str(room) + ' disconnected', 'active': False}, room=room)
+    emit('status', {'sender_id': user_id, 'text': str(room) + ' disconnected', 'active': False}, room=room)
     leave_room(room)
 
 
@@ -831,7 +831,7 @@ def sendMessage():
         chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
-        emit('message', {'user_id': session.get('user_id'), 'chat_id': chat.id, 'text': text}, room=session.get('room'), namespace='/chat')
+        emit('message', {'sender_id': session.get('user_id'), 'chat_id': chat.id, 'text': text}, room=session.get('room'), namespace='/chat')
     return jsonify(chat_message_schema.dump(chat_message))
 
 
