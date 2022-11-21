@@ -709,6 +709,7 @@ def getUser():
 def getMyContacts():
     user_id = request.args.get('user_id')
     user = Users.query.filter(Users.id != user_id).all()
+    print(users_schema.dump(user))
     return jsonify(users_schema.dump(user))
 
 
@@ -741,6 +742,7 @@ def getChatUserRelations():
     chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids),
                                                        ChatUserRelation.user_id != user_id).order_by(
         ChatUserRelation.id).all()
+    print(chat_user_relations_schema.dump(chat_user_relation))
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 
 

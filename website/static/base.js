@@ -124,15 +124,15 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         $scope.login=checkUserName();
     }
     function getContacts(){
-            $http({
-                method: 'POST',
-                url: "/getUser?uid="+$scope.user.uid+"&not_me=1",
-            }).then(function (d) {
-                console.log(d.data);
-                $scope.Contacts = d.data;
-            }, function (error) {
-                console.log("error in getUser -> ", error);
-            });
+        $http({
+            method: 'POST',
+            url: "/getUser?uid="+$scope.user.uid+"&not_me=1",
+        }).then(function (d) {
+            console.log(d.data);
+            $scope.Contacts = d.data;
+        }, function (error) {
+            console.log("error in getUser -> ", error);
+        });
     }
     function getChatUserRelations(){
             $http({
@@ -146,15 +146,15 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
             });
     }
     function getMyContacts(){
-            $http({
-                method: 'POST',
-                url: "/getMyContacts?user_id="+$scope.user.id,
-            }).then(function (d) {
-                console.log(d.data);
-                $scope.MyContacts = d.data;
-            }, function (error) {
-                console.log("error in getMyContacts -> ", error);
-            });
+        $http({
+            method: 'POST',
+            url: "/getMyContacts?user_id="+$scope.user.id,
+        }).then(function (d) {
+            console.log(d.data);
+            $scope.MyContacts = d.data;
+        }, function (error) {
+            console.log("error in getMyContacts -> ", error);
+        });
     }
     $scope.loadContacts = function(){
         getMyContacts()
@@ -198,7 +198,7 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
     });
     socket.on('status', function(data) {
         if(data.active){
-            alertify.success(data.text);
+//            alertify.success(data.text);
         }
         else{
             alertify.error(data.text);
@@ -246,7 +246,6 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
 	$scope.closeMessageArea = function(){
 	    document.getElementById('messageTextArea').style.display = "none"
         document.getElementById('contactsArea').style.display = "block"
-
 	}
     function loadMessageByChatId(chat_id){
         $http({
@@ -269,6 +268,7 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         document.getElementById("user"+index).className = "friend-drawer selected_user";
         $scope.selectedUser=$scope.ChatUserRelations.filter(user => user.user_id == receiver_id)[0].user
         console.log($scope.selectedUser)
+        document.getElementById('contactsArea').style.display = "none"
         document.getElementById('messageTextArea').style.display = "block"
         $(".chat-bubble").hide("slow").show("slow");
         loadMessageByChatId(chat_id)

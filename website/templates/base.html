@@ -41,7 +41,9 @@
     <link rel="stylesheet" href="http://complexprogrammer.uz/static/alertify/alertify.core.css">
     <script src="http://complexprogrammer.uz/static/alertify/alertify.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <script src="https://kit.fontawesome.com/f7eccd980a.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/js/all.min.js" integrity="sha512-rpLlll167T5LJHwp0waJCh3ZRf7pO6IT1+LZOhAyP6phAirwchClbTZV3iqL3BMrVxIYRbzGTpli4rfxsCK6Vw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>-->
+<!--    <script src="https://kit.fontawesome.com/f7eccd980a.js" crossorigin="anonymous"></script>-->
     <title>C0mplex</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7773722896374259"
  crossorigin="anonymous"></script>
@@ -335,7 +337,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           return output.slice(0, -1);
         };
     </script>
-    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' type='text/css'>
+<!--    <link href='https://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet' type='text/css'>-->
     <link rel="stylesheet" href="/static/login/css.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js" integrity="sha512-aVKKRRi/Q/YV+4mjoKBsE4x3H+BkegoM/em46NNlCqNTmUYADjBbeNefNxYV7giUp0VxICtqdrbqU7iVaeZNXA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.3/socket.io.min.js" integrity="sha512-GtM/5c/Ie0lStj6QwEG0HkpMQuGr9vrOAgFD4nNmImviyZvsJxN7TYU7b+R7Kthob0zFBUpuxfl3R3Mn1qekTw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -405,18 +407,20 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
            outline:0px !important;
 		}
 		.attach_btn{
-	border-radius: 15px 0 0 15px !important;
-	background-color: rgba(0,0,0,0.3) !important;
+            border-radius: 15px 0 0 15px !important;
+            background-color: rgba(0,0,0,0.3) !important;
 			border:0 !important;
 			color: white !important;
 			cursor: pointer;
+			height:60px;
 		}
 		.send_btn{
-	border-radius: 0 15px 15px 0 !important;
-	background-color: rgba(0,0,0,0.3) !important;
+            border-radius: 0 15px 15px 0 !important;
+            background-color: rgba(0,0,0,0.3) !important;
 			border:0 !important;
 			color: white !important;
 			cursor: pointer;
+			height:60px;
 		}
 		.search_btn{
 			border-radius: 0 15px 15px 0 !important;
@@ -424,6 +428,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 			border:0 !important;
 			color: white !important;
 			cursor: pointer;
+			height:70px
 		}
 		.contacts{
 			list-style: none;
@@ -434,9 +439,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 			padding: 5px 10px;
 			margin-bottom: 15px !important;
 		}
-	.active{
-			background-color: rgba(0,0,0,0.3);
-	}
 		.user_img{
 			height: 70px;
 			width: 70px;
@@ -481,8 +483,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		color: white;
 	}
 	.user_info p{
-	font-size: 10px;
-	color: rgba(255,255,255,0.6);
+        font-size: 10px;
+        color: rgba(255,255,255,0.6);
 	}
 	.video_cam{
 		margin-left: 50px;
@@ -513,6 +515,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		position: relative;
 	}
 	.msg_time{
+	    width:70px;
 		position: absolute;
 		left: 0;
 		bottom: -15px;
@@ -520,6 +523,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		font-size: 10px;
 	}
 	.msg_time_send{
+	    width:70px;
 		position: absolute;
 		right:0;
 		bottom: -15px;
@@ -541,6 +545,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         .contacts_card{
             margin-bottom: 15px !important;
         }
+	}
+	.hover:hover {
+	    cursor:pointer;
+	    background-color: rgba(0,0,0,0.4) !important;
 	}
 
 
@@ -721,25 +729,61 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 									<span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
 								</div>
 							</div>
+                            <ul class="nav nav-tabs">
+                              <li class="nav-item">
+                                <a class="nav-link active" style="font-size:24px" data-bs-toggle="tab" href="#contacts">Contacts</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" style="font-size:24px" ng-click="loadChats()" data-bs-toggle="tab" href="#chats">Chats</a>
+                              </li>
+                            </ul>
 						</div>
 						<div class="card-body contacts_body">
-							<ul class="contacts">
-                                <li ng-repeat="item in MyContacts" id="contact{{$index}}">
-                                    <div class="d-flex bd-highlight" ng-click="loadMessageByContactId(item.id, $index, MyContacts.length)">
-                                        <div class="img_cont">
-                                            <img ng-show="item.photo_url" src="{{item.photo_url}}" class="rounded-circle user_img">
-                                            <span ng-show="item.active" class="online_icon"></span>
-                                            <span ng-show="!item.active" class="online_icon offline"></span>
+                            <div class="tab-content">
+                              <div class="tab-pane container active" id="contacts">
+                                  <ul class="contacts">
+                                    <li ng-repeat="item in MyContacts" id="contact{{$index}}">
+                                        <div class="d-flex bd-highlight hover" ng-click="loadMessageByContactId(item.id, $index, MyContacts.length)">
+                                            <div class="img_cont">
+                                                <img ng-show="item.photo_url" src="{{item.photo_url}}" class="rounded-circle user_img">
+                                                <span ng-show="item.active" class="online_icon"></span>
+                                                <span ng-show="!item.active" class="online_icon offline"></span>
+                                            </div>
+                                            <div class="user_info">
+                                                <span ng-show="item.name">{{item.name}}</span>
+                                                <span ng-show="item.name==null&&item.email">{{item.email}}</span>
+                                                <span ng-show="item.name==null&&item.email==null&&item.phone">{{item.phone}}</span>
+                                                <p>{{item.login_date}}</p>
+                                            </div>
                                         </div>
-                                        <div class="user_info">
-                                            <span ng-show="item.name">{{item.name}}</span>
-                                            <span ng-show="item.name==null&&item.email">{{item.email}}</span>
-                                            <span ng-show="item.name==null&&item.email==null&&item.phone">{{item.phone}}</span>
-                                            <p>{{item.login_date}}</p>
+                                    </li>
+                                  </ul>
+                              </div>
+                              <div class="tab-pane container fade" id="chats">
+                                  <ul class="contacts">
+                                    <li ng-repeat="item in ChatUserRelations" id="user{{$index}}">
+                                        <div class="d-flex bd-highlight hover" ng-click="loadMessageByChatId(item.user.id, item.chat_id, $index, ChatUserRelations.length)">
+                                            <div class="img_cont">
+                                                <img ng-show="item.user.photo_url" src="{{item.user.photo_url}}" class="rounded-circle user_img">
+                                                <span ng-show="item.user.active" class="online_icon"></span>
+                                                <span ng-show="!item.user.active" class="online_icon offline"></span>
+                                            </div>
+                                            <div class="user_info">
+                                                <span ng-show="item.user.name">{{item.user.name}}</span>
+                                                <span ng-show="item.user.name==null&&item.user.email">{{item.user.email}}</span>
+                                                <span ng-show="item.user.name==null&&item.user.email==null&&item.user.phone">{{item.user.phone}}</span>
+                                                &emsp;&emsp;&emsp;
+                                                <span ng-show="item.count_new_message>0" style="color:red">
+                                                    +{{item.count_new_message}}
+                                                  <span class="spinner-grow text-danger spinner-grow-xl" role="status" aria-hidden="true"></span>
+                                                </span>
+                                                <p>{{item.user.login_date}}</p>
+                                            </div>
                                         </div>
-                                    </div>
-                                </li>
-							</ul>
+                                    </li>
+                                  </ul>
+                              </div>
+                            </div>
 						</div>
 						<div class="card-footer"></div>
 					</div>
@@ -791,11 +835,11 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 						<div class="card-footer">
 							<div class="input-group">
 								<div class="input-group-append">
-									<span class="input-group-text attach_btn"><i class="fas fa-paperclip"></i></span>
+									<span class="input-group-text attach_btn"><i class="fas fa-paperclip fa-2xl"></i></span>
 								</div>
 								<textarea name="" ng-model="text" class="form-control type_msg" placeholder="Type your message..."></textarea>
 								<div class="input-group-append" ng-click="sendMessage()">
-									<span class="input-group-text send_btn"><i class="fas fa-location-arrow"></i></span>
+									<span class="input-group-text send_btn"><i class="fas fa-location-arrow  fa-2xl"></i></span>
 								</div>
 							</div>
 						</div>
