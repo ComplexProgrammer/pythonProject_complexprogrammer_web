@@ -139,7 +139,6 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
                 method: 'POST',
                 url: "/getChatUserRelations?user_id="+$scope.user.id,
             }).then(function (d) {
-                console.log(d.data);
                 $scope.ChatUserRelations = d.data;
             }, function (error) {
                 console.log("error in getChatUserRelations -> ", error);
@@ -218,10 +217,28 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
     $window.join_room = function() {
         myModal.hide();
         socket.emit('join', {});
+        $scope.user=checkAuth();
+        if($scope.user!=false){
+            $scope.login=checkUserName();
+        }
+        getMyContacts()
+        for(i=0;i<document.getElementsByClassName('friend-drawer selected_user').length;i++){
+           document.getElementsByClassName('friend-drawer selected_user')[i].className = "friend-drawer friend-drawer--onhover";
+        }
+        document.getElementById("myForm").style.display = "block";
+        document.getElementById("openChatBtn").style.display = "none";
     };
     $window.leave_room = function() {
+        $scope.user=checkAuth();
+        $scope.login="Login";
+        document.getElementById("myForm").style.display = "none";
+	    document.getElementById("openChatBtn").style.display = "block";
         myModal.hide();
         socket.emit('left', {});
+//        $scope.user=checkAuth();
+//        if($scope.user!=false){
+//            $scope.login="Login";
+//        }
     };
     $scope.openForm = function() {
         if($scope.login=="Login"){
