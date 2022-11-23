@@ -134,15 +134,25 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
             console.log("error in getUser -> ", error);
         });
     }
+    function getCountNewMessages(){
+        $http({
+            method: 'POST',
+            url: "/getCountNewMessages?user_id="+$scope.user.id,
+        }).then(function (d) {
+            $scope.CountNewMessages = d.data;
+        }, function (error) {
+            console.log("error in getCountNewMessages -> ", error);
+        });
+    }
     function getChatUserRelations(){
-            $http({
-                method: 'POST',
-                url: "/getChatUserRelations?user_id="+$scope.user.id,
-            }).then(function (d) {
-                $scope.ChatUserRelations = d.data;
-            }, function (error) {
-                console.log("error in getChatUserRelations -> ", error);
-            });
+        $http({
+            method: 'POST',
+            url: "/getChatUserRelations?user_id="+$scope.user.id,
+        }).then(function (d) {
+            $scope.ChatUserRelations = d.data;
+        }, function (error) {
+            console.log("error in getChatUserRelations -> ", error);
+        });
     }
     function getMyContacts(){
         $http({
@@ -156,7 +166,9 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         });
     }
     $scope.loadContacts = function(){
-        getMyContacts()
+        if($scope.MyContacts==null){
+            getMyContacts()
+        }
     }
     $scope.loadChats = function(){
         getChatUserRelations()
@@ -206,6 +218,7 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
     socket.on('message', function(data) {
         console.log($scope.Messages)
         console.log(data)
+        alertify.success(data.text)
 //            $('#chat').val($('#chat').val() + data.text + '\n');
 //            $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
@@ -235,17 +248,13 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
 	    document.getElementById("openChatBtn").style.display = "block";
         myModal.hide();
         socket.emit('left', {});
-//        $scope.user=checkAuth();
-//        if($scope.user!=false){
-//            $scope.login="Login";
-//        }
     };
     $scope.openForm = function() {
         if($scope.login=="Login"){
             myModal.show();
-//            window.location.href = "/login"
         }
         else{
+            getCountNewMessages()
             if($scope.MyContacts==null){
                 getMyContacts()
             }

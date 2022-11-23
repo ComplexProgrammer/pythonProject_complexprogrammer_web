@@ -20,8 +20,9 @@ import cv2
 import urllib3
 from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash, send_file, send_from_directory, abort, session
-from sqlalchemy import func
+from sqlalchemy import func, desc
 from sqlalchemy.orm import joinedload
+from sqlalchemy.sql import functions
 from werkzeug.utils import secure_filename
 import googletrans
 from googletrans import Translator
@@ -730,6 +731,23 @@ def left(message):
     leave_room(room)
 
 
+@app.route("/getCountNewMessages", methods=['POST'])
+def getCountNewMessages():
+    user_id = request.args.get('user_id')
+    chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.user_id == user_id,
+                                                       ChatUserRelation.is_deleted == False).order_by(
+        ChatUserRelation.id).all()
+    chat_ids = []
+    for item in chat_user_relation:
+        chat_ids.append(item.chat_id)
+    result = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids),
+                                                       ChatUserRelation.user_id != user_id)\
+        .with_entities(
+        func.sum(ChatUserRelation.count_new_message).label("mySum")
+    ).first()
+    return jsonify(result.mySum)
+
+
 @app.route("/getChatUserRelations", methods=['POST'])
 def getChatUserRelations():
     user_id = request.args.get('user_id')
@@ -740,8 +758,8 @@ def getChatUserRelations():
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
     chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids),
-                                                       ChatUserRelation.user_id != user_id).order_by(
-        ChatUserRelation.id).all()
+                                                       ChatUserRelation.user_id != user_id).join(Chat).join(ChatMessage)\
+        .order_by(desc(ChatMessage.created_date)).all()
     print(chat_user_relations_schema.dump(chat_user_relation))
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
 

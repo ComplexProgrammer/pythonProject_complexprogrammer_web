@@ -515,7 +515,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		position: relative;
 	}
 	.msg_time{
-	    width:70px;
+	    width:100px;
 		position: absolute;
 		left: 0;
 		bottom: -15px;
@@ -523,7 +523,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 		font-size: 10px;
 	}
 	.msg_time_send{
-	    width:70px;
+	    width:100px;
 		position: absolute;
 		right:0;
 		bottom: -15px;
@@ -712,7 +712,6 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 								</div>
 								<div class="user_info">
 									<span ng-show="login!='Login'">{{login}}</span>
-									<p>1767 Messages</p>
 								</div>
 <!--								<div class="video_cam">-->
 <!--									<span><i class="fas fa-video"></i></span>-->
@@ -723,7 +722,7 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 						</div>
 						<div class="card-header">
 							<div class="input-group">
-								<input type="text" placeholder="Search..." name="" class="form-control search" style="padding: 2.375rem 0.75rem">
+								<input type="text" placeholder="Search..." name="" class="form-control search" style="padding: 1.375rem 0.75rem;">
 								<div class="input-group-prepend">
 									<span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
 								</div>
@@ -733,7 +732,14 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
                                 <a class="nav-link active" style="font-size:24px" data-bs-toggle="tab" href="#contacts">Contacts</a>
                               </li>
                               <li class="nav-item">
-                                <a class="nav-link" style="font-size:24px" ng-click="loadChats()" data-bs-toggle="tab" href="#chats">Chats</a>
+                                <a class="nav-link" style="font-size:24px" ng-click="loadChats()" data-bs-toggle="tab" href="#chats">
+                                    Chats
+                                    &emsp;
+                                    <span ng-show="CountNewMessages>0" style="color:red">
+                                        +{{CountNewMessages}}
+                                      <span class="spinner-grow text-danger spinner-grow-xl" role="status" aria-hidden="true"></span>
+                                    </span>
+                                </a>
                               </li>
                             </ul>
 						</div>
@@ -800,7 +806,6 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 									<span ng-show="selectedUser.name">{{selectedUser.name}}</span>
 									<span ng-show="selectedUser.name==null&&selectedUser.email">{{selectedUser.email}}</span>
 									<span ng-show="selectedUser.name==null&&selectedUser.email==null&&selectedUser.phone">{{selectedUser.phone}}</span>
-									<p>1767 Messages</p>
 								</div>
 <!--								<div class="video_cam">-->
 <!--									<span><i class="fas fa-video"></i></span>-->
@@ -817,13 +822,13 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
                                     </div>
                                     <div class="msg_cotainer">
                                         {{item.text}}
-                                        <span class="msg_time">8:40 AM, Today</span>
+                                        <span class="msg_time">{{item.created_date | date:"yyyy-MM-dd HH:mm:ss"}}</span>
                                     </div>
                                 </div>
 							    <div ng-show="user.id==item.sender_id" class="d-flex justify-content-end mb-4">
                                     <div class="msg_cotainer_send">
                                         {{item.text}}
-                                        <span class="msg_time_send">8:55 AM, Today</span>
+                                        <span class="msg_time_send">{{item.created_date | date:"yyyy-MM-dd HH:mm:ss"}}</span>
                                     </div>
                                     <div class="img_cont_msg">
                                         <img  ng-show="user.photo_url" src="{{user.photo_url}}" class="rounded-circle user_img_msg">
