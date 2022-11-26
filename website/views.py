@@ -851,7 +851,7 @@ def sendMessage():
         chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
-        emit('message', {'sender_id': session.get('user_id'), 'chat_id': chat.id, 'text': text}, room=session.get('room'), namespace='/chat')
+        emit('message', {'sender_id': session.get('user_id'), 'chat_id': chat.id, 'created_date': str(chat_message.created_date), 'text': text}, room=session.get('room'), namespace='/chat')
     return jsonify(chat_message_schema.dump(chat_message))
 
 

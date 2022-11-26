@@ -758,7 +758,7 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
                                                 <span ng-show="item.name">{{item.name}}</span>
                                                 <span ng-show="item.name==null&&item.email">{{item.email}}</span>
                                                 <span ng-show="item.name==null&&item.email==null&&item.phone">{{item.phone}}</span>
-                                                <p>{{item.login_date}}</p>
+                                                <p>{{item.login_date | date:"yyyy-MM-dd HH:mm:ss"}}</p>
                                             </div>
                                         </div>
                                     </li>
@@ -782,7 +782,7 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
                                                     +{{item.count_new_message}}
                                                   <span class="spinner-grow text-danger spinner-grow-xl" role="status" aria-hidden="true"></span>
                                                 </span>
-                                                <p>{{item.user.login_date}}</p>
+                                                <p>{{item.user.login_date | date:"yyyy-MM-dd HH:mm:ss"}}</p>
                                             </div>
                                         </div>
                                     </li>
@@ -814,7 +814,7 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 							</div>
 							<span ng-click="closeMessageArea()" class="action_menu_btn"><i class="fas fa-arrow-left"></i></span>
 						</div>
-						<div class="card-body msg_card_body"  id="scroll-to-bottom">
+						<div class="card-body msg_card_body"  id="msg_card_body">
                             <div ng-repeat="item in Messages">
                                 <div ng-show="user.id!=item.sender_id" class="d-flex justify-content-start mb-4">
                                     <div class="img_cont_msg">
@@ -841,7 +841,7 @@ const myModal = new bootstrap.Modal(document.getElementById('loginStaticBackdrop
 								<div class="input-group-append">
 									<span class="input-group-text attach_btn"><i class="fas fa-paperclip fa-2xl"></i></span>
 								</div>
-								<textarea name="" ng-model="text" class="form-control type_msg" placeholder="Type your message..."></textarea>
+								<textarea id="messageText" name="" ng-model="text" class="form-control type_msg" placeholder="Type your message..."></textarea>
 								<div class="input-group-append" ng-click="sendMessage()">
 									<span class="input-group-text send_btn"><i class="fas fa-location-arrow  fa-2xl"></i></span>
 								</div>

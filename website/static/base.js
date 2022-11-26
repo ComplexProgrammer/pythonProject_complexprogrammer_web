@@ -217,15 +217,73 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
     });
     socket.on('message', function(data) {
         console.log($scope.Messages)
+        let chat_id=0;
+        if($scope.Messages.length>0){
+            chat_id = $scope.Messages[0].chat_id
+        }
         console.log(data)
-        alertify.success(data.text)
+        $scope.Messages = $scope.Messages.concat(data);
+        console.log($scope.Messages)
+//        if(chat_id>0){
+//            let msg_card_body = document.querySelector('#msg_card_body');
+//            let msg_time_span = document.createElement('span');
+//            let msg_container_div = document.createElement('div');
+//            let img = document.createElement('img');
+//            let img_cont_msg_div = document.createElement('div');
+//            let div = document.createElement('div');
+//
+//            if($scope.user.id==data.sender_id){
+//                img.setAttribute('class', 'rounded-circle user_img_msg');
+//                img.setAttribute('ng-show', $scope.user.photo_url);
+//                img.setAttribute('src', $scope.user.photo_url);
+//                img_cont_msg_div.setAttribute('class', 'img_cont_msg');
+//                img_cont_msg_div.appendChild(img);
+//                msg_time_span.setAttribute('class', 'msg_time_send');
+//                msg_time_span.append(new Date());
+//                msg_container_div.setAttribute('class', 'msg_cotainer_send');
+//                msg_container_div.append(data.text);
+//                msg_container_div.append(msg_time_span);
+//                div.setAttribute('class', 'd-flex justify-content-end mb-4');
+//                div.appendChild(msg_container_div);
+//                div.appendChild(img_cont_msg_div);
+//            }
+//            else{
+//                img.setAttribute('class', 'rounded-circle user_img_msg');
+//                img.setAttribute('ng-show', $scope.selectedUser.photo_url);
+//                img.setAttribute('src', $scope.selectedUser.photo_url);
+//                img_cont_msg_div.setAttribute('class', 'img_cont_msg');
+//                img_cont_msg_div.appendChild(img);
+//                msg_time_span.setAttribute('class', 'msg_time');
+//                msg_time_span.append(new Date());
+//                msg_container_div.setAttribute('class', 'msg_cotainer');
+//                msg_container_div.append(data.text);
+//                msg_container_div.append(msg_time_span);
+//                div.setAttribute('class', 'd-flex justify-content-start mb-4');
+//                div.appendChild(img_cont_msg_div);
+//                div.appendChild(msg_container_div);
+//                alertify.success(data.text)
+//            }
+//            msg_card_body.append(div);
+//        }
 //            $('#chat').val($('#chat').val() + data.text + '\n');
 //            $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
-    $('#send').click(function(e) {
+    function refreshMessages(){
+
+    }
+    function sendMessage(){
         text = $('#text').val();
         $('#text').val('');
         socket.emit('text', {msg: text});
+    }
+    $('#send').click(function(e) {
+        sendMessage();
+    });
+    $('#messageText').keyup(function(e){
+        if(e.keyCode == 13)
+        {
+            sendMessage();
+        }
     });
     $window.join_room = function() {
         myModal.hide();
