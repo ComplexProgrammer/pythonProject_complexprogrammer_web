@@ -217,13 +217,18 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
     });
     socket.on('message', function(data) {
         console.log($scope.Messages)
-        let chat_id=0;
-        if($scope.Messages.length>0){
-            chat_id = $scope.Messages[0].chat_id
-        }
         console.log(data)
-        $scope.Messages = $scope.Messages.concat(data);
-        console.log($scope.Messages)
+        if($scope.Messages != "undefined" && $scope.Messages != null){
+            $scope.Messages = $scope.Messages.concat(data);
+            console.log($scope.Messages);
+        }
+        if($scope.user.id==data.sender_id){
+
+        }
+        else{
+            refreshMessages()
+//            alertify.success(data.text)
+        }
 //        if(chat_id>0){
 //            let msg_card_body = document.querySelector('#msg_card_body');
 //            let msg_time_span = document.createElement('span');
@@ -269,16 +274,39 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
 //            $('#chat').scrollTop($('#chat')[0].scrollHeight);
     });
     function refreshMessages(){
-
+        alertify.success('Sizga yangi xabar keldi')
     }
     function sendMessage(){
-        text = $('#text').val();
-        $('#text').val('');
-        socket.emit('text', {msg: text});
+        $scope.model={
+            sender_id:$scope.user.id,
+            receiver_id:$scope.receiver_id,
+            text:$scope.text
+        }
+        console.log($scope.model)
+        $http({
+            method: 'POST',
+            url: "/sendMessage",
+            data: JSON.stringify($scope.model),
+            dataType: "json"
+        }).then(function (d) {
+            console.log(d.data);
+            $scope.text=''
+//            if($scope.is_chat==1){
+//                loadMessageByChatId(d.data[0].chat_id)
+//            }
+//            if($scope.is_contact==1){
+//                loadMessageByContactId($scope.receiver_id)
+//            }
+        }, function (error) {
+            console.log("error in sendMessage -> ", error);
+        });
+//        text = $('#messageText').val();
+//        $('#messageText').val('');
+//        socket.emit('text', {msg: text});
     }
-    $('#send').click(function(e) {
-        sendMessage();
-    });
+//    $('#send').click(function(e) {
+//        sendMessage();
+//    });
     $('#messageText').keyup(function(e){
         if(e.keyCode == 13)
         {
@@ -358,29 +386,7 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         loadMessageByChatId(chat_id)
     }
     $scope.sendMessage=function(){
-        $scope.model={
-            sender_id:$scope.user.id,
-            receiver_id:$scope.receiver_id,
-            text:$scope.text
-        }
-        console.log($scope.model)
-        $http({
-            method: 'POST',
-            url: "/sendMessage",
-            data: JSON.stringify($scope.model),
-            dataType: "json"
-        }).then(function (d) {
-            console.log(d.data);
-            $scope.text=''
-//            if($scope.is_chat==1){
-//                loadMessageByChatId(d.data[0].chat_id)
-//            }
-//            if($scope.is_contact==1){
-//                loadMessageByContactId($scope.receiver_id)
-//            }
-        }, function (error) {
-            console.log("error in sendMessage -> ", error);
-        });
+        sendMessage()
     }
 
 }]);
