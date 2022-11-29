@@ -336,11 +336,11 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         socket.emit('left', {});
     };
     $scope.openForm = function() {
+        getCountNewMessages()
         if($scope.login=="Login"){
             myModal.show();
         }
         else{
-            getCountNewMessages()
             if($scope.MyContacts==null){
                 getMyContacts()
             }
