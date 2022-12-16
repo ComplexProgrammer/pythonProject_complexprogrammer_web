@@ -152,6 +152,11 @@ def convert_bytes_to_image(img_bytes):
     return image
 
 
+@app.route("/password_generator", methods=['GET', 'POST'])
+def password_generator():
+    return render_template('password_generator.html')
+
+
 @app.route('/')
 @app.route('/cartoonize', methods=["POST", "GET"])
 def cartoonize():
