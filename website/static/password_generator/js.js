@@ -28,7 +28,7 @@ var app = angular.module("App", []);
                 alertify.error($scope.Password);
                 document.getElementById('conn').style.visibility = "hidden";
             }, function (error) {
-            document.getElementById("Password").value="";
+                document.getElementById("Password").value="";
                 document.getElementById('conn').style.visibility = "hidden";
                 alertify.error("Xatolik yuz berdi");
                 console.log("error in password_generator -> ", error);

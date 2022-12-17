@@ -79,12 +79,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script src="http://complexprogrammer.uz/static/alertify/alertify.min.js"></script>
     <script src="http://complexprogrammer.uz/static/jquery-3.4.1.min.js"></script>
     <script src="http://complexprogrammer.uz/static/angular.min.js"></script>
-    <link rel="stylesheet" href="/static/password_generator/style.css">
-    <script src="/static/password_generator/js.js"></script>
+    <link rel="stylesheet" href="/static/sitemap/style.css">
+    <script src="/static/sitemap/js.js"></script>
 
-    <title>Secure Password Generator Tool</title>
+    <title>Free Online XML Sitemap Generator</title>
 </head>
-<body ng-app="App" ng-controller="PasswordGenerator">
+<body ng-app="App" ng-controller="SitemapGenerator">
 <!-- Yandex.RTB R-A-1963742-1 -->
 <div id="yandex_rtb_R-A-1963742-1"></div>
 <script>window.yaContextCb.push(()=>{
@@ -108,7 +108,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     X
                 </a>
             </div>
-    <h2>Secure Password Generator Tool
+    <h2>Free Online XML Sitemap Generator
         <a href="https://play.google.com/store/apps/dev?id=6854503445964035235" target="_blank">
             <img src="http://complexprogrammer.uz/static/img/google-play.svg" />
         </a>
@@ -116,103 +116,44 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <div class="row">
         <div class="col">
             <div class="badge bg-success text-wrap">
-                <i class="fa-regular fa-circle-check"></i> Generate Secure Unbreakable Passwords in Seconds!
+                <i class="fa-regular fa-circle-check"></i> XML Sitemap Generator
             </div>
             <br>
             <br>
             <div class="input-group">
-              <input type="text" class="form-control" ng-model="Password" id="Password" aria-label="Recipient's username with two button addons">
-              <button class="btn btn-outline-success" ng-click="Copy()" type="button"><i class="fa fa-copy"></i> Copy</button>
-              <button class="btn btn-outline-warning" ng-click="Refresh()" type="button"><i class="fa fa-refresh"></i> Refresh</button>
-            </div>
-            <br />
-            <div class="badge bg-primary text-wrap">
-              Password Length ( {{Model.PasswordLength}} Characters)
-            </div>
-            <div>
-                <span id="rangeValue">0</span>
-                <input class="range" type="range" value="8" min="0" max="100" id="myRange"></input>
+              <input type="text" class="form-control" ng-model="url" placeholder="Your Website URL" id="url">
+              <button class="btn btn-outline-success" ng-click="Copy()" type="button"><i class="fa fa-paste"></i> Paste</button>
+              <button class="btn btn-outline-warning" ng-click="Generator()" type="button"><i class="fa-solid fa-recycle"></i> Generator Sitemap</button>
             </div>
 <!--            <div class="progress">-->
 <!--              <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>-->
 <!--            </div>-->
-        </div>
-        <div class="col-1">
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="Uppercase" ng-model="Model.Uppercase">
-              <label class="form-check-label" for="Uppercase">Uppercase</label>
-            </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="Lowercase" ng-model="Model.Lowercase">
-              <label class="form-check-label" for="Lowercase">Lowercase</label>
-            </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="Numbers" ng-model="Model.Numbers">
-              <label class="form-check-label" for="Numbers">Numbers</label>
-            </div>
-            <div class="form-check form-switch">
-              <input class="form-check-input" type="checkbox" role="switch" id="Symbols" ng-model="Model.Symbols">
-              <label class="form-check-label" for="Symbols">Symbols</label>
-            </div>
-        </div>
-        <div class="col">
-
         </div>
     </div>
     <br />
     <div class="row">
        <div class="col">
             <div class="card text-bg-info mb-12">
-                <div class="card-header">Password Generator Tool (Explained):</div>
+                <div class="card-header">About XML Sitemap Generator</div>
                 <div class="card-body">
-                    <h5 class="card-title">What is The Free Password Generator Tool?</h5>
+<!--                    <h5 class="card-title"></h5>-->
                     <p class="card-text">
-                        A password generator is a tool that helps you create strong, unique passwords for your accounts.
+                        Creating XML SITEMAP is crucial for every website and blog for better indexing and SEO practices. Using the XML
                         <br />
+                        Sitemap Generator, you can create functional XML Sitemaps and help Google find your pages and crawl them. It is free
                         <br />
-                        A good password should be at least 12-16 characters long and include a mix of uppercase and lowercase letters, numbers, and special characters.
+                        and easy to use. Just use XML Sitemap Generator and start enjoying the results.
                     </p>
                     <br />
-                    <h5 class="card-title">How To Generate a Strong Password?</h5>
+                    <h5 class="card-title">How to use XML Sitemap Generator?</h5>
                     <p class="card-text">
-                        When you visit this page (the tool), it will generate a random password based on the default parameters. This password has 36 lower and upper case letters, digits, and special characters.
+                        To use XML Sitemap Generator, follow these steps:
                         <br />
                         <br />
-                        You can change the length and kind of characters used in the password if you have specific needs.
+                        * Enter a domain name
                         <br />
                         <br />
-                        To copy the password to the clipboard, simply click the copy button.
-                    </p>
-                    <br />
-                    <h5 class="card-title">How To make sure you are safe?</h5>
-                    <p class="card-text">
-                        You should be aware of the following to keep your passwords safe from social engineering, brute force, or dictionary attacks and to keep your online accounts protected:
-                        <br />
-                        <br />
-                        1. Do not use the same password, security question, and answer for multiple important accounts.
-                        <br />
-                        <br />
-                        2. Use a password with at least 16 characters. Use at least one number, one uppercase letter, one lowercase letter, and one special symbol.
-                        <br />
-                        <br />
-                        3. Do not use the names of your families, friends, or pets in your passwords.
-                        <br />
-                        <br />
-                        4. Do not use postcodes, house numbers, phone numbers, birthdates, ID card numbers, social security numbers, and so on in your passwords.
-                        <br />
-                        <br />
-                        5. Do not use any dictionary words in your passwords. Examples of strong passwords: CZ*1Qdrk5fLzBIE5G , t0^gwgx0NGCS*pzzZ*D78 , ApaQ7uKPE^!*LKXqx$X!V^9dSM.
-                        <br />
-                        <br />
-                        Examples of weak passwords: pass12345, abc@123, 12345678910, yournamepassword.
-                    </p>
-                    <br />
-                    <h5 class="card-title">What Makes a Password Secure?</h5>
-                    <p class="card-text">
-                        A secure password should be 8 characters long, but ideally 12 or 16 characters long.
-                        <br />
-                        <br />
-                        Aside from length, it's critical not to reuse passwords across many online accounts. Millions of passwords have been made public in the past due to data breaches or hacking assaults.
+                        * Click Generate Sitemap
                     </p>
                 </div>
             </div>

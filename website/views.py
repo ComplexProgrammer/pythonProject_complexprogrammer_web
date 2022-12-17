@@ -20,6 +20,7 @@ from PIL import Image, ImageChops, ImageFile
 # from cv2 import cv2
 import cv2
 import urllib3
+from pysitemap import crawler
 from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash, send_file, send_from_directory, abort, session
 from sqlalchemy import func, desc
@@ -134,36 +135,6 @@ def privacy():
     return render_template('privacy.html')
 
 
-@app.route('//.well-known/pki-validation/057563D5748D2753B84E7944B00F213F.txt')
-def send_ssl():
-    return send_from_directory(app.static_folder, '057563D5748D2753B84E7944B00F213F.txt')
-
-
-# region online services
-wb_cartoonizer = WB_Cartoonize(os.path.abspath("website/white_box_cartoonizer/saved_models/"), opts['gpu'])
-
-
-def convert_bytes_to_image(img_bytes):
-    """Convert bytes to numpy array
-
-    Args:
-        img_bytes (bytes): Image bytes read from flask.
-
-    Returns:
-        [numpy array]: Image numpy array
-    """
-
-    pil_image = Image.open(io.BytesIO(img_bytes))
-    if pil_image.mode == "RGBA":
-        image = Image.new("RGB", pil_image.size, (255, 255, 255))
-        image.paste(pil_image, mask=pil_image.split()[3])
-    else:
-        image = pil_image.convert('RGB')
-    image = np.array(image)
-
-    return image
-
-
 @app.route("/password_generator", methods=['GET', 'POST'])
 def password_generator():
     if request.method == 'GET':
@@ -194,6 +165,54 @@ def password_generator():
             # appending a random character to password
             password.append(randomchar)
         return {"result": "".join(password)}
+
+
+@app.route("/sitemap", methods=['GET', 'POST'])
+def sitemap():
+    if request.method == 'GET':
+        return render_template('sitemap.html')
+    if request.method == 'POST':
+        go = False
+        url = request.json
+        from asyncio import events, windows_events
+        el = windows_events.ProactorEventLoop()
+        events.set_event_loop(el)
+        crawler(url, out_file='sitemap.xml', exclude_urls=[".ico", ".css", ".pdf", ".jpg", ".zip", ".png", ".svg"])
+        basedir = os.path.abspath(os.path.dirname(__file__))
+        print(basedir)
+        go = True
+        if go:
+            return {"result": os.path.join(basedir.replace('\\website', ''), 'sitemap.xml')}
+
+
+@app.route('//.well-known/pki-validation/057563D5748D2753B84E7944B00F213F.txt')
+def send_ssl():
+    return send_from_directory(app.static_folder, '057563D5748D2753B84E7944B00F213F.txt')
+
+
+# region online services
+wb_cartoonizer = WB_Cartoonize(os.path.abspath("website/white_box_cartoonizer/saved_models/"), opts['gpu'])
+
+
+def convert_bytes_to_image(img_bytes):
+    """Convert bytes to numpy array
+
+    Args:
+        img_bytes (bytes): Image bytes read from flask.
+
+    Returns:
+        [numpy array]: Image numpy array
+    """
+
+    pil_image = Image.open(io.BytesIO(img_bytes))
+    if pil_image.mode == "RGBA":
+        image = Image.new("RGB", pil_image.size, (255, 255, 255))
+        image.paste(pil_image, mask=pil_image.split()[3])
+    else:
+        image = pil_image.convert('RGB')
+    image = np.array(image)
+
+    return image
 
 
 @app.route('/')
