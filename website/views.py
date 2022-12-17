@@ -2,8 +2,10 @@ import base64
 import datetime
 import io
 import os
+import random
 import shutil
 import sqlite3
+import string
 import time
 import traceback
 import urllib
@@ -122,6 +124,16 @@ def send_robots():
     return send_from_directory(app.static_folder, 'robots.txt')
 
 
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+
 @app.route('//.well-known/pki-validation/057563D5748D2753B84E7944B00F213F.txt')
 def send_ssl():
     return send_from_directory(app.static_folder, '057563D5748D2753B84E7944B00F213F.txt')
@@ -154,7 +166,34 @@ def convert_bytes_to_image(img_bytes):
 
 @app.route("/password_generator", methods=['GET', 'POST'])
 def password_generator():
-    return render_template('password_generator.html')
+    if request.method == 'GET':
+        return render_template('password_generator.html')
+    if request.method == 'POST':
+        characterList = ""
+        json_data = request.json
+        PasswordLength = int(json_data['PasswordLength'])
+        Uppercase = json_data['Uppercase']
+        Lowercase = json_data['Lowercase']
+        Numbers = json_data['Numbers']
+        Symbols = json_data['Symbols']
+        if Uppercase:
+            characterList += string.ascii_uppercase
+        if Lowercase:
+            characterList += string.ascii_lowercase
+        if Numbers:
+            characterList += string.digits
+        if Symbols:
+            characterList += string.punctuation
+        password = []
+
+        for i in range(PasswordLength):
+            # Picking a random character from our
+            # character list
+            randomchar = random.choice(characterList)
+
+            # appending a random character to password
+            password.append(randomchar)
+        return {"result": "".join(password)}
 
 
 @app.route('/')
