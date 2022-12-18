@@ -422,7 +422,6 @@ def remove_file_():
         if filename[-4:] == ".zip":
             filename_ = filename[:-4]
             path = filename_
-            print(path)
             shutil.rmtree(path, ignore_errors=True)
             # for file_name in os.listdir(path):
             #     print(file_name)
@@ -431,7 +430,6 @@ def remove_file_():
             #     if os.path.isfile(file):
             #         print('Deleting file:', file)
             #         os.remove(file)
-        print(filename)
         os.remove(filename)
         return "1"
     else:
