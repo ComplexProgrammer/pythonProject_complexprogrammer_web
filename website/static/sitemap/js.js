@@ -1,13 +1,10 @@
 var app = angular.module("App", []);
     app.controller("SitemapGenerator", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
-    $scope.ShowData = false;
     function LoadData(){
         document.getElementById('conn').style.visibility = "visible";
         $http({
             method: 'POST',
-            url: "/sitemap",
-            data: JSON.stringify($scope.url),
-            dataType: "json"
+            url: "/sitemap?url="+$scope.url,
             }).then(function (d) {
                 console.log(d.data.result);
                 window.location.href = "/send_file?filename="+d.data.result;
@@ -28,11 +25,13 @@ var app = angular.module("App", []);
                 alertify.success('Success!');
                 document.getElementById('conn').style.visibility = "hidden";
             }, function (error) {
-                document.getElementById("url").value="";
                 document.getElementById('conn').style.visibility = "hidden";
                 alertify.error("Error");
                 console.log("error in sitemap -> ", error);
         });
+    }
+    $scope.Paste=function(){
+        navigator.clipboard.readText().then((clipText) => ($scope.url = clipText, document.getElementById('url').value = clipText ));
     }
     $scope.Generator=function() {
         LoadData()

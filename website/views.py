@@ -1,3 +1,4 @@
+import asyncio
 import base64
 import datetime
 import io
@@ -72,6 +73,7 @@ app.config['UPLOAD_FOLDER_VIDEOS'] = 'website/static/uploaded_videos'
 app.config['CARTOONIZED_FOLDER'] = 'website/static/cartoonized_images'
 
 app.config['OPTS'] = opts
+
 
 @app.errorhandler(404)
 def not_found(e):
@@ -172,17 +174,14 @@ def sitemap():
     if request.method == 'GET':
         return render_template('sitemap.html')
     if request.method == 'POST':
-        go = False
-        url = request.json
+        url = request.args.get('url')
         from asyncio import events, windows_events
         el = windows_events.ProactorEventLoop()
         events.set_event_loop(el)
         crawler(url, out_file='sitemap.xml', exclude_urls=[".ico", ".css", ".pdf", ".jpg", ".zip", ".png", ".svg"])
         basedir = os.path.abspath(os.path.dirname(__file__))
-        print(basedir)
-        go = True
-        if go:
-            return {"result": os.path.join(basedir.replace('\\website', ''), 'sitemap.xml')}
+        time.sleep(10)
+        return {"result": os.path.join(basedir.replace('\\website', ''), 'sitemap.xml')}
 
 
 @app.route('//.well-known/pki-validation/057563D5748D2753B84E7944B00F213F.txt')
