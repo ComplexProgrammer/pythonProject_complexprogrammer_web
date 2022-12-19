@@ -78,21 +78,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script src="/static/alertify/alertify.min.js"></script>
     <script src="/static/jquery-3.4.1.min.js"></script>
     <script src="/static/angular.min.js"></script>
-    <script src="/static/login/auth.js"></script>
-    <script src="/static/base.js"></script>
+    <link rel="stylesheet" href="/static/instagram_downloader/style.css">
+    <script src="/static/instagram_downloader/js.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,900|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/dropify.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/391652c176.js" crossorigin="anonymous"></script>
     <title>Instagram Downloader</title>
-    <style>
-        body {
-            background-color: #212121;
-            color: white;
-        }
-    </style>
 </head>
-<body ng-app="App" ng-controller="Base" class="modal-open">
+<body ng-app="App" ng-controller="InstagramDownloader" class="modal-open">
 <!-- Yandex.RTB R-A-1963742-1 -->
 <div id="yandex_rtb_R-A-1963742-1"></div>
 <script>window.yaContextCb.push(()=>{
@@ -106,16 +99,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <input id="hh" type="text" class="fade hide" />
 {% raw %}
-<div class="C0mplexButton float-end">
-    <a href="/#services">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        X
-    </a>
-</div>
 <div class="container">
+    <div class="C0mplexButton float-end">
+        <a href="/#services">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            X
+        </a>
+    </div>
     <div class="row">
         <div class="col"></div>
         <div class="col">
@@ -137,8 +130,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     <h5 class="card-title">instagram downloader converter</h5>
                     <p class="card-text">A simple Website that is able to download Instagram posts or tagged.</p>
                     <div class="input-group mb-3">
-                      <input type="text" ng-model="instagram_user_name" class="form-control" placeholder="Instagram user name" aria-label="Instagram user name" aria-describedby="button-addon2">
-                      <button class="btn btn-outline-success" type="button" ng-click="instagram_downloader()" id="button-addon2">Convert</button>
+                        <input type="text" ng-model="instagram_user_name" id="instagram_user_name" class="form-control" placeholder="Instagram user name" aria-label="Instagram user name" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-success" ng-click="Paste()" id="paste" type="button"><i class="fa fa-paste"></i> Paste</button>
+                        <button class="btn btn-outline-warning" type="button" ng-click="instagram_downloader()" id="button-addon2"><i class="fa-solid fa-recycle"></i> Convert</button>
                     </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 var app = angular.module("App", []);
     app.controller("SitemapGenerator", ["$scope", "$http", "$filter", function ($scope, $http, $filter) {
     function LoadData(){
+        document.getElementById('hh').className= "modal-backdrop fade show";
         document.getElementById('conn').style.visibility = "visible";
         $http({
             method: 'POST',
@@ -23,8 +24,10 @@ var app = angular.module("App", []);
                     });
                 }, 3000);
                 alertify.success('Success!');
+                document.getElementById('hh').className= "fade hide";
                 document.getElementById('conn').style.visibility = "hidden";
             }, function (error) {
+                document.getElementById('hh').className= "fade hide";
                 document.getElementById('conn').style.visibility = "hidden";
                 alertify.error("Error");
                 console.log("error in sitemap -> ", error);
@@ -36,6 +39,4 @@ var app = angular.module("App", []);
     $scope.Generator=function() {
         LoadData()
     };
-
-
 }]);

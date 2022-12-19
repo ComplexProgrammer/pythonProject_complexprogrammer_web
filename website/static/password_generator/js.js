@@ -16,6 +16,7 @@ var app = angular.module("App", []);
     $scope.Model.Symbols = true;
     LoadData()
     function LoadData(){
+        document.getElementById('hh').className= "modal-backdrop fade show";
         document.getElementById('conn').style.visibility = "visible";
         $http({
             method: 'POST',
@@ -26,9 +27,11 @@ var app = angular.module("App", []);
                 console.log(d.data.result);
                 $scope.Password=d.data.result;
                 alertify.error($scope.Password);
+                document.getElementById('hh').className= "fade hide";
                 document.getElementById('conn').style.visibility = "hidden";
             }, function (error) {
-                document.getElementById("Password").value="";
+                document.getElementById("Password").value = "";
+                document.getElementById('hh').className= "fade hide";
                 document.getElementById('conn').style.visibility = "hidden";
                 alertify.error("Xatolik yuz berdi");
                 console.log("error in password_generator -> ", error);

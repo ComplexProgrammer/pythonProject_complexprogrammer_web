@@ -32,10 +32,10 @@ var app = angular.module("App", []);
         $scope.text1=$scope.text;
         $scope.text=$scope.result;
         $scope.result=$scope.text1;
-
     }
     $scope.getResult=function() {
         $scope.result='';
+        document.getElementById('hh').className= "modal-backdrop fade show";
         document.getElementById('conn').style.visibility = "visible";
         $http({
             method: 'POST',
@@ -46,11 +46,13 @@ var app = angular.module("App", []);
             $scope.Data = d.data.data;
             $scope.result=$scope.Data;
             alertify.success("Natija tayyor");
+            document.getElementById('hh').className= "fade hide";
             document.getElementById('conn').style.visibility = "hidden";
         }, function (error) {
             $scope.ShowData = false;
             alertify.error("Xatolik yuz berdi");
             console.log("error in GetTranslateResult -> ", error);
+            document.getElementById('hh').className= "fade hide";
             document.getElementById('conn').style.visibility = "hidden";
         });
     };

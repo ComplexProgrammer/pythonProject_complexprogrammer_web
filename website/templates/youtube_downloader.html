@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script type="text/javascript">
+<script type="text/javascript">
     (function(c,l,a,r,i,t,y){
         c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
         t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -28,24 +28,25 @@
 <script>window.yaContextCb=window.yaContextCb||[]</script>
 <script src="https://yandex.ru/ads/system/context.js" async></script>
 <meta name="yandex-verification" content="6bd5e2cc7d84e7b1" />
-    <meta charset="UTF-8">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7773722896374259"
-     crossorigin="anonymous"></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8DHWL20H58"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
+<meta charset="UTF-8">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7773722896374259"
+ crossorigin="anonymous"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-8DHWL20H58"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-      gtag('config', 'G-8DHWL20H58');
-    </script>
+  gtag('config', 'G-8DHWL20H58');
+</script>
         <!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
 new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
 j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-NW763C2');</script>
+})(window,document,'script','dataLayer','GTM-NW763C2');
+</script>
 <!-- End Google Tag Manager -->
     <script type="module">
       // Import the functions you need from the SDKs you need
@@ -78,21 +79,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <script src="/static/alertify/alertify.min.js"></script>
     <script src="/static/jquery-3.4.1.min.js"></script>
     <script src="/static/angular.min.js"></script>
-    <script src="/static/login/auth.js"></script>
-    <script src="/static/base.js"></script>
+    <link rel="stylesheet" href="/static/youtube_downloader/style.css">
+    <script src="/static/youtube_downloader/js.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,900|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    <link rel="stylesheet" href="/static/css/dropify.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/391652c176.js" crossorigin="anonymous"></script>
     <title>Youtube Downloader</title>
-    <style>
-        body {
-            background-color: #212121;
-            color: white;
-        }
-    </style>
 </head>
-<body ng-app="App" ng-controller="Base" class="modal-open">
+<body ng-app="App" ng-controller="YoutubeDownloader" class="modal-open">
 <!-- Yandex.RTB R-A-1963742-1 -->
 <div id="yandex_rtb_R-A-1963742-1"></div>
 <script>window.yaContextCb.push(()=>{
@@ -106,16 +100,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </div>
 <input id="hh" type="text" class="fade hide" />
 {% raw %}
-<div class="C0mplexButton float-end">
-    <a href="/#services">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        X
-    </a>
-</div>
 <div class="container">
+    <div class="C0mplexButton float-end">
+        <a href="/#services">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            X
+        </a>
+    </div>
     <div class="row">
         <div class="col"></div>
         <div class="col">
@@ -165,8 +159,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                       </li>
                     </ul>
                     <div class="input-group mb-3">
-                      <input type="text" ng-model="link" class="form-control" placeholder="Youtube video url" aria-label="Youtube video or playlist url" aria-describedby="button-addon2">
-                      <button class="btn btn-outline-success" type="button" ng-click="youtube_downloader()" id="button-addon2">Convert</button>
+                        <input type="text" ng-model="link" id="link" class="form-control" placeholder="Youtube video url" aria-label="Youtube video or playlist url" aria-describedby="button-addon2">
+                        <button class="btn btn-outline-success" ng-click="Paste()" id="paste" type="button"><i class="fa fa-paste"></i> Paste</button>
+                        <button class="btn btn-outline-warning" type="button" ng-click="youtube_downloader()" id="button-addon2"><i class="fa-solid fa-recycle"></i> Convert</button>
                     </div>
               </div>
             </div>
