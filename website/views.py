@@ -410,6 +410,8 @@ def send_file_():
     filename = request.args.get('filename')
     if filename[-4:] == '.mp3' or filename[-4:] == '.mp4' or filename[-4:] == '.zip' or filename[-4:] == '.xml':
         return send_file(filename, as_attachment=True)
+    else:
+        return send_file('C:\\inetpub\\pythonProject_complexprogrammer_web\\website\\static\\img\\fuck.jpg', as_attachment=True)
 
 
 @app.route("/remove_file", methods=['POST'])
