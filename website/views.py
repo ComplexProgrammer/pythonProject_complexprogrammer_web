@@ -408,13 +408,14 @@ def youtube_downloader_():
 @app.route("/send_file")
 def send_file_():
     filename = request.args.get('filename')
-    return send_file(filename, as_attachment=True)
+    if filename[-4:] == '.mp3' or filename[-4:] == '.mp4' or filename[-4:] == '.zip' or filename[-4:] == '.xml':
+        return send_file(filename, as_attachment=True)
 
 
 @app.route("/remove_file", methods=['POST'])
 def remove_file_():
     filename = request.args.get('filename')
-    if os.path.exists(filename):
+    if os.path.exists(filename) and (filename[-4:] == '.mp3' or filename[-4:] == '.mp4' or filename[-4:] == '.zip' or filename[-4:] == '.xml'):
         if filename[-4:] == ".mp3":
             filename_ = filename[:-4] + ".mp4"
             if os.path.exists(filename_):
