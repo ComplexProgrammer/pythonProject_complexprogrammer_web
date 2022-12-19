@@ -32,7 +32,7 @@ import googletrans
 from googletrans import Translator
 import pyttsx3
 
-from website import app, ALLOWED_EXTENSIONS, db, youtube_downloader, file_converter, TWILIO_ACCOUNT_SID, \
+from website import app, ALLOWED_EXTENSIONS, GET_FILE_FORMATS, db, youtube_downloader, file_converter, TWILIO_ACCOUNT_SID, \
     TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, socketio, instagram_downloader
 
 import json
@@ -408,7 +408,7 @@ def youtube_downloader_():
 @app.route("/send_file")
 def send_file_():
     filename = request.args.get('filename')
-    if filename[-4:] == '.mp3' or filename[-4:] == '.mp4' or filename[-4:] == '.zip' or filename[-4:] == '.xml':
+    if filename[-4:] in GET_FILE_FORMATS:
         return send_file(filename, as_attachment=True)
     else:
         return send_file('C:\\inetpub\\pythonProject_complexprogrammer_web\\website\\static\\img\\fuck.jpg', as_attachment=True)
@@ -417,7 +417,7 @@ def send_file_():
 @app.route("/remove_file", methods=['POST'])
 def remove_file_():
     filename = request.args.get('filename')
-    if os.path.exists(filename) and (filename[-4:] == '.mp3' or filename[-4:] == '.mp4' or filename[-4:] == '.zip' or filename[-4:] == '.xml'):
+    if os.path.exists(filename) and filename[-4:] in GET_FILE_FORMATS:
         if filename[-4:] == ".mp3":
             filename_ = filename[:-4] + ".mp4"
             if os.path.exists(filename_):

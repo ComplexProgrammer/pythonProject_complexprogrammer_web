@@ -12,6 +12,7 @@ TWILIO_API_KEY_SECRET = "ClYYGOesl4RYh7oH17tauhSN3iXl3mhg"
 
 UPLOAD_FOLDER = 'C:/Users/odilj/OneDrive/Документы/ImageCompare'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+GET_FILE_FORMATS = {'.mp3', '.mp4', '.zip', '.xml'}
 basedir = os.path.abspath(os.path.dirname(__file__))
 print(basedir)
 app = Flask(__name__)
