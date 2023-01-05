@@ -1,6 +1,46 @@
-from sqlalchemy.orm import relationship, joinedload
+from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, CHAR, DateTime, Boolean, func
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import relationship
 
-from website import db, ma
+from website import db, ma, app
+
+Base = declarative_base()
+
+
+class Address(Base):
+     __tablename__ = "address"
+
+     id = Column(Integer, primary_key=True)
+     email_address = Column(String, nullable=False)
+     def __repr__(self):
+        return f"Address(id={self.id!r}, email_address={self.email_address!r})"
+
+
+class Auditable(Base):
+    __abstract__ = True
+    id = Column(Integer(), primary_key=True)
+    created_at = Column(DateTime, default=func.now())
+    created_by = Column(Integer, nullable=False)
+    updated_at = Column(DateTime, nullable=False)
+    updated_by = Column(Integer, nullable=False)
+    is_deleted = Column(Boolean, default=False)
+
+
+class Translatable(Auditable, Base):
+    __abstract__ = True
+    name_en_us = Column(String)
+    name_ru_ru = Column(String)
+    name_uz_crl = Column(String)
+    name_uz_uz = Column(String)
+
+
+class Groups(Translatable, Base):
+    __tablename__ = "groups"
+    number = Column(Integer)
+
+
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
+Base.metadata.create_all(bind=engine)
 
 
 class Users(db.Model):
@@ -14,7 +54,7 @@ class Users(db.Model):
     uid = db.Column(db.String(length=1024), nullable=False, unique=True)
     email_verified = db.Column(db.Boolean(), nullable=False)
 
-    created_date = db.Column(db.DateTime(), nullable=False)
+    created_date = db.Column(db.DateTime(), default=db.func.now())
     login_date = db.Column(db.DateTime(), nullable=False)
     login_count = db.Column(db.Integer(), nullable=True, default=1)
     logout_date = db.Column(db.DateTime(), nullable=False)
