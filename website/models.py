@@ -1,29 +1,23 @@
-from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, CHAR, DateTime, Boolean, func
+import enum
+
+from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, CHAR, DateTime, Boolean, func, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
+from sqlalchemy_enum34 import EnumType
 
 from website import db, ma, app
 
 Base = declarative_base()
 
 
-class Address(Base):
-     __tablename__ = "address"
-
-     id = Column(Integer, primary_key=True)
-     email_address = Column(String, nullable=False)
-     def __repr__(self):
-        return f"Address(id={self.id!r}, email_address={self.email_address!r})"
-
-
 class Auditable(Base):
     __abstract__ = True
-    id = Column(Integer(), primary_key=True)
-    created_at = Column(DateTime, default=func.now())
-    created_by = Column(Integer, nullable=False)
-    updated_at = Column(DateTime, nullable=False)
-    updated_by = Column(Integer, nullable=False)
-    is_deleted = Column(Boolean, default=False)
+    id = Column(Integer, primary_key=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    created_by = Column(Integer)
+    updated_at = Column(DateTime(timezone=True), server_onupdate=func.now())
+    updated_by = Column(Integer)
+    is_deleted = Column(Boolean, server_default='0')
 
 
 class Translatable(Auditable, Base):
@@ -37,6 +31,63 @@ class Translatable(Auditable, Base):
 class Groups(Translatable, Base):
     __tablename__ = "groups"
     number = Column(Integer)
+    book = relationship("Books", back_populates="group")
+
+
+class BookType(enum.Enum):
+    alifbe = 'alifbe'
+    adabiyot = 'adabiyot'
+    algebra = 'algebra'
+    biologiya = 'biologiya'
+    dasturlash_asoslari = 'dasturlash_asoslari'
+    english = 'english'
+    fizika = 'fizika'
+    geografiya = 'geografiya'
+    geometriya = 'geometriya'
+    informatika = 'informatika'
+    kimyo = 'kimyo'
+    matematika = 'matematika'
+    onatili = 'onatili'
+    oqish = 'oqish'
+    ozbek_tili = 'ozbek_tili'
+    rustili = 'rustili'
+    yozuv = 'yozuv'
+    uzb_tarix = 'uzb_tarix'
+    jahon_tarix = 'jahon_tarix'
+
+
+class Books(Translatable, Base):
+    __tablename__ = "books"
+    book_type = Column(EnumType(BookType))
+    group_id = Column(Integer, ForeignKey('groups.id'), nullable=False)
+    group = relationship("Groups", back_populates="book")
+    topic = relationship("Topics", back_populates="book")
+
+
+class Topics(Translatable, Base):
+    __tablename__ = "topics"
+    number = Column(Integer)
+    book_id = Column(Integer, ForeignKey('books.id'), nullable=False)
+    book = relationship("Books", back_populates="topic")
+    question = relationship("Questions", back_populates="topic")
+
+
+class Questions(Translatable, Base):
+    __tablename__ = "questions"
+    number = Column(Integer)
+    photo = Column(String)
+    topic_id = Column(Integer, ForeignKey('topics.id'), nullable=False)
+    topic = relationship("Topics", back_populates="question")
+    answer = relationship("Answers", back_populates="question")
+
+
+class Answers(Translatable, Base):
+    __tablename__ = "answers"
+    number = Column(Integer)
+    photo = Column(String)
+    right = Column(Boolean, server_default='0')
+    question_id = Column(Integer, ForeignKey('questions.id'), nullable=False)
+    question = relationship("Questions", back_populates="answer")
 
 
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
