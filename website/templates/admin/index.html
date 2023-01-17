@@ -1,0 +1,100 @@
+{% extends 'admin/base.html' %}
+{% include 'admin/header.html' %}
+{% block title %} Home {% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-secondary" role="alert">
+              <h2>Manage <b>Groups</b> <button type="button" class="btn btn-outline-success float-end"
+              data-bs-toggle="modal" data-bs-target="#group_modal" data-bs-whatever="Add new" ng-click="add_edit_group(0)"><i class="fa fa-add"></i> Add new group</button></h2>
+                {% raw %}
+                <table class="table table-hover table-dark text-left" ng-show="show_groups_data">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th width="200px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>Test</td>
+                            <td>
+                                <button class="btn btn-outline-warning btn-xs" data-bs-toggle="modal" data-bs-target="#group_modal" data-bs-whatever="Edit" ng-click="add_edit_group()"><i class="fa fa-edit"></i> Edit</button>
+                                <button class="btn btn-outline-danger btn-xs" ng-click="remove_group(1)"><i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                        <tr ng-repeat="item in groups">
+                            <td>{{item.id}}</td>
+                            <td>{{item.name_uz_uz}}</td>
+                            <td>
+                                <button class="btn btn-outline-warning btn-xs" data-bs-toggle="modal" data-bs-target="#group_modal" data-bs-whatever="Edit" ng-click="add_edit_group(item)"><i class="fa fa-edit"></i> Edit</button>
+                                <button class="btn btn-outline-danger btn-xs" ng-click="remove_group(item)"><i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endraw %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="group_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="groupModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="groupModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form class="row g-3 needs-validation was-validated" novalidate>
+              <div class="mb-3">
+                <label for="number" class="col-form-label">number:</label>
+                <input type="number" class="form-control" id="number" ng-model="group.number" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_en_us" class="col-form-label">name_en_us:</label>
+                <input type="text" class="form-control" id="name_en_us" ng-model="group.name_en_us" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_ru_ru" class="col-form-label">name_ru_ru:</label>
+                <input type="text" class="form-control" id="name_ru_ru" ng-model="group.name_ru_ru" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_uz_crl" class="col-form-label">name_uz_crl:</label>
+                <input type="text" class="form-control" id="name_uz_crl" ng-model="group.name_uz_crl" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_uz_uz" class="col-form-label">name_uz_uz:</label>
+                <input type="text" class="form-control" id="name_uz_uz" ng-model="group.name_uz_uz" required>
+              </div>
+          </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+        <button type="button" class="btn btn-outline-success" ng-click="save_group()"><i class="fa fa-check"></i> OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+        const group_modal = document.getElementById('group_modal')
+        group_modal.addEventListener('show.bs.modal', event => {
+          // Button that triggered the modal
+          const button = event.relatedTarget
+          // Extract info from data-bs-* attributes
+          const recipient = button.getAttribute('data-bs-whatever')
+          // If necessary, you could initiate an AJAX request here
+          // and then do the updating in a callback.
+          //
+          // Update the modal's content.
+          const modalTitle = group_modal.querySelector('.modal-title')
+
+          modalTitle.textContent = `${recipient} Group`
+        })
+</script>
+{% endblock %}

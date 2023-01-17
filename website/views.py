@@ -80,6 +80,12 @@ def not_found(e):
     return render_template('404.html')
 
 
+@app.route('/admin')
+@app.route('/admin')
+def admin_page():
+    return render_template('admin/index.html')
+
+
 @app.route('/')
 @app.route('/home')
 def home_page():
