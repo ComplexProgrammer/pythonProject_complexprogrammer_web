@@ -38,7 +38,7 @@ from website import app, ALLOWED_EXTENSIONS, GET_FILE_FORMATS, db, youtube_downl
 import json
 
 from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
-    users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema
+    users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema, Groups, groups_schema
 import pytube
 import twilio.jwt.access_token
 import twilio.jwt.access_token.grants
@@ -81,9 +81,41 @@ def not_found(e):
 
 
 @app.route('/admin')
-@app.route('/admin')
 def admin_page():
     return render_template('admin/index.html')
+
+
+@app.route("/get_groups", methods=['GET'])
+def get_groups():
+    group = Groups.query.all()
+    # return jsonify(groups_schema.dump(group))
+    return 0
+
+
+@app.route("/save_group", methods=['POST'])
+def save_group():
+    json_data = request.json
+    print(json_data)
+    id = json_data['id']
+    number = json_data['number']
+    name_en_us = json_data['name_en_us']
+    name_ru_ru = json_data['name_ru_ru']
+    name_uz_crl = json_data['name_uz_crl']
+    name_uz_uz = json_data['name_uz_uz']
+    if id == 0:
+        group = Groups(number=number, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl, name_uz_uz=name_uz_uz)
+        db.session.add(group)
+        db.session.commit()
+    else:
+        group = Groups.query.filter_by(id=id).first()
+        group.number = number
+        group.name_en_us = name_en_us
+        group.name_ru_ru = name_ru_ru
+        group.name_uz_crl = name_uz_crl
+        group.name_uz_uz = name_uz_uz
+        db.session.commit()
+    groups = Groups.query.all()
+    return 0
 
 
 @app.route('/')

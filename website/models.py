@@ -34,6 +34,7 @@ class Groups(Translatable, Base):
     book = relationship("Books", back_populates="group")
 
 
+
 class BookType(enum.Enum):
     alifbe = 'alifbe'
     adabiyot = 'adabiyot'
@@ -93,6 +94,15 @@ class Answers(Translatable, Base):
 engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
 Base.metadata.create_all(bind=engine)
 
+
+class GroupsSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Groups
+        include_fk = True
+
+
+group_schema = GroupsSchema()
+groups_schema = GroupsSchema(many=True)
 
 class Users(db.Model):
     __tablename__ = "user"

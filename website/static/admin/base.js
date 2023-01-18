@@ -13,7 +13,7 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         document.getElementById('hh').className= "modal-backdrop fade show";
         document.getElementById('conn').style.visibility = "visible";
         $http({
-            method: 'POST',
+            method: 'GET',
             url: "/get_groups"
         }).then(function (d) {
             if (d.data.length > 0) {
@@ -56,7 +56,7 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         }).then(function (d) {
             console.log(d);
             console.log(d.data);
-            if (d.data === '0') {
+            if (d.data === 0) {
                 alertify.error("Ma`lumotni saqlashda xatolik yuz berdi");
             }
             else {
