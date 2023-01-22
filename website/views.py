@@ -24,21 +24,24 @@ import urllib3
 from pysitemap import crawler
 from skimage.metrics import structural_similarity as compare_ssim
 from flask import render_template, request, jsonify, flash, send_file, send_from_directory, abort, session
-from sqlalchemy import func, desc
+from sqlalchemy import func, desc, select
 from sqlalchemy.orm import joinedload
 from sqlalchemy.sql import functions
+from sqlalchemy_enum34 import EnumType
 from werkzeug.utils import secure_filename
 import googletrans
 from googletrans import Translator
 import pyttsx3
 
-from website import app, ALLOWED_EXTENSIONS, GET_FILE_FORMATS, db, youtube_downloader, file_converter, TWILIO_ACCOUNT_SID, \
+from website import app, ALLOWED_EXTENSIONS, GET_FILE_FORMATS, db, youtube_downloader, file_converter, \
+    TWILIO_ACCOUNT_SID, \
     TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, socketio, instagram_downloader
 
 import json
 
 from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
-    users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema, Groups, groups_schema
+    users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema, Groups, groups_schema, Books, \
+    books_schema, BookType, topics_schema, Topics, Questions, questions_schema, answers_schema, Answers
 import pytube
 import twilio.jwt.access_token
 import twilio.jwt.access_token.grants
@@ -48,6 +51,7 @@ from flask_socketio import SocketIO, send, emit, join_room, leave_room
 from website.white_box_cartoonizer.cartoonize import WB_Cartoonize
 import skvideo
 import skvideo.io
+
 skvideo.setFFmpegPath(r'C:\Python310\Lib\site-packages\ffmpeg')
 account_sid = TWILIO_ACCOUNT_SID
 api_key = TWILIO_API_KEY_SID
@@ -85,17 +89,20 @@ def admin_page():
     return render_template('admin/index.html')
 
 
+@app.route('/group')
+def group_page():
+    return render_template('admin/group.html')
+
+
 @app.route("/get_groups", methods=['GET'])
 def get_groups():
-    group = Groups.query.all()
-    # return jsonify(groups_schema.dump(group))
-    return 0
+    group = db.session.query(Groups).all()
+    return jsonify(groups_schema.dump(group))
 
 
 @app.route("/save_group", methods=['POST'])
 def save_group():
     json_data = request.json
-    print(json_data)
     id = json_data['id']
     number = json_data['number']
     name_en_us = json_data['name_en_us']
@@ -103,19 +110,248 @@ def save_group():
     name_uz_crl = json_data['name_uz_crl']
     name_uz_uz = json_data['name_uz_uz']
     if id == 0:
-        group = Groups(number=number, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl, name_uz_uz=name_uz_uz)
+        group = Groups(number=number, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl,
+                       name_uz_uz=name_uz_uz)
         db.session.add(group)
         db.session.commit()
     else:
-        group = Groups.query.filter_by(id=id).first()
+        group = db.session.query(Groups).filter_by(id=id).first()
         group.number = number
         group.name_en_us = name_en_us
         group.name_ru_ru = name_ru_ru
         group.name_uz_crl = name_uz_crl
         group.name_uz_uz = name_uz_uz
         db.session.commit()
-    groups = Groups.query.all()
-    return 0
+    return {'data': 1}
+
+
+@app.route("/remove_group", methods=["POST"])
+def remove_group():
+    try:
+        id = request.args.get('id')
+        group = db.session.query(Groups).filter_by(id=id).first()
+        db.session.delete(group)
+        db.session.commit()
+        return {'data': 1}
+    except NameError:
+        print(NameError)
+        return {'data': 0}
+
+
+@app.route('/book/<group_id>')
+def book_page(group_id):
+    group = db.session.query(Groups).filter_by(id=group_id).first()
+    return render_template('admin/book.html', group=group)
+
+
+@app.route("/get_books", methods=['GET'])
+def get_books():
+    group_id = request.args.get('group_id')
+    book = db.session.query(Books).filter_by(group_id=group_id).all()
+    return jsonify(books_schema.dump(book))
+
+
+@app.route("/save_book", methods=['POST'])
+def save_book():
+    json_data = request.json
+    id = json_data['id']
+    book_type = json_data['book_type']
+    group_id = json_data['group_id']
+    name_en_us = json_data['name_en_us']
+    name_ru_ru = json_data['name_ru_ru']
+    name_uz_crl = json_data['name_uz_crl']
+    name_uz_uz = json_data['name_uz_uz']
+    if id == 0:
+        book = Books(book_type=BookType(book_type), group_id=group_id, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl,
+                       name_uz_uz=name_uz_uz)
+        db.session.add(book)
+        db.session.commit()
+    else:
+        book = db.session.query(Books).filter_by(id=id).first()
+        book.book_type = BookType(book_type)
+        book.group_id = group_id
+        book.name_en_us = name_en_us
+        book.name_ru_ru = name_ru_ru
+        book.name_uz_crl = name_uz_crl
+        book.name_uz_uz = name_uz_uz
+        db.session.commit()
+    return {'data': 1}
+
+
+@app.route("/remove_book", methods=["POST"])
+def remove_book():
+    try:
+        id = request.args.get('id')
+        book = db.session.query(Books).filter_by(id=id).first()
+        db.session.delete(book)
+        db.session.commit()
+        return {'data': 1}
+    except NameError:
+        return {'data': 0}
+
+
+@app.route('/topic/<book_id>')
+def topic_page(book_id):
+    book = db.session.query(Books).filter_by(id=book_id).first()
+    return render_template('admin/topic.html', book=book)
+
+
+@app.route("/get_topics", methods=['GET'])
+def get_topics():
+    book_id = request.args.get('book_id')
+    topic = db.session.query(Topics).filter_by(book_id=book_id).all()
+    print(book_id)
+    print(books_schema.dump(topic))
+    return jsonify(topics_schema.dump(topic))
+
+
+@app.route("/save_topic", methods=['POST'])
+def save_topic():
+    json_data = request.json
+    id = json_data['id']
+    number = json_data['number']
+    book_id = json_data['book_id']
+    name_en_us = json_data['name_en_us']
+    name_ru_ru = json_data['name_ru_ru']
+    name_uz_crl = json_data['name_uz_crl']
+    name_uz_uz = json_data['name_uz_uz']
+    if id == 0:
+        topic = Topics(number=number, book_id=book_id, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl,
+                       name_uz_uz=name_uz_uz)
+        db.session.add(topic)
+        db.session.commit()
+    else:
+        topic = db.session.query(Topics).filter_by(id=id).first()
+        topic.number = number
+        topic.book_id = book_id
+        topic.name_en_us = name_en_us
+        topic.name_ru_ru = name_ru_ru
+        topic.name_uz_crl = name_uz_crl
+        topic.name_uz_uz = name_uz_uz
+        db.session.commit()
+    return {'data': 1}
+
+
+@app.route("/remove_topic", methods=["POST"])
+def remove_topic():
+    try:
+        id = request.args.get('id')
+        topic = db.session.query(Topics).filter_by(id=id).first()
+        db.session.delete(topic)
+        db.session.commit()
+        return {'data': 1}
+    except NameError:
+        return {'data': 0}
+
+
+@app.route('/question/<topic_id>')
+def question_page(topic_id):
+    topic = db.session.query(Topics).filter_by(id=topic_id).first()
+    return render_template('admin/question.html', topic=topic)
+
+
+@app.route("/get_questions", methods=['GET'])
+def get_questions():
+    topic_id = request.args.get('topic_id')
+    question = db.session.query(Questions).filter_by(topic_id=topic_id).all()
+    return jsonify(questions_schema.dump(question))
+
+
+@app.route("/save_question", methods=['POST'])
+def save_question():
+    json_data = request.json
+    id = json_data['id']
+    number = json_data['number']
+    # photo = json_data['photo']
+    topic_id = json_data['topic_id']
+    name_en_us = json_data['name_en_us']
+    name_ru_ru = json_data['name_ru_ru']
+    name_uz_crl = json_data['name_uz_crl']
+    name_uz_uz = json_data['name_uz_uz']
+    if id == 0:
+        question = Questions(number=number, topic_id=topic_id, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl,
+                       name_uz_uz=name_uz_uz)
+        db.session.add(question)
+        db.session.commit()
+    else:
+        question = db.session.query(Questions).filter_by(id=id).first()
+        question.number = number
+        # question.photo = photo
+        question.topic_id = topic_id
+        question.name_en_us = name_en_us
+        question.name_ru_ru = name_ru_ru
+        question.name_uz_crl = name_uz_crl
+        question.name_uz_uz = name_uz_uz
+        db.session.commit()
+    return {'data': 1}
+
+
+@app.route("/remove_question", methods=["POST"])
+def remove_question():
+    try:
+        id = request.args.get('id')
+        question = db.session.query(Questions).filter_by(id=id).first()
+        db.session.delete(question)
+        db.session.commit()
+        return {'data': 1}
+    except NameError:
+        return {'data': 0}
+
+
+@app.route('/answer/<question_id>')
+def answer_page(question_id):
+    question = db.session.query(Questions).filter_by(id=question_id).first()
+    return render_template('admin/answer.html', question=question)
+
+
+@app.route("/get_answers", methods=['GET'])
+def get_answers():
+    question_id = request.args.get('question_id')
+    answer = db.session.query(Answers).filter_by(question_id=question_id).all()
+    return jsonify(answers_schema.dump(answer))
+
+
+@app.route("/save_answer", methods=['POST'])
+def save_answer():
+    json_data = request.json
+    id = json_data['id']
+    number = json_data['number']
+    # photo = json_data['photo']
+    right = json_data['right']
+    question_id = json_data['question_id']
+    name_en_us = json_data['name_en_us']
+    name_ru_ru = json_data['name_ru_ru']
+    name_uz_crl = json_data['name_uz_crl']
+    name_uz_uz = json_data['name_uz_uz']
+    if id == 0:
+        answer = Answers(number=number, right=right, question_id=question_id, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl,
+                       name_uz_uz=name_uz_uz)
+        db.session.add(answer)
+        db.session.commit()
+    else:
+        answer = db.session.query(Answers).filter_by(id=id).first()
+        answer.number = number
+        # answer.photo = photo
+        answer.right = right
+        answer.question_id = question_id
+        answer.name_en_us = name_en_us
+        answer.name_ru_ru = name_ru_ru
+        answer.name_uz_crl = name_uz_crl
+        answer.name_uz_uz = name_uz_uz
+        db.session.commit()
+    return {'data': 1}
+
+
+@app.route("/remove_answer", methods=["POST"])
+def remove_answer():
+    try:
+        id = request.args.get('id')
+        answer = db.session.query(Answers).filter_by(id=id).first()
+        db.session.delete(answer)
+        db.session.commit()
+        return {'data': 1}
+    except NameError:
+        return {'data': 0}
 
 
 @app.route('/')
@@ -449,7 +685,8 @@ def send_file_():
     if filename[-4:] in GET_FILE_FORMATS:
         return send_file(filename, as_attachment=True)
     else:
-        return send_file('C:\\inetpub\\pythonProject_complexprogrammer_web\\website\\static\\img\\fuck.jpg', as_attachment=True)
+        return send_file('C:\\inetpub\\pythonProject_complexprogrammer_web\\website\\static\\img\\fuck.jpg',
+                         as_attachment=True)
 
 
 @app.route("/remove_file", methods=['POST'])
@@ -656,7 +893,7 @@ def UploadImage():
 
 def allowed_file(filename):
     return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+        filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 @app.route('/imagecompare')
@@ -820,7 +1057,8 @@ def join(message):
     room = session.get('room')
     if room is not None:
         join_room(room)
-        emit('status', {'sender_id': session.get('user_id'), 'text': str(room) + '  contected', 'active': True}, room=room)
+        emit('status', {'sender_id': session.get('user_id'), 'text': str(room) + '  contected', 'active': True},
+             room=room)
 
 
 @socketio.on('left', namespace='/chat')
@@ -842,7 +1080,7 @@ def getCountNewMessages():
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
     result = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids),
-                                                       ChatUserRelation.user_id != user_id)\
+                                           ChatUserRelation.user_id != user_id) \
         .with_entities(
         func.sum(ChatUserRelation.count_new_message).label("mySum")
     ).first()
@@ -859,7 +1097,7 @@ def getChatUserRelations():
     for item in chat_user_relation:
         chat_ids.append(item.chat_id)
     chat_user_relation = ChatUserRelation.query.filter(ChatUserRelation.chat_id.in_(chat_ids),
-                                                       ChatUserRelation.user_id != user_id).join(Chat).join(ChatMessage)\
+                                                       ChatUserRelation.user_id != user_id).join(Chat).join(ChatMessage) \
         .order_by(desc(ChatMessage.created_date)).all()
     print(chat_user_relations_schema.dump(chat_user_relation))
     return jsonify(chat_user_relations_schema.dump(chat_user_relation))
@@ -952,7 +1190,9 @@ def sendMessage():
         chat_user_relation.count_new_message = chat_user_relation.count_new_message + 1
         db.session.commit()
         # db.session.close_all()
-        emit('message', {'sender_id': session.get('user_id'), 'chat_id': chat.id, 'created_date': str(chat_message.created_date), 'text': text}, room=session.get('room'), namespace='/chat')
+        emit('message',
+             {'sender_id': session.get('user_id'), 'chat_id': chat.id, 'created_date': str(chat_message.created_date),
+              'text': text}, room=session.get('room'), namespace='/chat')
     return jsonify(chat_message_schema.dump(chat_message))
 
 

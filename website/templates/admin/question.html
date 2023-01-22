@@ -1,0 +1,104 @@
+{% extends 'admin/base.html' %}
+{% include 'admin/header.html' %}
+{% block title %} Question {% endblock %}
+
+{% block body %}
+<script>
+    jQuery(function($) {
+      window.get_questions({{ topic.id }});
+    });
+</script>
+<div class="C0mplexButton float-end">
+    <a href="/topic/{{ topic.book_id }}">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        X
+    </a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-secondary" role="alert">
+              <h2>Manage <b>{{ topic.name_uz_uz }} Questions</b>
+                  <button type="button" class="btn btn-outline-success float-end" data-bs-whatever="Add new" ng-click="add_edit_question(0)"><i class="fa fa-add"></i> Add new question</button>
+              </h2>
+                {% raw %}
+                <table class="table table-hover table-dark text-left" ng-show="show_questions_data">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Right</th>
+                            <th>Name</th>
+                            <th width="300px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in questions">
+                            <td>{{item.number}}</td>
+                            <td>{{item.right}}</td>
+                            <td>{{item.name_uz_uz}}</td>
+                            <td>
+                                <a href="/answer/{{item.id}}" class="btn btn-outline-success btn-xs"><i class="fa fa-eye"></i> Enter</a>
+                                <button class="btn btn-outline-warning btn-xs" data-bs-whatever="Edit" ng-click="add_edit_question(item)"><i class="fa fa-edit"></i> Edit</button>
+                                <button class="btn btn-outline-danger btn-xs" ng-click="remove_question(item)"><i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endraw %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="question_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="questionModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <form class="row g-3 needs-validation was-validated" name="question_form" novalidate>
+          <div class="modal-header">
+              {% raw %}
+                <h1 class="modal-title fs-5" id="questionModalLabel">{{modal_title}} question</h1>
+              {% endraw %}
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+                <label for="number" class="col-form-label">number:</label>
+                <input type="number" class="form-control" id="number" name="number" ng-model="question.number" required>
+              </div>
+              <div class="mb-3">
+                <label for="right" class="col-form-label">right:</label>
+                <input class="form-check-input mt-2" id="right" name="right" ng-model="question.right" type="checkbox" value="" aria-label="Checkbox for following text input">
+
+              </div>
+              <div class="mb-3">
+                <label for="name_en_us" class="col-form-label">name_en_us:</label>
+                <input type="text" class="form-control" id="name_en_us" name="name_en_us" ng-model="question.name_en_us" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_ru_ru" class="col-form-label">name_ru_ru:</label>
+                <input type="text" class="form-control" id="name_ru_ru" name="name_ru_ru" ng-model="question.name_ru_ru" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_uz_crl" class="col-form-label">name_uz_crl:</label>
+                <input type="text" class="form-control" id="name_uz_crl" name="name_uz_crl" ng-model="question.name_uz_crl" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_uz_uz" class="col-form-label">name_uz_uz:</label>
+                <input type="text" class="form-control" id="name_uz_uz" name="name_uz_uz" ng-model="question.name_uz_uz" required>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            <button type="button" class="btn btn-outline-success" ng-disabled="question_form.number.$error.required||question_form.name_en_us.$error.required||question_form.name_ru_ru.$error.required||question_form.name_uz_crl.$error.required||question_form.name_uz_uz.$error.required" ng-click="save_question()"><i class="fa fa-check"></i> Save</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+<script>
+        const question_modal = new bootstrap.Modal(document.getElementById('question_modal'));
+</script>
+{% endblock %}

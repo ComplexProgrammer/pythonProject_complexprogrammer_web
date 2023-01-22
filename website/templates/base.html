@@ -330,7 +330,8 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 phone:user.phoneNumber,
                 provider_id:user.providerId,
                 uid:user.uid,
-                email_verified:user.emailVerified
+                email_verified:user.emailVerified,
+                is_admin:user.is_admin
             };
             $.ajax({
                 type: "POST",
@@ -625,6 +626,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                             <tr ng-show="user.phone">
                                 <td>{{user.phone}}</td>
                             </tr>
+                            <tr ng-show="user.is_admin">
+                                <td><a href="/admin" class="btn btn-outline-primary">Admin Panel</a></td>
+                            </tr>
+
                         </tbody>
                     </table>
                     <button id="logout" class="btn_sign_up">Logout</button>

@@ -1,0 +1,107 @@
+{% extends 'admin/base.html' %}
+{% include 'admin/header.html' %}
+{% block title %} Group {% endblock %}
+
+{% block body %}
+<script type="module">
+    jQuery(function($) {
+      window.get_groups();
+    });
+
+</script>
+<div class="C0mplexButton float-end">
+    <a href="/admin">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        X
+    </a>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="alert alert-secondary" role="alert">
+              <h2>Manage <b>Groups</b>
+<!--                  <button type="button" class="btn btn-outline-success float-end" data-bs-toggle="modal" data-bs-target="#group_modal" data-bs-whatever="Add new" ng-click="add_edit_group(0)"><i class="fa fa-add"></i> Add new group</button>-->
+                  <button type="button" class="btn btn-outline-success float-end" data-bs-whatever="Add new" ng-click="add_edit_group(0)"><i class="fa fa-add"></i> Add new group</button>
+              </h2>
+                {% raw %}
+                <table class="table table-hover table-dark text-left" ng-show="show_groups_data">
+                    <thead>
+                        <tr>
+                            <th>Number</th>
+                            <th>Name</th>
+                            <th width="300px">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in groups">
+                            <td>{{item.number}}</td>
+                            <td>{{item.name_uz_uz}}</td>
+                            <td>
+<!--                                <button class="btn btn-outline-warning btn-xs" data-bs-toggle="modal" data-bs-target="#group_modal" data-bs-whatever="Edit" ng-click="add_edit_group(item)"><i class="fa fa-edit"></i> Edit</button>-->
+                                <a href="/book/{{item.id}}" class="btn btn-outline-success btn-xs"><i class="fa fa-eye"></i> Enter</a>
+                                <button class="btn btn-outline-warning btn-xs" data-bs-whatever="Edit" ng-click="add_edit_group(item)"><i class="fa fa-edit"></i> Edit</button>
+                                <button class="btn btn-outline-danger btn-xs" ng-click="remove_group(item)"><i class="fa fa-trash"></i> Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                {% endraw %}
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="group_modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="groupModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <form class="row g-3 needs-validation was-validated" name="group_form" novalidate>
+          <div class="modal-header">
+              {% raw %}
+                <h1 class="modal-title fs-5" id="groupModalLabel">{{modal_title}} group</h1>
+              {% endraw %}
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <div class="mb-3">
+                <label for="number" class="col-form-label">number:</label>
+                <input type="number" class="form-control" id="number" name="number" ng-model="group.number" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_en_us" class="col-form-label">name_en_us:</label>
+                <input type="text" class="form-control" id="name_en_us" name="name_en_us" ng-model="group.name_en_us" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_ru_ru" class="col-form-label">name_ru_ru:</label>
+                <input type="text" class="form-control" id="name_ru_ru" name="name_ru_ru" ng-model="group.name_ru_ru" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_uz_crl" class="col-form-label">name_uz_crl:</label>
+                <input type="text" class="form-control" id="name_uz_crl" name="name_uz_crl" ng-model="group.name_uz_crl" required>
+              </div>
+              <div class="mb-3">
+                <label for="name_uz_uz" class="col-form-label">name_uz_uz:</label>
+                <input type="text" class="form-control" id="name_uz_uz" name="name_uz_uz" ng-model="group.name_uz_uz" required>
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+            <button type="button" class="btn btn-outline-success" ng-disabled="group_form.number.$error.required||group_form.name_en_us.$error.required||group_form.name_ru_ru.$error.required||group_form.name_uz_crl.$error.required||group_form.name_uz_uz.$error.required" ng-click="save_group()"><i class="fa fa-check"></i> Save</button>
+          </div>
+        </form>
+    </div>
+  </div>
+</div>
+<script>
+        const group_modal = new bootstrap.Modal(document.getElementById('group_modal'));
+        // const group_modal_ = document.getElementById('group_modal')
+        // group_modal_.addEventListener('show.bs.modal', event => {
+        //   const button = event.relatedTarget
+        //   const recipient = button.getAttribute('data-bs-whatever')
+        //   const modalTitle = group_modal_.querySelector('.modal-title')
+        //   modalTitle.textContent = `${recipient} Group`
+        // })
+</script>
+{% endblock %}

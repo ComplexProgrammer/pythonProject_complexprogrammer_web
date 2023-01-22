@@ -281,7 +281,8 @@
                 phone:user.phoneNumber,
                 provider_id:user.providerId,
                 uid:user.uid,
-                email_verified:user.emailVerified
+                email_verified:user.emailVerified,
+                is_admin:user.is_admin
             };
             $.ajax({
                 type: "POST",

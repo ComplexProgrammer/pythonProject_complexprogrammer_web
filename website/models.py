@@ -1,5 +1,6 @@
 import enum
 
+from marshmallow_enum import EnumField
 from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, CHAR, DateTime, Boolean, func, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -32,7 +33,6 @@ class Groups(Translatable, Base):
     __tablename__ = "groups"
     number = Column(Integer)
     book = relationship("Books", back_populates="group")
-
 
 
 class BookType(enum.Enum):
@@ -104,6 +104,48 @@ class GroupsSchema(ma.SQLAlchemyAutoSchema):
 group_schema = GroupsSchema()
 groups_schema = GroupsSchema(many=True)
 
+
+class BooksSchema(ma.SQLAlchemyAutoSchema):
+    book_type = EnumField(BookType)
+    class Meta:
+        model = Books
+        include_fk = True
+
+
+book_schema = BooksSchema()
+books_schema = BooksSchema(many=True)
+
+
+class TopicsSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Topics
+        include_fk = True
+
+
+topic_schema = TopicsSchema()
+topics_schema = TopicsSchema(many=True)
+
+
+class QuestionsSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Questions
+        include_fk = True
+
+
+question_schema = QuestionsSchema()
+questions_schema = QuestionsSchema(many=True)
+
+
+class AnswersSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Answers
+        include_fk = True
+
+
+answer_schema = AnswersSchema()
+answers_schema = AnswersSchema(many=True)
+
+
 class Users(db.Model):
     __tablename__ = "user"
     id = db.Column(db.Integer(), primary_key=True)
@@ -114,6 +156,7 @@ class Users(db.Model):
     provider_id = db.Column(db.String(length=1024), nullable=False)
     uid = db.Column(db.String(length=1024), nullable=False, unique=True)
     email_verified = db.Column(db.Boolean(), nullable=False)
+    is_admin = db.Column(db.Boolean(), default=False, nullable=False)
 
     created_date = db.Column(db.DateTime(), default=db.func.now())
     login_date = db.Column(db.DateTime(), nullable=False)
@@ -254,6 +297,7 @@ class ChatUserRelationSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ChatUserRelation
         include_fk = True
+
     user = ma.Nested(UserSchema)
     chat = ma.Nested(ChatSchema)
 
@@ -266,6 +310,7 @@ class ChatMessageSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = ChatMessage
         include_fk = True
+
     chat = ma.Nested(ChatSchema)
 
 
