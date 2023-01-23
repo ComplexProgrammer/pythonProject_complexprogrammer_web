@@ -8,20 +8,12 @@
       window.get_topics({{ book.id }});
     });
 </script>
-<div class="C0mplexButton float-end">
-    <a href="/book/{{ book.group_id }}">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        X
-    </a>
-</div>
 <div class="container">
+    <a href="/book/{{ book.group_id }}" class="btn btn-outline-danger float-end">X</a>
     <div class="row">
         <div class="col">
             <div class="alert alert-secondary" role="alert">
-              <h2>Manage <b>{{ book.name_uz_uz }} Topics</b>
+              <h2>Manage <b>Topics</b> {{ group.name_uz_uz }} <i class="fa-solid fa-angles-right"></i> {{ book.name_uz_uz }}
                   <button type="button" class="btn btn-outline-success float-end" data-bs-whatever="Add new" ng-click="add_edit_topic(0)"><i class="fa fa-add"></i> Add new topic</button>
               </h2>
                 {% raw %}

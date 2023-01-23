@@ -8,20 +8,12 @@
       window.get_books({{ group.id }});
     });
 </script>
-<div class="C0mplexButton float-end">
-    <a href="/group">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        X
-    </a>
-</div>
 <div class="container">
+    <a href="/group" class="btn btn-outline-danger float-end">X</a>
     <div class="row">
         <div class="col">
             <div class="alert alert-secondary" role="alert">
-              <h2>Manage <b>{{ group.name_uz_uz }} Books</b>
+              <h2>Manage <b>Books {{ group.name_uz_uz }} </b>
                   <button type="button" class="btn btn-outline-success float-end" data-bs-whatever="Add new" ng-click="add_edit_book(0)"><i class="fa fa-add"></i> Add new book</button>
               </h2>
                 {% raw %}

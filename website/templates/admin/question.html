@@ -8,20 +8,12 @@
       window.get_questions({{ topic.id }});
     });
 </script>
-<div class="C0mplexButton float-end">
-    <a href="/topic/{{ topic.book_id }}">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        X
-    </a>
-</div>
 <div class="container">
+    <a href="/topic/{{ topic.book_id }}" class="btn btn-outline-danger float-end">X</a>
     <div class="row">
         <div class="col">
             <div class="alert alert-secondary" role="alert">
-              <h2>Manage <b>{{ topic.name_uz_uz }} Questions</b>
+              <h2>Manage <b>Questions</b> {{ group.name_uz_uz }} <i class="fa-solid fa-angles-right"></i> {{ book.name_uz_uz }} <i class="fa-solid fa-angles-right"></i> {{ topic.name_uz_uz }}
                   <button type="button" class="btn btn-outline-success float-end" data-bs-whatever="Add new" ng-click="add_edit_question(0)"><i class="fa fa-add"></i> Add new question</button>
               </h2>
                 {% raw %}

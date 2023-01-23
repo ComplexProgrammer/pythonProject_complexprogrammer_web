@@ -193,7 +193,8 @@ def remove_book():
 @app.route('/topic/<book_id>')
 def topic_page(book_id):
     book = db.session.query(Books).filter_by(id=book_id).first()
-    return render_template('admin/topic.html', book=book)
+    group = db.session.query(Groups).filter_by(id=book.group_id).first()
+    return render_template('admin/topic.html', book=book, group=group)
 
 
 @app.route("/get_topics", methods=['GET'])
@@ -247,7 +248,9 @@ def remove_topic():
 @app.route('/question/<topic_id>')
 def question_page(topic_id):
     topic = db.session.query(Topics).filter_by(id=topic_id).first()
-    return render_template('admin/question.html', topic=topic)
+    book = db.session.query(Books).filter_by(id=topic.book_id).first()
+    group = db.session.query(Groups).filter_by(id=book.group_id).first()
+    return render_template('admin/question.html', topic=topic, book=book, group=group)
 
 
 @app.route("/get_questions", methods=['GET'])
@@ -301,7 +304,10 @@ def remove_question():
 @app.route('/answer/<question_id>')
 def answer_page(question_id):
     question = db.session.query(Questions).filter_by(id=question_id).first()
-    return render_template('admin/answer.html', question=question)
+    topic = db.session.query(Topics).filter_by(id=question.topic_id).first()
+    book = db.session.query(Books).filter_by(id=topic.book_id).first()
+    group = db.session.query(Groups).filter_by(id=book.group_id).first()
+    return render_template('admin/answer.html', question=question, topic=topic, book=book, group=group)
 
 
 @app.route("/get_answers", methods=['GET'])

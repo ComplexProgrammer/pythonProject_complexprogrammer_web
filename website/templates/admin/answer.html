@@ -8,20 +8,12 @@
       window.get_answers({{ question.id }});
     });
 </script>
-<div class="C0mplexButton float-end">
-    <a href="/question/{{ question.topic_id }}">
-        <span></span>
-        <span></span>
-        <span></span>
-        <span></span>
-        X
-    </a>
-</div>
 <div class="container">
+    <a href="/question/{{ question.topic_id }}" class="btn btn-outline-danger float-end">X</a>
     <div class="row">
         <div class="col">
             <div class="alert alert-secondary" role="alert">
-              <h2>Manage <b>{{ question.name_uz_uz }} Answers</b>
+              <h2>Manage <b>Answers</b> {{ group.name_uz_uz }} <i class="fa-solid fa-angles-right"></i> {{ book.name_uz_uz }} <i class="fa-solid fa-angles-right"></i> {{ topic.name_uz_uz }} <i class="fa-solid fa-angles-right"></i> {{ question.name_uz_uz }}
                   <button type="button" class="btn btn-outline-success float-end" data-bs-whatever="Add new" ng-click="add_edit_answer(0)"><i class="fa fa-add"></i> Add new answer</button>
               </h2>
                 {% raw %}

@@ -5,22 +5,6 @@
     <value-preview-text-wrapping value="false" />
     <value-preview-pinned value="false" />
   </component>
-  <component name="DBNavigator.Project.DataExportManager">
-    <export-instructions>
-      <create-header value="true" />
-      <friendly-headers value="false" />
-      <quote-values-containing-separator value="true" />
-      <quote-all-values value="false" />
-      <value-separator value="" />
-      <file-name value="" />
-      <file-location value="" />
-      <scope value="GLOBAL" />
-      <destination value="FILE" />
-      <format value="EXCEL" />
-      <charset value="windows-1254" />
-      <charset value="windows-1254" />
-    </export-instructions>
-  </component>
   <component name="DBNavigator.Project.DatabaseBrowserManager">
     <autoscroll-to-editor value="false" />
     <autoscroll-from-editor value="true" />
@@ -28,8 +12,8 @@
     <loaded-nodes />
   </component>
   <component name="DBNavigator.Project.DatabaseConsoleManager">
-    <connection id="e9dc6f01-ef78-46aa-9b6d-ab54f41d0fd8">
-      <console name="Connection" type="STANDARD" schema="main" session="Main" />
+    <connection id="0023d27c-da23-4666-bfd9-75b8d05b673b">
+      <console name="Connection" type="STANDARD" schema="" session="Main" />
     </connection>
   </component>
   <component name="DBNavigator.Project.DatabaseEditorStateManager">
@@ -38,50 +22,19 @@
   <component name="DBNavigator.Project.DatabaseFileManager">
     <open-files />
   </component>
-  <component name="DBNavigator.Project.DatabaseSessionManager">
-    <connection id="e9dc6f01-ef78-46aa-9b6d-ab54f41d0fd8" />
-  </component>
-  <component name="DBNavigator.Project.DatasetFilterManager">
-    <filter-actions connection-id="e9dc6f01-ef78-46aa-9b6d-ab54f41d0fd8" dataset="main.user" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="e9dc6f01-ef78-46aa-9b6d-ab54f41d0fd8" dataset="main.chat_message" active-filter-id="EMPTY_FILTER" />
-    <filter-actions connection-id="e9dc6f01-ef78-46aa-9b6d-ab54f41d0fd8" dataset="main.chat_user_relation" active-filter-id="EMPTY_FILTER" />
-  </component>
-  <component name="DBNavigator.Project.EditorStateManager">
-    <last-used-providers />
-  </component>
-  <component name="DBNavigator.Project.ExecutionManager">
-    <retain-sticky-names value="false" />
-  </component>
-  <component name="DBNavigator.Project.MethodExecutionManager">
-    <method-browser />
-    <execution-history>
-      <group-entries value="true" />
-      <execution-inputs />
-    </execution-history>
-    <argument-values-cache />
-  </component>
-  <component name="DBNavigator.Project.ObjectDependencyManager">
-    <last-used-dependency-type value="INCOMING" />
-  </component>
   <component name="DBNavigator.Project.ObjectQuickFilterManager">
     <last-used-operator value="EQUAL" />
     <filters />
   </component>
-  <component name="DBNavigator.Project.ParserDiagnosticsManager">
-    <diagnostics-history />
-  </component>
-  <component name="DBNavigator.Project.ScriptExecutionManager" clear-outputs="true">
-    <recently-used-interfaces />
-  </component>
   <component name="DBNavigator.Project.Settings">
     <connections>
-      <connection id="e9dc6f01-ef78-46aa-9b6d-ab54f41d0fd8" active="true" signed="true">
+      <connection id="0023d27c-da23-4666-bfd9-75b8d05b673b" active="true" signed="true">
         <database>
           <name value="Connection" />
           <description value="" />
           <database-type value="SQLITE" />
           <config-type value="BASIC" />
-          <database-version value="3.39" />
+          <database-version value="9999.0" />
           <driver-source value="BUILTIN" />
           <driver-library value="" />
           <driver value="" />
@@ -90,14 +43,15 @@
           <port value="" />
           <database value="" />
           <files>
-            <file path="C:\Users\odilj\PycharmProjects\pythonProject_complexprogrammer_web\website\avtotest.db" schema="main" />
+            <file path="sqlite.db" schema="main" />
+            <file path="C:\Users\User\PycharmProjects\pythonProject_complexprogrammer_web\website\avtotest.db" schema="avtotest" />
           </files>
           <type value="NONE" />
           <user value="" />
           <deprecated-pwd value="" />
         </database>
         <properties>
-          <auto-commit value="true" />
+          <auto-commit value="false" />
         </properties>
         <ssh-settings>
           <active value="false" />
@@ -215,10 +169,10 @@
       <lookup-filters>
         <lookup-objects>
           <object-type name="SCHEMA" enabled="true" />
-          <object-type name="USER" enabled="false" />
-          <object-type name="ROLE" enabled="false" />
-          <object-type name="PRIVILEGE" enabled="false" />
-          <object-type name="CHARSET" enabled="false" />
+          <object-type name="USER" enabled="true" />
+          <object-type name="ROLE" enabled="true" />
+          <object-type name="PRIVILEGE" enabled="true" />
+          <object-type name="CHARSET" enabled="true" />
           <object-type name="TABLE" enabled="true" />
           <object-type name="VIEW" enabled="true" />
           <object-type name="MATERIALIZED VIEW" enabled="true" />
@@ -226,14 +180,14 @@
           <object-type name="CONSTRAINT" enabled="true" />
           <object-type name="DATASET TRIGGER" enabled="true" />
           <object-type name="DATABASE TRIGGER" enabled="true" />
-          <object-type name="SYNONYM" enabled="false" />
+          <object-type name="SYNONYM" enabled="true" />
           <object-type name="SEQUENCE" enabled="true" />
           <object-type name="PROCEDURE" enabled="true" />
           <object-type name="FUNCTION" enabled="true" />
           <object-type name="PACKAGE" enabled="true" />
           <object-type name="TYPE" enabled="true" />
-          <object-type name="DIMENSION" enabled="false" />
-          <object-type name="CLUSTER" enabled="false" />
+          <object-type name="DIMENSION" enabled="true" />
+          <object-type name="CLUSTER" enabled="true" />
           <object-type name="DBLINK" enabled="true" />
         </lookup-objects>
         <force-database-load value="false" />
@@ -556,8 +510,5 @@
         </visibility-settings>
       </environment>
     </general-settings>
-  </component>
-  <component name="DBNavigator.Project.StatementExecutionManager">
-    <execution-variables />
   </component>
 </project>
