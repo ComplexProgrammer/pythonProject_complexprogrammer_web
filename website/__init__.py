@@ -6,6 +6,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_marshmallow import Marshmallow
 from flask_session import Session
+
 # from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, CHAR, DateTime
 # from sqlalchemy.ext.declarative import declarative_base
 # from sqlalchemy.orm import sessionmaker
@@ -24,7 +25,7 @@ socketio = SocketIO(app, manage_session=False, async_mode="threading")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1000 * 1000 * 1000
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///complexprogrammer.db'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'avtotest_test.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'avtotest_old.db')
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///avtotest.db'
 app.config['SECRET_KEY'] = '7df06660a1e6b95c9108cdea'
 
@@ -35,4 +36,5 @@ db = SQLAlchemy(app)
 ma = Marshmallow(app)
 
 
+os.environ['MPLCONFIGDIR'] = r'C:\Users\User\.matplotlib'
 from website import views
