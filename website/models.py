@@ -1,14 +1,16 @@
 import enum
-
+from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 from marshmallow_enum import EnumField
 from sqlalchemy import create_engine, ForeignKey, Column, String, Integer, CHAR, DateTime, Boolean, func, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy_enum34 import EnumType
-
-from website import db, ma, app
+from website import app
 
 Base = declarative_base()
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 
 class Auditable(Base):
@@ -91,10 +93,6 @@ class Answers(Translatable, Base):
     question = relationship("Questions", back_populates="answer")
 
 
-engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
-Base.metadata.create_all(bind=engine)
-
-
 class GroupsSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Groups
@@ -107,6 +105,7 @@ groups_schema = GroupsSchema(many=True)
 
 class BooksSchema(ma.SQLAlchemyAutoSchema):
     book_type = EnumField(BookType)
+
     class Meta:
         model = Books
         include_fk = True
@@ -144,6 +143,9 @@ class AnswersSchema(ma.SQLAlchemyAutoSchema):
 
 answer_schema = AnswersSchema()
 answers_schema = AnswersSchema(many=True)
+
+# engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
+# Base.metadata.create_all(bind=engine)
 
 
 class Users(db.Model):

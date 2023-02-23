@@ -33,30 +33,21 @@ import googletrans
 from googletrans import Translator
 import pyttsx3
 
-from website import app, ALLOWED_EXTENSIONS, GET_FILE_FORMATS, db, youtube_downloader, file_converter, \
-    TWILIO_ACCOUNT_SID, \
-    TWILIO_API_KEY_SID, TWILIO_API_KEY_SECRET, socketio, instagram_downloader
+from website import app, ALLOWED_EXTENSIONS, GET_FILE_FORMATS, youtube_downloader, file_converter, \
+    instagram_downloader, socketio
 
 import json
 
-from website.models import Users, Chat, ChatMessage, ChatUserRelation, UserSchema, ChatUserRelationSchema, user_schema, \
+from website.models import Users, Chat, ChatMessage, ChatUserRelation, user_schema, \
     users_schema, chat_user_relations_schema, chat_messages_schema, chat_message_schema, Groups, groups_schema, Books, \
-    books_schema, BookType, topics_schema, Topics, Questions, questions_schema, answers_schema, Answers
-import pytube
-import twilio.jwt.access_token
-import twilio.jwt.access_token.grants
-import twilio.rest
-from flask_socketio import SocketIO, send, emit, join_room, leave_room
+    books_schema, BookType, topics_schema, Topics, Questions, questions_schema, answers_schema, Answers, db
+from flask_socketio import emit, join_room, leave_room
 
 from website.white_box_cartoonizer.cartoonize import WB_Cartoonize
 import skvideo
 import skvideo.io
 
 skvideo.setFFmpegPath(r'C:\Python310\Lib\site-packages\ffmpeg')
-account_sid = TWILIO_ACCOUNT_SID
-api_key = TWILIO_API_KEY_SID
-api_secret = TWILIO_API_KEY_SECRET
-twilio_client = twilio.rest.Client(api_key, api_secret, account_sid)
 
 with open('./website/config.yaml', 'r') as fd:
     opts = yaml.safe_load(fd)
@@ -718,45 +709,6 @@ def remove_file_():
         return "1"
     else:
         return "0"
-
-
-# @app.route("/video_chat")
-# def video_chat():
-#     return render_template('video_chat.html')
-#
-#
-# @app.route("/join-room", methods=["POST"])
-# def join_room():
-#     username = request.get_json(force=True).get('username')
-#     if not username:
-#         abort(401)
-#
-#     token = twilio.AccessToken(account_sid, api_key,
-#                                api_secret, identity=username)
-#     token.add_grant(twilio.VideoGrant(room='My Room'))
-#
-#     return {'token': token.to_jwt().decode()}
-
-
-def find_or_create_room(room_name):
-    try:
-        # try to fetch an in-progress room with this name
-        twilio_client.video.rooms(room_name).fetch()
-    except twilio.base.exceptions.TwilioRestException:
-        # the room did not exist, so create it
-        twilio_client.video.rooms.create(unique_name=room_name, type="go")
-
-
-def get_access_token(room_name):
-    # create the access token
-    access_token = twilio.jwt.access_token.AccessToken(
-        account_sid, api_key, api_secret, identity=uuid.uuid4().int
-    )
-    # create the video grant
-    video_grant = twilio.jwt.access_token.grants.VideoGrant(room=room_name)
-    # Add the video grant to the access token
-    access_token.add_grant(video_grant)
-    return access_token
 
 
 @app.route("/exchangerates")
