@@ -144,8 +144,8 @@ class AnswersSchema(ma.SQLAlchemyAutoSchema):
 answer_schema = AnswersSchema()
 answers_schema = AnswersSchema(many=True)
 
-# engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
-# Base.metadata.create_all(bind=engine)
+engine = create_engine(app.config['SQLALCHEMY_DATABASE_URI'], echo=True)
+Base.metadata.create_all(bind=engine)
 
 
 class Users(db.Model):

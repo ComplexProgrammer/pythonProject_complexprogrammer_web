@@ -8,11 +8,23 @@
       <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/website/avtotest_test.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="avtotest_old" uuid="5f8d1d16-4ecc-430b-8dd7-e530fecd30c3">
+    <data-source source="LOCAL" name="avtotest" uuid="ea2193ff-5ad6-44b4-98fc-edc7e1f43793">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\User\PycharmProjects\pythonProject_complexprogrammer_web\website\avtotest_old.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\odilj\PycharmProjects\pythonProject_complexprogrammer_web\website\avtotest.db</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+      <libraries>
+        <library>
+          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.39.2/sqlite-jdbc-3.39.2.jar</url>
+        </library>
+      </libraries>
+    </data-source>
+    <data-source source="LOCAL" name="avtotest_old" uuid="23acf642-7051-4d43-864f-5c27f2396bca">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:C:\Users\odilj\PycharmProjects\pythonProject_complexprogrammer_web\website\avtotest_old.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
         <library>
