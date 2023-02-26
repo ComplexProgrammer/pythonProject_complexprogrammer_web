@@ -6,6 +6,17 @@ app.filter('jsonDate', ['$filter', function ($filter) {
             : '';
     };
 }]);
+app.directive('ngFiles', ['$parse', function ($parse) {
+    function fn_link(scope, element, attrs) {
+        var onChange = $parse(attrs.ngFiles);
+        element.on('change', function (event) {
+            onChange(scope, { $files: event.target.files });
+        });
+    };
+    return {
+        link: fn_link
+    }
+}])
 app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scope, $window, $http, $filter) {
     $scope.show_groups_data = false;
     function get_groups(){
@@ -308,6 +319,13 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
 
     $scope.show_questions_data = false;
     var topic_id;
+    var question_photo_formdata = new FormData();
+    $scope.getQuestionPhoto = function ($files) {
+        question_photo_formdata.set('photo', $files[0]);
+        $scope.question.photo=question_photo_formdata;
+        console.log($files[0]);
+        console.log(question_photo_formdata);
+    };
     function get_questions(){
         document.getElementById('hh').className= "modal-backdrop fade show";
         document.getElementById('conn').style.visibility = "visible";
@@ -349,6 +367,8 @@ app.controller("Base", ["$scope", "$window", "$http", "$filter", function ($scop
         }
     }
     $scope.save_question = function(){
+        console.log(question_photo_formdata.get('photo'));
+        console.log($scope.question);
         document.getElementById('hh').className = "modal-backdrop fade show";
         document.getElementById('conn').style.visibility = "visible";
         $http({

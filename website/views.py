@@ -256,12 +256,15 @@ def save_question():
     json_data = request.json
     id = json_data['id']
     number = json_data['number']
-    # photo = json_data['photo']
+    photo = json_data['photo']
     topic_id = json_data['topic_id']
     name_en_us = json_data['name_en_us']
     name_ru_ru = json_data['name_ru_ru']
     name_uz_crl = json_data['name_uz_crl']
     name_uz_uz = json_data['name_uz_uz']
+    print(photo)
+    # photo_model = request.files[photo]
+    # print(photo_model)
     if id == 0:
         question = Questions(number=number, topic_id=topic_id, name_en_us=name_en_us, name_ru_ru=name_ru_ru, name_uz_crl=name_uz_crl,
                        name_uz_uz=name_uz_uz)

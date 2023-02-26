@@ -21,16 +21,16 @@
                     <thead>
                         <tr>
                             <th>Number</th>
-                            <th>Right</th>
                             <th>Name</th>
+                            <th>Photo</th>
                             <th width="300px">Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr ng-repeat="item in questions">
                             <td>{{item.number}}</td>
-                            <td>{{item.right}}</td>
                             <td>{{item.name_uz_uz}}</td>
+                            <td>{{item.photo}}</td>
                             <td>
                                 <a href="/answer/{{item.id}}" class="btn btn-outline-success btn-xs"><i class="fa fa-eye"></i> Enter</a>
                                 <button class="btn btn-outline-warning btn-xs" data-bs-whatever="Edit" ng-click="add_edit_question(item)"><i class="fa fa-edit"></i> Edit</button>
@@ -61,11 +61,6 @@
                 <input type="number" class="form-control" id="number" name="number" ng-model="question.number" required>
               </div>
               <div class="mb-3">
-                <label for="right" class="col-form-label">right:</label>
-                <input class="form-check-input mt-2" id="right" name="right" ng-model="question.right" type="checkbox" value="" aria-label="Checkbox for following text input">
-
-              </div>
-              <div class="mb-3">
                 <label for="name_en_us" class="col-form-label">name_en_us:</label>
                 <textarea class="form-control" id="name_en_us" name="name_en_us" ng-model="question.name_en_us" required></textarea>
 <!--                <input type="text" class="form-control" id="name_en_us" name="name_en_us" ng-model="question.name_en_us" required>-->
@@ -85,6 +80,10 @@
                 <textarea class="form-control" id="name_uz_uz" name="name_uz_uz" ng-model="question.name_uz_uz" required></textarea>
 <!--                <input type="text" class="form-control" id="name_uz_uz" name="name_uz_uz" ng-model="question.name_uz_uz" required>-->
               </div>
+                <div class="mb-3">
+                    <label for="photo" class="col-form-label">photo:</label>
+                    <input name="photo" id="photo" type="file" ng-files="getQuestionPhoto($files)" class="dropify" data-height="100" />
+                </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"><i class="fa fa-close"></i> Close</button>
@@ -95,6 +94,6 @@
   </div>
 </div>
 <script>
-        const question_modal = new bootstrap.Modal(document.getElementById('question_modal'));
+    const question_modal = new bootstrap.Modal(document.getElementById('question_modal'));
 </script>
 {% endblock %}
