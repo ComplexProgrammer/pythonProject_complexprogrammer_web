@@ -1159,6 +1159,7 @@ def sendMessage():
 
 @app.route('/GetTranslateLanguages', methods=['POST'])
 def GetTranslateLanguages():
+    print(googletrans.LANGUAGES)
     return {'data': googletrans.LANGUAGES}
 
 
